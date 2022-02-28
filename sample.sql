@@ -34,6 +34,7 @@ SET
     `userID1` int(11) NOT NULL COMMENT 'Which user initiated the connection?',
     `userID2` int(11) NOT NULL COMMENT 'Which user received the connection',
     `ConnectionDate` date NOT NULL COMMENT 'When was the connection made?'
+    `Superlike` binary(1) NOT NULL 
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 -- --------------------------------------------------------
   --
@@ -56,7 +57,11 @@ SET
     `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Description` blob NOT NULL COMMENT 'Blob type because this will contain a free text description of the person',
     `Banned` binary(1) NOT NULL COMMENT 'Has the user been banned by an admin?',
-    `Photo` varchar(26) NOT NULL COMMENT 'We should allow users to upload photos to the site; this field contains the name of the photo they have uploaded'
+    `Photo1` varchar(26) NOT NULL COMMENT 'We should allow users to upload photos to the site; this field contains the name of the photo they have uploaded'
+    `Photo2` varchar(26) COMMENT 'Users can upload optional multiple photos'
+    `Photo3` varchar(26) COMMENT 'Users can upload optional multiple photos'
+    `County` enum('Limerick', 'Tipperary', 'Cork') NOT NULL 
+    `Town` varchar(26) 
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 -- --------------------------------------------------------
   --
@@ -68,6 +73,7 @@ SET
     `Firstname` varchar(26) NOT NULL,
     `Surname` varchar(26) NOT NULL,
     `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.'
+    `Email` varchar(52) NOT NULL
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
 --
   -- Indexes for dumped tables
