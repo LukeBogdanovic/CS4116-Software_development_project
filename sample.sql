@@ -57,10 +57,10 @@ SET
     `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Description` blob NOT NULL COMMENT 'Blob type because this will contain a free text description of the person',
     `Banned` binary(1) NOT NULL COMMENT 'Has the user been banned by an admin?',
-    `Photo1` varchar(26) NOT NULL COMMENT 'We should allow users to upload photos to the site; this field contains the name of the photo they have uploaded'
-    `Photo2` varchar(26) COMMENT 'Users can upload optional multiple photos'
-    `Photo3` varchar(26) COMMENT 'Users can upload optional multiple photos'
-    `County` enum('Limerick', 'Tipperary', 'Cork') NOT NULL 
+    `Photo1` varchar(26) NOT NULL COMMENT 'We should allow users to upload photos to the site; this field contains the name of the photo they have uploaded',
+    `Photo2` varchar(26) COMMENT 'Users can upload optional multiple photos',
+    `Photo3` varchar(26) COMMENT 'Users can upload optional multiple photos',
+    `County` enum('Limerick', 'Tipperary', 'Cork') NOT NULL,
     `Town` varchar(26) 
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 -- --------------------------------------------------------
@@ -72,10 +72,20 @@ SET
     `Handle` varchar(26) NOT NULL,
     `Firstname` varchar(26) NOT NULL,
     `Surname` varchar(26) NOT NULL,
-    `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.'
-    `Email` varchar(52) NOT NULL
+    `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
+    `Email` varchar(52) NOT NULL,
+    `SecurityQuestion1` enum('Q1','Q2','Q3','Q4','Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
+    `SecurityQuestion2` enum('Q1','Q2','Q3','Q4','Q5') NOT NULL COMMENT 'Users select which security question they are answering'
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
---
+-- --------------------------------------------------------
+  --
+  -- Table structure for table `SecurityAnswers`
+  --
+  CREATE TABLE `SecurityAnswers` (
+    `UserID` int(11) NOT NULL,
+    `SecurityAnswer1` varchar(256) NOT NULL,
+    `SecurityAnswer2` varchar(256) NOT NULL
+  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery answers for each user';
   -- Indexes for dumped tables
   --
   --
@@ -133,6 +143,14 @@ ADD
   CONSTRAINT `Connections_ibfk_1` FOREIGN KEY (`userID1`) REFERENCES `user` (`UserID`),
 ADD
   CONSTRAINT `Connections_ibfk_2` FOREIGN KEY (`userID2`) REFERENCES `user` (`UserID`);
+--
+  -- Constraints for table `SecurityAnswers`
+  --
+ALTER TABLE
+  `SecurityAnswers`
+ADD
+--
+  CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`);
 --
   -- Constraints for table `Interests`
   --
