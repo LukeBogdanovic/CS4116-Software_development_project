@@ -78,7 +78,9 @@ SET
     `Firstname` varchar(26) NOT NULL,
     `Surname` varchar(26) NOT NULL,
     `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
-    `Email` varchar(52) NOT NULL
+    `Email` varchar(52) NOT NULL,
+    `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
+    `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering'
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
 --
   -- AUTO_INCREMENT values for tables
@@ -101,7 +103,16 @@ ALTER TABLE
 ADD
   UNIQUE (Email);
 --
-  -- Indexes for dumped tables
+  -- --------------------------------------------------------
+  --
+  -- Table structure for table `SecurityAnswers`
+  --
+  CREATE TABLE `SecurityAnswers` (
+    `UserID` int(11) NOT NULL,
+    `SecurityAnswer1` varchar(256) NOT NULL,
+    `SecurityAnswer2` varchar(256) NOT NULL
+  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery answers for each user';
+-- Indexes for dumped tables
   --
   --
   -- Indexes for table `AvailableInterests`
@@ -158,6 +169,14 @@ ADD
   CONSTRAINT `Connections_ibfk_1` FOREIGN KEY (`userID1`) REFERENCES `user` (`UserID`),
 ADD
   CONSTRAINT `Connections_ibfk_2` FOREIGN KEY (`userID2`) REFERENCES `user` (`UserID`);
+--
+  -- Constraints for table `SecurityAnswers`
+  --
+ALTER TABLE
+  `SecurityAnswers`
+ADD
+  --
+  CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`);
 --
   -- Constraints for table `Interests`
   --
