@@ -15,6 +15,16 @@ function verify_password($user_password, $hashed)
 }
 
 /**
+ * Takes the Input of a password string and returns a string of the hashed password using the PASSWORD_DEFAULT algorithm
+ * @param string $password
+ * @return string
+ */
+function hash_password($password)
+{
+    return password_hash($password, PASSWORD_DEFAULT);
+}
+
+/**
  * Validates the email provided to the function for if the email is valid
  * @param string $email
  * @return boolean
