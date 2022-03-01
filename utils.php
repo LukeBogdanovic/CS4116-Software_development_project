@@ -37,18 +37,6 @@ function validate_email($email)
 }
 
 /**
- * Validates the two passwords $password1 and $password2 are identical 
- * @param string $password1
- * @param string $password2
- * @return boolean
- */
-function validate_identical($password1,$password2){
-    if($password1 == $password2)
-        return true;
-    return false;
-}
-
-/**
  * Verifies that the password entered by the user matches the confirm password
  * entry entered by the user at time of registration
  * @param string $password
