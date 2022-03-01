@@ -83,8 +83,8 @@ SET
   --
   CREATE TABLE `SecurityAnswers` (
     `UserID` int(11) NOT NULL,
-    `SecurityAnswer1` varchar(52) NOT NULL,
-    `SecurityAnswer2` varchar(52) NOT NULL
+    `SecurityAnswer1` varchar(256) NOT NULL,
+    `SecurityAnswer2` varchar(256) NOT NULL
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery answers for each user';
   -- Indexes for dumped tables
   --
