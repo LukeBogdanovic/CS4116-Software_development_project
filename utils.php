@@ -2,6 +2,9 @@
 
 function verify_password($user_password, $hashed)
 {
+    if (password_verify($user_password, $hashed))
+        return true;
+    return false;
 }
 
 /**
@@ -11,10 +14,9 @@ function verify_password($user_password, $hashed)
  */
 function validate_email($email)
 {
-    $result = false;
     if (filter_var($email, FILTER_VALIDATE_EMAIL))
-        $result = true;
-    return $result;
+        return true;
+    return false;
 }
 
 /**
@@ -26,8 +28,7 @@ function validate_email($email)
  */
 function validate_password($password, $repeat_password)
 {
-    $result = false;
     if ($password === $repeat_password)
-        $result = true;
-    return $result;
+        return true;
+    return false;
 }
