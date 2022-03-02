@@ -79,6 +79,16 @@ SET
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
 -- --------------------------------------------------------
   --
+  -- Table structure for table `Reports`
+  --
+  CREATE TABLE `Report` (
+    `UserID` int(11) NOT NULL,
+    `ReportID` int(11) NOT NULL,
+    `ReportReason` enum('Harassment','Disrespectful behaviour','Hate Speech','Catfish','Bot account')
+    `ReporterID` int(11) NOT NULL,
+  ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+-- --------------------------------------------------------
+  --
   -- Table structure for table `SecurityAnswers`
   --
   CREATE TABLE `SecurityAnswers` (
@@ -160,6 +170,15 @@ ADD
   CONSTRAINT `Interests_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`),
 ADD
   CONSTRAINT `Interests_ibfk_2` FOREIGN KEY (`InterestID`) REFERENCES `AvailableInterests` (`InterestID`);
+--
+  -- Constraints for table `Reports`
+  --
+ALTER TABLE
+  `Reports`
+ADD
+  CONSTRAINT `Reports_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`),
+ADD
+  CONSTRAINT `Reports_ibfk_2` FOREIGN KEY (`ReporterID`) REFERENCES `user` (`UserID`);
 --
   -- Constraints for table `profile`
   --
