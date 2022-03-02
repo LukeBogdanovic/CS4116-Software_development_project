@@ -17,7 +17,7 @@ SET
 --
   -- Database: `epiz_31123825_group13`
   --
--- --------------------------------------------------------
+  -- --------------------------------------------------------
   --
   -- Table structure for table `user`
   --
@@ -56,7 +56,7 @@ SET
     `Superlike` binary(1) NOT NULL,
     PRIMARY KEY (ConnectionID),
     CONSTRAINT `Connection_ibfk_1` FOREIGN KEY (userID1) REFERENCES user(UserID),
-    CONSTRAINT `Connection_ibfk_2`FOREIGN KEY (userID2) REFERENCES user(UserID)
+    CONSTRAINT `Connection_ibfk_2` FOREIGN KEY (userID2) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 -- --------------------------------------------------------
   --
@@ -101,7 +101,13 @@ SET
   CREATE TABLE `Reports` (
     `UserID` int(11) NOT NULL,
     `ReportID` int(11) NOT NULL AUTO_INCREMENT,
-    `ReportReason` enum('Harassment','Disrespectful behaviour','Hate Speech','Catfish','Bot account'),
+    `ReportReason` enum(
+      'Harassment',
+      'Disrespectful behaviour',
+      'Hate Speech',
+      'Catfish',
+      'Bot account'
+    ),
     `ReporterID` int(11) NOT NULL,
     PRIMARY KEY (ReportID),
     CONSTRAINT `Reports_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID),
@@ -116,7 +122,13 @@ SET
     `BanID` int(11) NOT NULL AUTO_INCREMENT,
     `Date` DATE NOT NULL,
     `BannedByID` int(11) NOT NULL,
-    `Reason` enum('Harassment','Disrespectful behaviour','Hate Speech','Catfish','Bot account'),
+    `Reason` enum(
+      'Harassment',
+      'Disrespectful behaviour',
+      'Hate Speech',
+      'Catfish',
+      'Bot account'
+    ),
     `Duration` int(3) NOT NULL DEFAULT 2 COMMENT 'Ban length in weeks. Default = 2. 0 = permabanned',
     PRIMARY KEY (BanID),
     CONSTRAINT `BannedUsers_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID),
@@ -132,7 +144,17 @@ SET
     `SecurityAnswer2` varchar(256) NOT NULL,
     CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery answers for each user';
-
+-- --------------------------------------------------------
+  --
+  -- Table structure for table `Photos`
+  --
+  CREATE Table `Photos` (
+    `UserID` int(11) NOT NULL,
+    `PhotoID` int (11) NOT NULL,
+    `Type` enum('primaryPhoto', 'coverPhoto', 'additionalPhoto'),
+    PRIMARY KEY (PhotoID),
+    CONSTRAINT `Photos_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
+  ) ENGINE = INNODB DEFAULT CHARSET = latin1 COMMENT = 'Store each Photo of Users';
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
   /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
   /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
