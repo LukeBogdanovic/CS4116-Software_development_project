@@ -19,6 +19,24 @@ SET
   --
 -- --------------------------------------------------------
   --
+  -- Table structure for table `user`
+  --
+  CREATE TABLE `user` (
+    `UserID` int(11) NOT NULL AUTO_INCREMENT,
+    `Handle` varchar(26) NOT NULL,
+    `Firstname` varchar(26) NOT NULL,
+    `Surname` varchar(26) NOT NULL,
+    `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
+    `Email` varchar(52) NOT NULL,
+    `Admin` binary(1) NOT NULL DEFAULT 0,
+    `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
+    `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering',
+    PRIMARY KEY (UserID),
+    UNIQUE (Email),
+    UNIQUE (Handle)
+  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
+-- --------------------------------------------------------
+  --
   -- Table structure for table `AvailableInterests`
   --
   CREATE TABLE `AvailableInterests` (
@@ -76,24 +94,6 @@ SET
     `Degree` VARCHAR(26),
     CONSTRAINT `profile_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
--- --------------------------------------------------------
-  --
-  -- Table structure for table `user`
-  --
-  CREATE TABLE `user` (
-    `UserID` int(11) NOT NULL AUTO_INCREMENT,
-    `Handle` varchar(26) NOT NULL,
-    `Firstname` varchar(26) NOT NULL,
-    `Surname` varchar(26) NOT NULL,
-    `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
-    `Email` varchar(52) NOT NULL,
-    `Admin` binary(1) NOT NULL DEFAULT 0,
-    `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
-    `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering',
-    PRIMARY KEY (UserID),
-    UNIQUE (Email),
-    UNIQUE (Handle)
-  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
 -- --------------------------------------------------------
   --
   -- Table structure for table `Reports`
