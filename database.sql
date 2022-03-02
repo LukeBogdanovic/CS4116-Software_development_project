@@ -144,7 +144,11 @@ SET
     `SecurityAnswer2` varchar(256) NOT NULL,
     CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery answers for each user';
-CREATE Table `Photos` (
+-- --------------------------------------------------------
+  --
+  -- Table structure for table `Photos`
+  --
+  CREATE Table `Photos` (
     `UserID` int(11) NOT NULL,
     `PhotoID` int (11) NOT NULL,
     `Type` enum('primaryPhoto', 'coverPhoto', 'additionalPhoto'),
