@@ -23,17 +23,18 @@ SET
   --
   CREATE TABLE `user` (
     `UserID` int(11) NOT NULL AUTO_INCREMENT,
-    `Handle` varchar(26) NOT NULL,
+    `Username` varchar(26) NOT NULL,
     `Firstname` varchar(26) NOT NULL,
     `Surname` varchar(26) NOT NULL,
     `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
     `Email` varchar(52) NOT NULL,
-    `Admin` binary(1) NOT NULL DEFAULT 0,
+    `Admin` binary(1) NOT NULL DEFAULT 0  COMMENT'Is the user an admin',
+    `Banned` binary(1) NOT NULL DEFAULT 0 COMMENT'Has the user been banned by an admin?',
     `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
     `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering',
     PRIMARY KEY (UserID),
     UNIQUE (Email),
-    UNIQUE (Handle)
+    UNIQUE (Username)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
 -- --------------------------------------------------------
   --
@@ -85,7 +86,6 @@ SET
     `Gender` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Description` blob NOT NULL COMMENT 'Blob type because this will contain a free text description of the person',
-    `Banned` binary(1) NOT NULL COMMENT 'Has the user been banned by an admin?',
     `County` enum('Limerick', 'Tipperary', 'Cork') NOT NULL,
     `Town` varchar(26),
     `Employment` VARCHAR(26) DEFAULT 'Unemployed',
