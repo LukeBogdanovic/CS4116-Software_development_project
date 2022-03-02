@@ -15,7 +15,7 @@ SET
   /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
   /*!40101 SET NAMES utf8mb4 */;
 --
-  -- Database: `ET4243_Sample`
+  -- Database: `epiz_31123825_group13`
   --
   -- --------------------------------------------------------
   --
@@ -51,7 +51,7 @@ SET
   CREATE TABLE `profile` (
     `UserID` int(11) NOT NULL,
     `Age` int(2) NOT NULL,
-    `Smoker` binary(1) NOT NULL COMMENT 'Binary type because this is yes or no',
+    `Smoker` enum('Smoker', 'Social Smoker', 'Non Smoker') NOT NULL COMMENT 'enum type because people can be social smokers',
     `Drinker` enum(
       'Constantly',
       'Most days',
@@ -62,11 +62,12 @@ SET
     `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Description` blob NOT NULL COMMENT 'Blob type because this will contain a free text description of the person',
     `Banned` binary(1) NOT NULL COMMENT 'Has the user been banned by an admin?',
-    `Photo1` varchar(26) NOT NULL COMMENT 'We should allow users to upload photos to the site; this field contains the name of the photo they have uploaded',
-    `Photo2` varchar(26) COMMENT 'Users can upload optional multiple photos',
-    `Photo3` varchar(26) COMMENT 'Users can upload optional multiple photos',
     `County` enum('Limerick', 'Tipperary', 'Cork') NOT NULL,
-    `Town` varchar(26)
+    `Town` varchar(26),
+    `Employment` VARCHAR(26) DEFAULT 'Unemployed',
+    `Student` binary(1) NOT NULL DEFAULT 0,
+    `College` VARCHAR(26),
+    `Degree` VARCHAR(26)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 -- --------------------------------------------------------
   --
@@ -79,9 +80,20 @@ SET
     `Surname` varchar(26) NOT NULL,
     `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
     `Email` varchar(52) NOT NULL,
+    `Admin` binary(1) NOT NULL DEFAULT 0,
     `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
     `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering'
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
+--
+  -- --------------------------------------------------------
+  --
+  -- Table structure for table `SecurityAnswers`
+  --
+  CREATE TABLE `SecurityAnswers` (
+    `UserID` int(11) NOT NULL,
+    `SecurityAnswer1` varchar(256) NOT NULL,
+    `SecurityAnswer2` varchar(256) NOT NULL
+  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery answers for each user';
 --
   -- AUTO_INCREMENT values for tables
   --
@@ -102,16 +114,6 @@ ALTER TABLE
   `user`
 ADD
   UNIQUE (Email);
---
-  -- --------------------------------------------------------
-  --
-  -- Table structure for table `SecurityAnswers`
-  --
-  CREATE TABLE `SecurityAnswers` (
-    `UserID` int(11) NOT NULL,
-    `SecurityAnswer1` varchar(256) NOT NULL,
-    `SecurityAnswer2` varchar(256) NOT NULL
-  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery answers for each user';
 -- Indexes for dumped tables
   --
   --
