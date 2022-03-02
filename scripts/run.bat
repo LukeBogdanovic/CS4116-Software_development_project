@@ -10,7 +10,7 @@ START "http://localhost:8000"
 ECHO "================================="
 ECHO "Changing directory to project home directory"
 ECHO "================================="
-cd C:\Dev\college\CS4116-Software_development_project\
+cd ..
 ECHO "================================="
 ECHO "Starting PHP development Server"
 ECHO "================================="
