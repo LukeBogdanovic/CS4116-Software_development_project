@@ -15,9 +15,9 @@ SET
   /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
   /*!40101 SET NAMES utf8mb4 */;
 --
-  -- Database: `ET4243_Sample`
+  -- Database: `epiz_31123825_group13`
   --
-  -- --------------------------------------------------------
+-- --------------------------------------------------------
   --
   -- Table structure for table `AvailableInterests`
   --
@@ -25,7 +25,7 @@ SET
     `InterestID` int(3) NOT NULL AUTO_INCREMENT,
     `InterestName` varchar(26) NOT NULL COMMENT 'The name of the interest',
     PRIMARY KEY (InterestID)
-  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Show a list of available interests for registration/search';
+  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Show a list of available interests for registration search';
 -- --------------------------------------------------------
   --
   -- Table structure for table `Connections`
@@ -37,8 +37,8 @@ SET
     `ConnectionDate` date NOT NULL COMMENT 'When was the connection made?',
     `Superlike` binary(1) NOT NULL,
     PRIMARY KEY (ConnectionID),
-    FOREIGN KEY (userID1) REFERENCES user(UserID),
-    FOREIGN KEY (userID2) REFERENCES user(UserID)
+    CONSTRAINT `Connection_ibfk_1` FOREIGN KEY (userID1) REFERENCES user(UserID),
+    CONSTRAINT `Connection_ibfk_2`FOREIGN KEY (userID2) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 -- --------------------------------------------------------
   --
@@ -47,8 +47,8 @@ SET
   CREATE TABLE `Interests` (
     `UserID` int(11) NOT NULL COMMENT 'Which user is this?',
     `InterestID` int(3) NOT NULL COMMENT 'Which interest do they have?',
-    FOREIGN KEY (UserID) REFERENCES user(UserID),
-    FOREIGN KEY (InterestID) REFERENCES AvailableInterests(InterestID)
+    CONSTRAINT `Interests_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID),
+    CONSTRAINT `Interests_ibfk_2` FOREIGN KEY (InterestID) REFERENCES AvailableInterests(InterestID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Interests of ALL users';
 -- --------------------------------------------------------
   --
@@ -57,7 +57,7 @@ SET
   CREATE TABLE `profile` (
     `UserID` int(11) NOT NULL,
     `Age` int(2) NOT NULL,
-    `Smoker` binary(1) NOT NULL COMMENT 'Binary type because this is yes or no',
+    `Smoker` enum('Smoker', 'Social Smoker', 'Non Smoker') NOT NULL COMMENT 'enum type because people can be social smokers',
     `Drinker` enum(
       'Constantly',
       'Most days',
@@ -68,11 +68,13 @@ SET
     `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Description` blob NOT NULL COMMENT 'Blob type because this will contain a free text description of the person',
     `Banned` binary(1) NOT NULL COMMENT 'Has the user been banned by an admin?',
-    `Photo1` varchar(26) NOT NULL COMMENT 'We should allow users to upload photos to the site; this field contains the name of the photo they have uploaded',
-    `Photo2` varchar(26) COMMENT 'Users can upload optional multiple photos',
-    `Photo3` varchar(26) COMMENT 'Users can upload optional multiple photos',
     `County` enum('Limerick', 'Tipperary', 'Cork') NOT NULL,
-    `Town` varchar(26)
+    `Town` varchar(26),
+    `Employment` VARCHAR(26) DEFAULT 'Unemployed',
+    `Student` binary(1) NOT NULL DEFAULT 0,
+    `College` VARCHAR(26),
+    `Degree` VARCHAR(26),
+    CONSTRAINT `profile_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 -- --------------------------------------------------------
   --
@@ -85,24 +87,40 @@ SET
     `Surname` varchar(26) NOT NULL,
     `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
     `Email` varchar(52) NOT NULL,
+    `Admin` binary(1) NOT NULL DEFAULT 0,
     `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
     `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering',
     PRIMARY KEY (UserID),
     UNIQUE (Email),
     UNIQUE (Handle)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
-  -- --------------------------------------------------------
+-- --------------------------------------------------------
   --
   -- Table structure for table `Reports`
   --
   CREATE TABLE `Reports` (
     `UserID` int(11) NOT NULL,
     `ReportID` int(11) NOT NULL AUTO_INCREMENT,
-    `ReportReason` enum('Harassment','Disrespectful behaviour','Hate Speech','Catfish','Bot account')
+    `ReportReason` enum('Harassment','Disrespectful behaviour','Hate Speech','Catfish','Bot account'),
     `ReporterID` int(11) NOT NULL,
     PRIMARY KEY (ReportID),
-    FOREIGN KEY (UserID) REFERENCES user(UserID)
-    FOREIGN KEY (ReporterID) REFERENCES user(UserID)
+    CONSTRAINT `Reports_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID),
+    CONSTRAINT `Reports_ibfk_2` FOREIGN KEY (ReporterID) REFERENCES user(UserID)
+  ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+-- --------------------------------------------------------
+  --
+  -- Table structure for table `BannedUsers`
+  --
+  CREATE TABLE `BannedUsers` (
+    `UserID` int(11) NOT NULL,
+    `BanID` int(11) NOT NULL AUTO_INCREMENT,
+    `Date` DATE NOT NULL,
+    `BannedByID` int(11) NOT NULL,
+    `Reason` enum('Harassment','Disrespectful behaviour','Hate Speech','Catfish','Bot account'),
+    `Duration` int(3) NOT NULL DEFAULT 2 COMMENT 'Ban length in weeks. Default = 2. 0 = permabanned',
+    PRIMARY KEY (BanID),
+    CONSTRAINT `BannedUsers_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID),
+    CONSTRAINT `BannedUsers_ibfk_2` FOREIGN KEY (BannedByID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 -- --------------------------------------------------------
   --
@@ -112,96 +130,9 @@ SET
     `UserID` int(11) NOT NULL,
     `SecurityAnswer1` varchar(256) NOT NULL,
     `SecurityAnswer2` varchar(256) NOT NULL,
-    FOREIGN KEY (userID) REFERENCES user(userID)
+    CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery answers for each user';
--- Indexes for dumped tables
-  --
-  --
-  -- Indexes for table `AvailableInterests`
-  --
-ALTER TABLE
-  `AvailableInterests`
-ADD
-  PRIMARY KEY (`InterestID`);
---
-  -- Indexes for table `Connections`
-  --
-ALTER TABLE
-  `Connections`
-ADD
-  PRIMARY KEY (`ConnectionID`),
-ADD
-  KEY `userID1` (`userID1`),
-ADD
-  KEY `userID2` (`userID2`);
---
-  -- Indexes for table `SecurityAnswers`
-  --
-ALTER TABLE
-  `SecurityAnswers`
-ADD
-  KEY `userID` (`userID`),
-  --
-  -- Indexes for table `Interests`
-  --
-ALTER TABLE
-  `Interests`
-ADD
-  PRIMARY KEY (`UserID`, `InterestID`),
-ADD
-  KEY `UserID` (`UserID`),
-ADD
-  KEY `InterestID` (`InterestID`);
---
-  -- Indexes for table `profile`
-  --
-ALTER TABLE
-  `profile`
-ADD
-  PRIMARY KEY (`UserID`);
---
-  -- Indexes for table `user`
-  --
-ALTER TABLE
-  `user`
-ADD
-  PRIMARY KEY (`UserID`);
---
-  -- Constraints for dumped tables
-  --
---
-  -- Constraints for table `SecurityAnswers`
-  --
-ALTER TABLE
-  `SecurityAnswers`
-ADD
-  --
-  CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`);
---
-  -- Constraints for table `Interests`
-  --
-ALTER TABLE
-  `Interests`
-ADD
-  CONSTRAINT `Interests_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`),
-ADD
-  CONSTRAINT `Interests_ibfk_2` FOREIGN KEY (`InterestID`) REFERENCES `AvailableInterests` (`InterestID`);
---
-  -- Constraints for table `Reports`
-  --
-ALTER TABLE
-  `Reports`
-ADD
-  CONSTRAINT `Reports_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`),
-ADD
-  CONSTRAINT `Reports_ibfk_2` FOREIGN KEY (`ReporterID`) REFERENCES `user` (`UserID`);
---
-  -- Constraints for table `profile`
-  --
-ALTER TABLE
-  `profile`
-ADD
-  CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`);
+
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
   /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
   /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
