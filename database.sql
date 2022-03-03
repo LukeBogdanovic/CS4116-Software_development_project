@@ -135,12 +135,10 @@ SET
   --
   -- Table structure for table `SecurityAnswers`
   --
-  CREATE TABLE `SecurityAnswers` (
+  CREATE TABLE `SecurityQA` (
     `UserID` int(11) NOT NULL,
-    `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
-    `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering',
-    `SecurityAnswer1` varchar(256) NOT NULL,
-    `SecurityAnswer2` varchar(256) NOT NULL,
+    `SecurityQuestion` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
+    `SecurityAnswer` varchar(256) NOT NULL,
     CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery questions and answers for each user';
 -- --------------------------------------------------------
