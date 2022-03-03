@@ -28,8 +28,8 @@ SET
     `Surname` varchar(26) NOT NULL,
     `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
     `Email` varchar(52) NOT NULL,
-    `Admin` binary(1) NOT NULL DEFAULT 0  COMMENT'Is the user an admin',
-    `Banned` binary(1) NOT NULL DEFAULT 0 COMMENT'Has the user been banned by an admin?',
+    `Admin` binary(1) NOT NULL DEFAULT 0 COMMENT 'Is the user an admin',
+    `Banned` binary(1) NOT NULL DEFAULT 0 COMMENT 'Has the user been banned by an admin?',
     `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
     `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering',
     PRIMARY KEY (UserID),
@@ -54,7 +54,6 @@ SET
     `userID1` int(11) NOT NULL COMMENT 'Which user initiated the connection?',
     `userID2` int(11) NOT NULL COMMENT 'Which user received the connection',
     `ConnectionDate` date NOT NULL COMMENT 'When was the connection made?',
-    `Superlike` binary(1) NOT NULL,
     PRIMARY KEY (ConnectionID),
     CONSTRAINT `Connection_ibfk_1` FOREIGN KEY (userID1) REFERENCES user(UserID),
     CONSTRAINT `Connection_ibfk_2` FOREIGN KEY (userID2) REFERENCES user(UserID)
@@ -155,6 +154,17 @@ SET
     PRIMARY KEY (PhotoID),
     CONSTRAINT `Photos_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = INNODB DEFAULT CHARSET = latin1 COMMENT = 'Store each Photo of Users';
+-- --------------------------------------------------------
+  --
+  -- Table structure for table `Liked`
+  --
+  CREATE Table `Liked` (
+    `UserID1` int(11) NOT NULL COMMENT 'User that has liked another user',
+    `UserID2` int(11) NOT NULL COMMENT 'User that has been liked by another user',
+    `LikedDate` DATE NOT NULL COMMENT 'When was the user liked?',
+    CONSTRAINT `Liked_ibfk_1` FOREIGN KEY (UserID1) REFERENCES user(UserID),
+    CONSTRAINT `Liked_ibfk_2` FOREIGN KEY (UserID2) REFERENCES user(UserID)
+  ) ENGINE = INNODB DEFAULT CHARSET = latin1 COMMENT = 'Store the likes made between users';
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
   /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
   /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
