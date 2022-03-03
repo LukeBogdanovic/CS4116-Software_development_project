@@ -30,8 +30,6 @@ SET
     `Email` varchar(52) NOT NULL,
     `Admin` binary(1) NOT NULL DEFAULT 0 COMMENT 'Is the user an admin',
     `Banned` binary(1) NOT NULL DEFAULT 0 COMMENT 'Has the user been banned by an admin?',
-    `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
-    `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering',
     PRIMARY KEY (UserID),
     UNIQUE (Email),
     UNIQUE (Username)
@@ -139,10 +137,12 @@ SET
   --
   CREATE TABLE `SecurityAnswers` (
     `UserID` int(11) NOT NULL,
+    `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
+    `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering',
     `SecurityAnswer1` varchar(256) NOT NULL,
     `SecurityAnswer2` varchar(256) NOT NULL,
     CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
-  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery answers for each user';
+  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery questions and answers for each user';
 -- --------------------------------------------------------
   --
   -- Table structure for table `Photos`
