@@ -19,11 +19,11 @@
                 </div>
                 <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                     <form action="login.php">
-                        <div class="form-outline mb-4 textfield">
-                            <input type="username" id="form1username" class="form-control form-control-lg" placeholder="Username" />
+                        <div class="form-outline mb-4">
+                            <input type="username" class="form-control form-control-lg" placeholder="Username" />
                         </div>
-                        <div class="form-outline mb-4 textfield">
-                            <input type="password" id="form1password" class="form-control form-control-lg" placeholder="Password" />
+                        <div class="form-outline mb-4">
+                            <input type="password" class="form-control form-control-lg" placeholder="Password" />
                         </div>
                         <div class="d-flex justify-content-around align-items-center mb-4">
                             <div class="form-check">
