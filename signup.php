@@ -17,7 +17,7 @@
             <div class="container py-5 h-100">
                 <div class="row d-flex align-items-center justify-content-center h-100">
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                        <form action="signup.php">
+                        <form action="signup.php" method="POST">
                             <div class="form-outline mb-4">
                                 <input type="text" class="form-control form-control-lg" id="username" placeholder="Username">
                                 <span id="usermsg"></span>
@@ -53,14 +53,14 @@
         </section>
     </div>
     <script>
-        $("#username").keyup(function() {
+        $("#username").keyup(() => {
             if ($("#username").val().length > 16) {
                 $("#usermsg").html("Username must not exceed 16 characters").css("color", "red");
             } else {
                 $("#usermsg").html("");
             }
         });
-        $("#pwd").keyup(function() {
+        $("#pwd").keyup(() => {
             if ($("#pwd").val().length < 8) {
                 $("#pwdmsg").html("Password must be at least 8 characters").css("color", "red");
             } else if ($("#pwd").val().length > 16) {
@@ -69,7 +69,7 @@
                 $("#pwdmsg").html("");
             }
         });
-        $("#confirmpwd").keyup(function() {
+        $("#confirmpwd").keyup(() => {
             if ($("#pwd").val() == $("#confirmpwd").val()) {
                 $("#confirmpwdmsg").html("Matching").css("color", "green");
             } else {
