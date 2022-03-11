@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="http://group13.epizy.com/css/login.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="http://group13.epizy.com/js/utils.js"></script>
 </head>
 
 <body>
@@ -20,8 +21,8 @@
                     <div class="col-md-8 col-lg-7 col-xl-6">
                         <img src="" class="img-fluid" alt="image to be found">
                     </div>
-                    <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                        <form action="login.php">
+                    <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1" id="form">
+                        <form action="login.php" method="POST">
                             <div class="form-outline mb-4">
                                 <input type="text" id="username" data-toggle="tooltip" class="form-control form-control-lg" placeholder="Username" pattern="[A-Za-z0-9_]{,16}" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." />
                             </div>
@@ -30,16 +31,16 @@
                             </div>
                             <div class="d-flex justify-content-around align-items-center mb-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="form1checkbox" checked />
+                                    <input class="form-check-input" type="checkbox" value="" id="form1checkbox" />
                                     <label class="form-check-label" for="form1checkbox"> Remember Me </label>
                                 </div>
-                                <a href="#!">Forgot Password?</a>
+                                <a onclick="forgotPassword();" href="#!">Forgot Password?</a>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Sign In</button>
                             <div class="divider d-flex align-items-center my-4">
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
                             </div>
-                            <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998;" href="#!" role="button">
+                            <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998;" href="signup.php" role="button">
                                 Register for an Account
                             </a>
                         </form>
@@ -49,7 +50,7 @@
         </section>
     </div>
     <script>
-        $(document).ready(function() {
+        $(document).ready(() => {
             $('[data-toggle="tooltip"]').tooltip()
         });
     </script>
