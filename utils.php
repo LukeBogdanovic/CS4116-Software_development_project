@@ -1,18 +1,5 @@
 <?php
 
-/**
- * Verifies the password entered by the user upon login and returns true if password matches
- * stored password or false value if password does not match stored password
- * @param string $user_password
- * @param string $hashed
- * @return boolean
- */
-function verify_password($user_password, $hashed)
-{
-    if (password_verify($user_password, $hashed))
-        return true;
-    return false;
-}
 
 /**
  * Takes the Input of a password string and returns a string of the hashed password using the PASSWORD_DEFAULT algorithm
@@ -49,3 +36,7 @@ function validate_password($password, $repeat_password)
         return true;
     return false;
 }
+
+
+
+echo hash_password("Appleseed12@?");
