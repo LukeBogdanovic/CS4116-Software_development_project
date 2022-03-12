@@ -28,10 +28,8 @@ SET
     `Surname` varchar(26) NOT NULL,
     `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
     `Email` varchar(52) NOT NULL,
-    `Admin` binary(1) NOT NULL DEFAULT 0  COMMENT'Is the user an admin',
-    `Banned` binary(1) NOT NULL DEFAULT 0 COMMENT'Has the user been banned by an admin?',
-    `SecurityQuestion1` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
-    `SecurityQuestion2` enum('Q1', 'Q2', 'Q3', 'Q4', 'Q5') NOT NULL COMMENT 'Users select which security question they are answering',
+    `Admin` binary(1) NOT NULL DEFAULT 0 COMMENT 'Is the user an admin',
+    `Banned` binary(1) NOT NULL DEFAULT 0 COMMENT 'Has the user been banned by an admin?',
     PRIMARY KEY (UserID),
     UNIQUE (Email),
     UNIQUE (Username)
@@ -54,7 +52,6 @@ SET
     `userID1` int(11) NOT NULL COMMENT 'Which user initiated the connection?',
     `userID2` int(11) NOT NULL COMMENT 'Which user received the connection',
     `ConnectionDate` date NOT NULL COMMENT 'When was the connection made?',
-    `Superlike` binary(1) NOT NULL,
     PRIMARY KEY (ConnectionID),
     CONSTRAINT `Connection_ibfk_1` FOREIGN KEY (userID1) REFERENCES user(UserID),
     CONSTRAINT `Connection_ibfk_2` FOREIGN KEY (userID2) REFERENCES user(UserID)
@@ -86,7 +83,7 @@ SET
     `Gender` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Description` blob NOT NULL COMMENT 'Blob type because this will contain a free text description of the person',
-    `County` enum('Limerick', 'Tipperary', 'Cork') NOT NULL,
+    `County` enum('Antrim','Armagh','Carlow','Cavan','Clare','Cork','Donegal','Down','Dublin','Fermanagh','Galway','Kerry','Kildare','Kilkenny','Laois','Leitrim','Limerick','Derry','Longford','Louth','Mayo','Meath','Monaghan','Offaly','Roscommon','Sligo','Tipperary','Tyrone','Waterford','Westmeath','Wexford','Wexford','Wicklow') NOT NULL,
     `Town` varchar(26),
     `Employment` VARCHAR(26) DEFAULT 'Unemployed',
     `Student` binary(1) NOT NULL DEFAULT 0,
@@ -138,12 +135,12 @@ SET
   --
   -- Table structure for table `SecurityAnswers`
   --
-  CREATE TABLE `SecurityAnswers` (
+  CREATE TABLE `SecurityQA` (
     `UserID` int(11) NOT NULL,
-    `SecurityAnswer1` varchar(256) NOT NULL,
-    `SecurityAnswer2` varchar(256) NOT NULL,
+    `SecurityQuestion` enum('Mothers maiden name', 'First pets name', 'First school', 'Best friends name', 'Favourite teacher') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
+    `SecurityAnswer` varchar(256) NOT NULL COMMENT 'Users answer to their selected question',
     CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
-  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery answers for each user';
+  ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery questions and answers for each user';
 -- --------------------------------------------------------
   --
   -- Table structure for table `Photos`
@@ -155,6 +152,17 @@ SET
     PRIMARY KEY (PhotoID),
     CONSTRAINT `Photos_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = INNODB DEFAULT CHARSET = latin1 COMMENT = 'Store each Photo of Users';
+-- --------------------------------------------------------
+  --
+  -- Table structure for table `Liked`
+  --
+  CREATE Table `Liked` (
+    `UserID1` int(11) NOT NULL COMMENT 'User that has liked another user',
+    `UserID2` int(11) NOT NULL COMMENT 'User that has been liked by another user',
+    `LikedDate` DATE NOT NULL COMMENT 'When was the user liked?',
+    CONSTRAINT `Liked_ibfk_1` FOREIGN KEY (UserID1) REFERENCES user(UserID),
+    CONSTRAINT `Liked_ibfk_2` FOREIGN KEY (UserID2) REFERENCES user(UserID)
+  ) ENGINE = INNODB DEFAULT CHARSET = latin1 COMMENT = 'Store the likes made between users';
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
   /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
   /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

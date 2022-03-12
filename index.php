@@ -11,6 +11,8 @@ require "database.php";
 
 <body>
     <h1>Home</h1>
+    <a href="login.php">Login Page</a>
+    <a href="signup.php">Registration Page</a>
 </body>
 
 </html>
