@@ -1,12 +1,18 @@
 <?php
 session_start();
-require "database.php";
+/* Checking if the user is not logged in
+ * If user is not logged in: the user is redirected to the login page and the script exits
+ */
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("location: login.php");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Welcome</title>
+    <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -16,9 +22,7 @@ require "database.php";
 </head>
 
 <body>
-    <h1>Welcome</h1>
-    <a href="login.php" class="btn btn-primary btn-lg btn-block">Login Page</a>
-    <a href="signup.php" class="btn btn-primary btn-lg btn-block">Registration Page</a>
+    <a href="logout.php" class="btn btn-danger ml-3">Sign Out</a>
 </body>
 
 </html>
