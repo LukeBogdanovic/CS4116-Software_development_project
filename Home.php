@@ -30,7 +30,7 @@
       </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn sign-out" type="submit">Search</button>
+        <button class="btn submit" type="submit">Search</button>
       </form>
       <a href="logout.php" class="btn ml-3">Sign Out</a>
     </div>
@@ -82,7 +82,7 @@
           <div class="col-auto">
 
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary mb-4">
+            <button type="Submit" class="btn submit mb-4">
               Subscribe
             </button>
           </div>
