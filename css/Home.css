@@ -1,0 +1,27 @@
+:root {
+    --gradient: linear-gradient(90deg, #843CAF, #FF5979, #FFC455);
+}
+
+.navbar {
+    background-size: 300%;
+    background-image: var(--gradient);
+    animation: bg-animation 25s infinite;
+  }
+
+@keyframes bg-animation {
+    0% {background-position: left}
+    50% {background-position: right}
+    100% {background-position: left}
+}
+
+.btn.sign-out{
+    cursor: pointer;
+    background: linear-gradient(90deg, #ee6352, #843CAF, #ee6352);
+    background-size: 300%;
+    background-position: left;
+    transition: background-position 350ms;
+}
+
+.btn.sign-out:hover {
+    background-position: right;
+}
