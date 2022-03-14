@@ -1,5 +1,5 @@
 :root {
-    --gradient: linear-gradient(90deg, #843CAF, #FF5979, #FFC455);
+    --gradient: linear-gradient(90deg, #843CAF, #D43A98, #FF5979, #FF8D5E, #FFC455);
 }
 
 .navbar {
@@ -16,7 +16,7 @@
 
 .btn.sign-out{
     cursor: pointer;
-    background: linear-gradient(90deg, #ee6352, #843CAF, #ee6352);
+    background: linear-gradient(90deg, #ee6352, #D43A98, #ee6352);
     background-size: 300%;
     background-position: left;
     transition: background-position 350ms;
