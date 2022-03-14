@@ -112,7 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         }
                         ?>
                         <form action="login.php" method="POST">
-<<<<<<< HEAD
                             <div class="form-floating mb-4">
                                 <input name="username" type="text" id="username" data-toggle="tooltip" class="form-control form-control-lg <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" pattern="[A-Za-z0-9_]{0,16}" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." value="<?php echo $username; ?>" />
                                 <label for="username">Username</label>
@@ -121,14 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             <div class="form-floating mb-4">
                                 <input name="password" type="password" id="pwd" data-toggle="tooltip" class="form-control form-control-lg <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." />
                                 <label for="password">Password</label>
-=======
-                            <div class="form-outline mb-4">
-                                <input name="username" type="text" id="username" data-toggle="tooltip" class="form-control form-control-lg <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" placeholder="Username" pattern="[A-Za-z0-9_]{0,16}" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." value="<?php echo $username; ?>" />
-                                <span class="invalid-feedback"><?php echo $username_err; ?></span>
-                            </div>
-                            <div class="form-outline mb-4">
-                                <input name="password" type="password" id="pwd" data-toggle="tooltip" class="form-control form-control-lg <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." />
->>>>>>> main
                                 <span class="invalid-feedback"><?php echo $password_err; ?></span>
                             </div>
                             <div class="d-flex justify-content-around align-items-center mb-4">
