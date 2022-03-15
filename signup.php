@@ -12,6 +12,9 @@
 </head>
 
 <body>
+    <?php 
+	require "navbar.php";
+    ?>
     <div>
         <section class="vh-100">
             <div class="container py-5 h-100">
@@ -52,6 +55,9 @@
             </div>
         </section>
     </div>
+    <?php
+	require "footer.php";
+    ?>
     <script>
         $("#username").keyup(() => {
             if ($("#username").val().length > 16) {
