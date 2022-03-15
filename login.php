@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                     <input class="form-check-input" type="checkbox" value="" id="form1checkbox" />
                                     <label class="form-check-label" for="form1checkbox"> Remember Me </label>
                                 </div>
-                                <a onclick="forgotPassword();" href="#!">Forgot Password?</a>
+                                <a href="resetPassword.php">Forgot Password?</a>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Sign In</button>
                             <div class="divider d-flex align-items-center my-4">
