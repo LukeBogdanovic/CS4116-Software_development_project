@@ -13,8 +13,8 @@
 </head>
 
 <body>
-    <?php 
-	require "navbar.php";
+    <?php
+    require "navbar.php";
     ?>
     <div>
         <section class="vh-100">
@@ -22,25 +22,31 @@
                 <div class="row d-flex align-items-center justify-content-center h-100">
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                         <form action="signup.php" method="POST">
-                            <div class="form-outline mb-4">
-                                <input type="text" class="form-control form-control-lg" id="username" placeholder="Username">
+                            <div class="form-floating mb-4">
+                                <input name="username" type="text" class="form-control form-control-lg" id="username" placeholder="Username">
+                                <label for="username">Username</label>
                                 <span id="usermsg"></span>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="text" class="form-control form-control-lg" id="firstname" placeholder="First Name">
+                            <div class="form-floating mb-4">
+                                <input name="firstname" type="text" class="form-control form-control-lg" id="firstname" placeholder="First Name">
+                                <label for="firstname">First Name</label>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="text" class="form-control form-control-lg" id="surname" placeholder="Surname">
+                            <div class="form-floating mb-4">
+                                <input name="surname" type="text" class="form-control form-control-lg" id="surname" placeholder="Surname">
+                                <label for="surname">Surname</label>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="email" class="form-control form-control-lg" id="email" placeholder="Email Address">
+                            <div class="form-floating mb-4">
+                                <input name="email" type="email" class="form-control form-control-lg" id="email" placeholder="Email Address">
+                                <label for="email">Email Address</label>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="password" class="form-control form-control-lg" id="pwd" placeholder="Password">
+                            <div class="form-floating mb-4">
+                                <input name="password" type="password" class="form-control form-control-lg" id="pwd" placeholder="Password">
+                                <label for="password">Password</label>
                                 <span id="pwdmsg"></span>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="password" class="form-control form-control-lg" id="confirmpwd" placeholder="Confirm Password">
+                            <div class="form-floating mb-4">
+                                <input name="confirmpassword" type="password" class="form-control form-control-lg" id="confirmpwd" placeholder="Confirm Password">
+                                <label for="confirmpassword">Confirm password</label>
                                 <span id="confirmpwdmsg"></span>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
@@ -57,7 +63,7 @@
         </section>
     </div>
     <?php
-	require "footer.php";
+    require "footer.php";
     ?>
     <script>
         $("#username").keyup(() => {
