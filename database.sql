@@ -83,7 +83,41 @@ SET
     `Gender` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Description` blob NOT NULL COMMENT 'Blob type because this will contain a free text description of the person',
-    `County` enum('Antrim','Armagh','Carlow','Cavan','Clare','Cork','Donegal','Down','Dublin','Fermanagh','Galway','Kerry','Kildare','Kilkenny','Laois','Leitrim','Limerick','Derry','Longford','Louth','Mayo','Meath','Monaghan','Offaly','Roscommon','Sligo','Tipperary','Tyrone','Waterford','Westmeath','Wexford','Wexford','Wicklow') NOT NULL,
+    `County` enum(
+      'Antrim',
+      'Armagh',
+      'Carlow',
+      'Cavan',
+      'Clare',
+      'Cork',
+      'Donegal',
+      'Down',
+      'Dublin',
+      'Fermanagh',
+      'Galway',
+      'Kerry',
+      'Kildare',
+      'Kilkenny',
+      'Laois',
+      'Leitrim',
+      'Limerick',
+      'Derry',
+      'Longford',
+      'Louth',
+      'Mayo',
+      'Meath',
+      'Monaghan',
+      'Offaly',
+      'Roscommon',
+      'Sligo',
+      'Tipperary',
+      'Tyrone',
+      'Waterford',
+      'Westmeath',
+      'Wexford',
+      'Wexford',
+      'Wicklow'
+    ) NOT NULL,
     `Town` varchar(26),
     `Employment` VARCHAR(26) DEFAULT 'Unemployed',
     `Student` binary(1) NOT NULL DEFAULT 0,
@@ -137,7 +171,13 @@ SET
   --
   CREATE TABLE `SecurityQA` (
     `UserID` int(11) NOT NULL,
-    `SecurityQuestion` enum('Mothers maiden name', 'First pets name', 'First school', 'Best friends name', 'Favourite teacher') NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
+    `SecurityQuestion` enum(
+      'Mothers maiden name',
+      'First pets name',
+      'First school',
+      'Best friends name',
+      'Favourite teacher'
+    ) NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
     `SecurityAnswer` varchar(256) NOT NULL COMMENT 'Users answer to their selected question',
     CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery questions and answers for each user';
@@ -147,8 +187,8 @@ SET
   --
   CREATE Table `Photos` (
     `UserID` int(11) NOT NULL,
-    `PhotoID` int (11) NOT NULL,
-    `Type` enum('primaryPhoto', 'coverPhoto', 'additionalPhoto'),
+    `PhotoID` int (11) NOT NULL AUTO_INCREMENT,
+    `Type` enum('primaryPhoto', 'coverPhoto', 'additionalPhoto') NOT NULL,
     PRIMARY KEY (PhotoID),
     CONSTRAINT `Photos_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = INNODB DEFAULT CHARSET = latin1 COMMENT = 'Store each Photo of Users';
