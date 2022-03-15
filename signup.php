@@ -1,3 +1,11 @@
+<?php
+session_start();
+// Checking if the user is already logged in to the website and redirecting to Home if they are
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+    header("location: Home.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
