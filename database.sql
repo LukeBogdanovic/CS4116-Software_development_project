@@ -115,7 +115,6 @@ SET
       'Waterford',
       'Westmeath',
       'Wexford',
-      'Wexford',
       'Wicklow'
     ) NOT NULL,
     `Town` varchar(26),
