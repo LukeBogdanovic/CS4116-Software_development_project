@@ -5,8 +5,10 @@
         <title>Help</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="http://group13.epizy.com/css/help.css">
-        <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/utils.css">
+        <link rel="stylesheet" type="text/css" href="css/help.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     </head>
 
     <body>
@@ -15,26 +17,45 @@
             require "navbar.php";
         ?>
         
-        <div>
-            <div>
-                <p class="heading"> Help: </p>
-                <img src="logo_v1.PNG" class="img1" alt="logo">
+        <section class="vh-100">
+
+            <div class="row d-flex align-items-center justify-content-center h-100">
+
+                <div class="col-lg-6 col-md-6">
+                     <div class="leftside d-flex align-items-center justify-content-center h-100">
+                        <img src="logo_v1.PNG" class="img-fluid" alt="logo">
+                     </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6">
+
+                        <div class="row d-flex align-items-center justify-content-center h-100">
+                            <button type="button" class="btn btn-dark btn-lg">Need Some Help? Get in touch!</button>
+                        </div>
+                        
+                        <div class="row d-flex align-items-center justify-content-center h-25">
+                            <div class="col d-flex align-items-center justify-content-center h-100">
+                                <img src="1619563.png" class="img-fluid" alt="Text box" width="200" height="200">
+                            </div>
+                            <div class="col d-flex align-items-center justify-content-center h-100">
+                                <button type="button" class="btn btn-outline-dark btn-lg">Please contact us via phone: 123456789</button>
+                            </div>
+                        </div>
+                        
+                        <div class="row d-flex align-items-center justify-content-center h-25">
+                            <div class="col d-flex align-items-center justify-content-center h-100">
+                                <img src="aticon.png" class="img-fluid" alt="at icon" width="200" height="200">
+                            </div>
+                            <div class="col d-flex align-items-center justify-content-center h-100">
+                                <button type="button" class="btn btn-outline-dark btn-lg">Please contact us via email: gragodeo@gmail.com</button>
+                            </div>
+                        </div>
+                    
+                </div>
+
             </div>
 
-            <div>
-                <img src="1619563.png" class="img2" alt="Text box" width="300" height="300">
-                <div>
-                    <p class="text-text"> --->Please contact us via text: 123456789 </p>
-                </div>
-            </div>
-
-            <div>
-                <img src="aticon.png" class="img3" alt="at icon" width="300" height="300">
-                <div>
-                    <p class="email-text"> --->Please contact us via email: gragodeo@gmail.com </p>
-                </div>
-            </div>
-        </div>
+        </section>
 
         <?php
             require "footer.php";
