@@ -20,7 +20,13 @@
         <section class="vh-100">
             <div class="container py-5 h-100">
                 <div class="row d-flex align-items-center justify-content-center h-100">
+                    <div class="col-md-8 col-lg-7 col-xl-6">
+                        <img src="" class="img-fluid" alt="image to be found">
+                    </div>
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                        <?php
+                        // Error informing should go here above the input form
+                        ?>
                         <form action="signup.php" method="POST">
                             <div class="form-floating mb-4">
                                 <input name="username" type="text" class="form-control form-control-lg" id="username" placeholder="Username">
@@ -88,6 +94,16 @@
             } else {
                 $("#confirmpwdmsg").html("Not Matching").css("color", "red");
             }
+        });
+        $(document).keyup(() => {
+            if ($("#username").val() === "" || $("#pwd").val() === "" || $("#confirmpwd").val() === "" || $("#email").val() === "" || $("#surname").val() === "" || $("#firstname").val() === "") {
+                $("#submit").prop('disabled', true);
+            } else {
+                $("#submit").prop('disabled', false);
+            }
+        });
+        $(document).ready(() => {
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 </body>
