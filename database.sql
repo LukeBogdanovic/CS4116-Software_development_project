@@ -28,8 +28,8 @@ SET
     `Surname` varchar(26) NOT NULL,
     `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
     `Email` varchar(52) NOT NULL,
-    `Admin` binary(1) NOT NULL DEFAULT 0 COMMENT 'Is the user an admin',
-    `Banned` binary(1) NOT NULL DEFAULT 0 COMMENT 'Has the user been banned by an admin?',
+    `Admin` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Is the user an admin',
+    `Banned` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Has the user been banned by an admin?',
     PRIMARY KEY (UserID),
     UNIQUE (Email),
     UNIQUE (Username)
@@ -115,12 +115,11 @@ SET
       'Waterford',
       'Westmeath',
       'Wexford',
-      'Wexford',
       'Wicklow'
     ) NOT NULL,
     `Town` varchar(26),
     `Employment` VARCHAR(26) DEFAULT 'Unemployed',
-    `Student` binary(1) NOT NULL DEFAULT 0,
+    `Student` tinyint(1) NOT NULL DEFAULT 0,
     `College` VARCHAR(26),
     `Degree` VARCHAR(26),
     CONSTRAINT `profile_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
