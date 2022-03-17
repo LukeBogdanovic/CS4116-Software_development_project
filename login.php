@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                 </div>
                                 <a href="resetPassword.php">Forgot Password?</a>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-lg btn-block">Sign In</button>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit" disabled="disabled">Sign In</button>
                             <div class="divider d-flex align-items-center my-4">
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
                             </div>
@@ -149,6 +149,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     require "footer.php";
     ?>
     <script>
+        $(document).keyup(() => {
+            if ($("#username").val() === "" || $("#pwd").val() === "") {
+                $("#submit").prop('disabled', true);
+            } else {
+                $("#submit").prop('disabled', false);
+            }
+        });
         $(document).ready(() => {
             $('[data-toggle="tooltip"]').tooltip()
         });
