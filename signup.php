@@ -7,82 +7,42 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 }
 // Intializing all form variables & err
 $username = $password = $confirmpassword = $firstname = $surname = $email = "";
-$username_err = $password_err = $confirmpassword_err = $firstname_err = $surname_err = $email_err = "";
+$username_err = $email_err = "";
 // Check for if the form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    // Must check all fields to see if they are empty
-    // Check for empty Username field in the form submission
-    if (empty(trim($_POST['username']))) {
-        $username_err = "Please enter your Username.";
-    } else {
-        $username = trim($_POST['username']);
-    }
-    //Check for empty firstname field in the form submission
-    if (empty(trim($_POST['firstname']))) {
-        $firstname_err = "Please enter your first name.";
-    } else {
-        $firstname = trim($_POST['firstname']);
-    }
-    //Check for empty surname field in the form submission
-    if (empty(trim($_POST['surname']))) {
-        $surname_err = "Please enter your surname.";
-    } else {
-        $surname = trim($_POST['surname']);
-    }
-    //Check for empty email field in the form submission
-    if (empty(trim($_POST['email']))) {
-        $email_err = "Please enter your email.";
-    } else {
-        $email = trim($_POST['email']);
-    }
-    //Check for empty password field in the form submission
-    if (empty(trim($_POST['password']))) {
-        $password_err = "Please enter your password.";
-    } else {
-        $password = trim($_POST['password']);
-    }
-    //Check for empty confirmpassword field in the form submission
-    if (empty(trim($_POST['confirmpassword']))) {
-        $confirmpassword_err = "Please confirm your password";
-    } else {
-        $confirmpassword = trim($_POST['confirmpassword']);
-    }
-    //Make sure all 6 variables are not null. i=6 if all are not empty
-    $i=0;
-    foreach($_POST as $name => $value) {
-        if($value != "") {
-          $i++;
-        }
-    }
-    //
-    if($i==6){
+    // Fill in all variables from the form
+    $username = trim($_POST['username']);
+    $firstname = trim($_POST['firstname']);
+    $surname = trim($_POST['surname']);
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+    $confirmpassword = trim($_POST['confirmpassword']);
 
-        //must run checks on email and username to see if theyre already taken
-        //Username check
-        $username_test = "SELECT Username, Email FROM user WHERE Username = '$username' OR Email = '$email'";
-        //prepare sql statement for username check
-        if($stmt = mysqli_prepare($con, $username_test)){
-            // Attempt to execute the sql statement
-            if (mysqli_stmt_execute($stmt)) {
-                // Store the result of the sql statement
-                mysqli_stmt_store_result($stmt);
-                //bind results from stmt to variables to be used
-                mysqli_stmt_bind_result($stmt, $username_stored, $email_stored);
-                //fetch the results of the stmt
-                if (mysqli_stmt_fetch($stmt)) {
-                    //if the result returns with a username matching the one entered by the user, the username is already in use
-                    if ($username == $username_stored) {
-                        $username_err = "Username is already in use";
-                    }
-                    //if the result returns with an email matching the one entered by the user, the email is already in use
-                    if($email == $email_stored) {
-                        $email_err = "Email is already in use";
-                    }
+    //must run checks on email and username to see if theyre already taken
+    //Username check
+    $username_test = "SELECT Username, Email FROM user WHERE Username = '$username' OR Email = '$email'";
+    //prepare sql statement for username check
+    if($stmt = mysqli_prepare($con, $username_test)){
+        // Attempt to execute the sql statement
+        if (mysqli_stmt_execute($stmt)) {
+            // Store the result of the sql statement
+            mysqli_stmt_store_result($stmt);
+            //bind results from stmt to variables to be used
+            mysqli_stmt_bind_result($stmt, $username_stored, $email_stored);
+            //fetch the results of the stmt
+            if (mysqli_stmt_fetch($stmt)) {
+                //if the result returns with a username matching the one entered by the user, the username is already in use
+                if ($username == $username_stored) {
+                    $username_err = "Username is already in use";
                 }
-            }else{echo "Oops! Something went wrong. Please try again later.";}
-            //Close statement
-            mysqli_stmt_close($stmt);
-        }
+                //if the result returns with an email matching the one entered by the user, the email is already in use
+                if($email == $email_stored) {
+                    $email_err = "Email is already in use";
+                }
+            }
+        }else{echo "Oops! Something went wrong. Please try again later.";}
+        //Close statement
+        mysqli_stmt_close($stmt);
     }
 
     if($username_err == '' && $email_err == ''){
