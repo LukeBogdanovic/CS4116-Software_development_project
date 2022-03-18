@@ -111,11 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         ?>
                         <form action="login.php" method="POST">
                             <div class="form-floating mb-4">
-                                <input name="username" type="text" id="username" data-toggle="tooltip" class="form-control form-control-lg" pattern="[A-Za-z0-9_]{0,16}" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." value="<?php echo $username; ?>" />
+                                <input name="username" type="text" id="username" class="form-control form-control-lg" pattern="[A-Za-z0-9_]{0,16}" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." value="<?php echo $username; ?>" />
                                 <label for="username">Username</label>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="password" type="password" id="pwd" data-toggle="tooltip" class="form-control form-control-lg" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." />
+                                <input name="password" type="password" id="pwd" class="form-control form-control-lg" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." />
                                 <label for="password">Password</label>
                             </div>
                             <div class="d-flex justify-content-around align-items-center mb-4">
@@ -148,9 +148,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             } else {
                 $("#submit").prop('disabled', false);
             }
-        });
-        $(document).ready(() => {
-            $('[data-toggle="tooltip"]').tooltip()
         });
     </script>
 </body>
