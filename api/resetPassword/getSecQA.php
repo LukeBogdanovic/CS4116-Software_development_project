@@ -57,7 +57,7 @@ function get_Security_Questions($username)
             }
         }
         // Statement to find all security Questions answered by the user in the database
-        $stmt = "SELECT SecurityQuestion FROM securityqa WHERE UserID = ?";
+        $stmt = "SELECT SecurityQuestion FROM SecurityQA WHERE UserID = ?";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             mysqli_stmt_bind_param($stmt, "s", $db_user_id);
             $db_user_id = $id;
@@ -107,7 +107,7 @@ function get_Security_Answers($username, $securityQ, $securityAnswer)
                 }
             }
         }
-        $stmt = "SELECT SecurityAnswer FROM securityqa WHERE UserID = ? AND SecurityQuestion = ?";
+        $stmt = "SELECT SecurityAnswer FROM SecurityQA WHERE UserID = ? AND SecurityQuestion = ?";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             mysqli_stmt_bind_param($stmt, "ss", $db_user_id, $db_secQ);
             $db_user_id = $id;

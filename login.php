@@ -1,7 +1,7 @@
 <?php
 session_start();
-require "database.php";
-require_once "utils.php";
+require "includes/database.php";
+require_once "includes/utils.php";
 
 // Checking if the user is already logged in to the website and redirecting to Home if they are
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
