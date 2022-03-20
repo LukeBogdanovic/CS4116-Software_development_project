@@ -23,7 +23,7 @@
 
                 <div class="col-lg-6 col-md-6">
                      <div class="leftside d-flex align-items-center justify-content-center h-100">
-                        <img src="logo_v1.PNG" class="img-fluid" alt="logo">
+                        <img src="logo.PNG" class="img-fluid" alt="logo" width="700" height="700">
                      </div>
                 </div>
 
