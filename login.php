@@ -1,7 +1,7 @@
 <?php
 session_start();
-require "database.php";
-require_once "utils.php";
+require_once "includes/database.php";
+require_once "includes/utils.php";
 
 // Checking if the user is already logged in to the website and redirecting to Home if they are
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
@@ -9,74 +9,69 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     exit;
 }
 // Intializing username and password variables
-$username = $password = "";
-$username_err = $password_err = $login_err = "";
+$username = $password = $login_err = "";
 // Check for if the form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    // Check for empty Username field in the form submission
-    if (empty(trim($_POST['username']))) {
-        $username_err = "Please enter your Username.";
-    } else {
-        $username = trim($_POST['username']);
-    }
-    // Check for empty Password field in the form submission
-    if (empty(trim($_POST['password']))) {
-        $password_err = "Please enter your Password.";
-    } else {
-        $password = trim($_POST['password']);
-    }
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
     // Validating username and password were filled in at form submission
-    if (empty($username_err) && empty($password_err)) {
-        // Preparation of SQL Select statement
-        $username_query = "SELECT UserID, Username, Password FROM user WHERE Username = ?";
-        if ($stmt = mysqli_prepare($con, $username_query)) {
-            // Binding variable db_username to the sql statement at the ?
-            mysqli_stmt_bind_param($stmt, "s", $db_username);
-            $db_username = $username;
-            // Attempting to execute the sql statement
-            if (mysqli_stmt_execute($stmt)) {
-                // Storing the result of the sql statement
-                mysqli_stmt_store_result($stmt);
-                /** 
-                 *Checking that the username has been returned
-                 * There should only be one username that matches due to usernames
-                 * having to be unique
-                 */
-                if (mysqli_stmt_num_rows($stmt) == 1) {
-                    // Binding the return values to php variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                    if (mysqli_stmt_fetch($stmt)) {
-                        if (password_verify($password, $hashed_password)) {
+    $username_query = "SELECT UserID, Username, Password, Admin, Banned FROM user WHERE Username = ?";
+    if ($stmt = mysqli_prepare($con, $username_query)) {
+        // Binding variable db_username to the sql statement at the ?
+        mysqli_stmt_bind_param($stmt, "s", $db_username);
+        $db_username = $username;
+        // Attempting to execute the sql statement
+        if (mysqli_stmt_execute($stmt)) {
+            // Storing the result of the sql statement
+            mysqli_stmt_store_result($stmt);
+            /** 
+             *Checking that the username has been returned
+             * There should only be one username that matches due to usernames
+             * having to be unique
+             */
+            if (mysqli_stmt_num_rows($stmt) == 1) {
+                // Binding the return values to php variables
+                mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $admin, $banned);
+                if (mysqli_stmt_fetch($stmt)) {
+                    if (password_verify($password, $hashed_password)) {
+                        if ($banned == 1)
+                            $login_err = "User is currently banned";
+                        else {
                             // Starting a new session for the user due to password being correct
                             session_start();
                             // Storing user data in the session variables
                             $_SESSION['loggedin'] = true;
                             $_SESSION['id'] = $id;
                             $_SESSION['username'] = $username;
+                            // Admin check
+                            if ($admin == 1)
+                                $_SESSION['admin'] = true;
+                            else
+                                $_SESSION['admin'] = false;
                             // Redirect to the Home page of Account
                             header("location: Home.php");
-                        } else {
-                            /**
-                             * Setting login_err to provide feedback to the user
-                             * In this case password is not valid
-                             * Display a generic error message as such 
-                             */
-                            $login_err = "Invalid Username or Password";
                         }
+                    } else {
+                        /**
+                         * Setting login_err to provide feedback to the user
+                         * In this case password is not valid
+                         * Display a generic error message as such 
+                         */
+                        $login_err = "Invalid Username or Password";
                     }
-                } else {
-                    /**
-                     * 
-                     */
-                    $login_err = "Invalid Username or Password";
                 }
             } else {
-                // 
-                echo "Oops! Something went wrong. Please try again later.";
+                /**
+                 * 
+                 */
+                $login_err = "Invalid Username or Password";
             }
-            // Close the SQL statement
-            mysqli_stmt_close($stmt);
+        } else {
+            // 
+            echo "Oops! Something went wrong. Please try again later.";
         }
+        // Close the SQL statement
+        mysqli_stmt_close($stmt);
     }
     // Close the connection to the database
     mysqli_close($con);
@@ -99,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 <body>
     <?php
-    require "navbar.php";
+    require_once "navbar.php";
     ?>
     <div>
         <section class="vh-100">
@@ -116,14 +111,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         ?>
                         <form action="login.php" method="POST">
                             <div class="form-floating mb-4">
-                                <input name="username" type="text" id="username" data-toggle="tooltip" class="form-control form-control-lg <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" pattern="[A-Za-z0-9_]{0,16}" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." value="<?php echo $username; ?>" />
+                                <input name="username" type="text" id="username" class="form-control form-control-lg" pattern="[A-Za-z0-9_]{0,16}" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." value="<?php echo $username; ?>" />
                                 <label for="username">Username</label>
-                                <span class="invalid-feedback"><?php echo $username_err; ?></span>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="password" type="password" id="pwd" data-toggle="tooltip" class="form-control form-control-lg <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." />
+                                <input name="password" type="password" id="pwd" class="form-control form-control-lg" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." />
                                 <label for="password">Password</label>
-                                <span class="invalid-feedback"><?php echo $password_err; ?></span>
                             </div>
                             <div class="d-flex justify-content-around align-items-center mb-4">
                                 <div class="form-check">
@@ -146,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </section>
     </div>
     <?php
-    require "footer.php";
+    require_once "footer.php";
     ?>
     <script>
         $(document).keyup(() => {
@@ -155,9 +148,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             } else {
                 $("#submit").prop('disabled', false);
             }
-        });
-        $(document).ready(() => {
-            $('[data-toggle="tooltip"]').tooltip()
         });
     </script>
 </body>
