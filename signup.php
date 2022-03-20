@@ -1,3 +1,11 @@
+<?php
+session_start();
+// Checking if the user is already logged in to the website and redirecting to Home if they are
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+    header("location: Home.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,37 +14,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="http://group13.epizy.com/css/login.css" rel="stylesheet" type="text/css">
+    <link href="css/login.css" rel="stylesheet" type="text/css">
+    <link href="css/utils.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 
 <body>
+    <?php
+    require "navbar.php";
+    ?>
     <div>
         <section class="vh-100">
             <div class="container py-5 h-100">
                 <div class="row d-flex align-items-center justify-content-center h-100">
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                         <form action="signup.php" method="POST">
-                            <div class="form-outline mb-4">
-                                <input type="text" class="form-control form-control-lg" id="username" placeholder="Username">
+                            <div class="form-floating mb-4">
+                                <input name="username" type="text" class="form-control form-control-lg" id="username" placeholder="Username">
+                                <label for="username">Username</label>
                                 <span id="usermsg"></span>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="text" class="form-control form-control-lg" id="firstname" placeholder="First Name">
+                            <div class="form-floating mb-4">
+                                <input name="firstname" type="text" class="form-control form-control-lg" id="firstname" placeholder="First Name">
+                                <label for="firstname">First Name</label>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="text" class="form-control form-control-lg" id="surname" placeholder="Surname">
+                            <div class="form-floating mb-4">
+                                <input name="surname" type="text" class="form-control form-control-lg" id="surname" placeholder="Surname">
+                                <label for="surname">Surname</label>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="email" class="form-control form-control-lg" id="email" placeholder="Email Address">
+                            <div class="form-floating mb-4">
+                                <input name="email" type="email" class="form-control form-control-lg" id="email" placeholder="Email Address">
+                                <label for="email">Email Address</label>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="password" class="form-control form-control-lg" id="pwd" placeholder="Password">
+                            <div class="form-floating mb-4">
+                                <input name="password" type="password" class="form-control form-control-lg" id="pwd" placeholder="Password">
+                                <label for="password">Password</label>
                                 <span id="pwdmsg"></span>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="password" class="form-control form-control-lg" id="confirmpwd" placeholder="Confirm Password">
+                            <div class="form-floating mb-4">
+                                <input name="confirmpassword" type="password" class="form-control form-control-lg" id="confirmpwd" placeholder="Confirm Password">
+                                <label for="confirmpassword">Confirm password</label>
                                 <span id="confirmpwdmsg"></span>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
@@ -52,6 +70,9 @@
             </div>
         </section>
     </div>
+    <?php
+    require "footer.php";
+    ?>
     <script>
         $("#username").keyup(() => {
             if ($("#username").val().length > 16) {
