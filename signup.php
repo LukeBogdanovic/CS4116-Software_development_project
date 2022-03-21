@@ -1,9 +1,79 @@
 <?php
 session_start();
+require "database.php";
+require_once "utils.php";
+
 // Checking if the user is already logged in to the website and redirecting to Home if they are
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     header("location: Home.php");
     exit;
+}
+// Intializing all form variables & err
+$username = $password = $confirmpassword = $firstname = $surname = $email = "";
+$username_err = $email_err = "";
+// Check for if the form has been submitted
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    // Fill in all variables from the form
+    $username = trim($_POST['username']);
+    $firstname = trim($_POST['firstname']);
+    $surname = trim($_POST['surname']);
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+    $confirmpassword = trim($_POST['confirmpassword']);
+
+    //must run checks on email and username to see if theyre already taken
+    //Username check
+    //I've noticed a bug with this code I will comment it beside the relevant line of code
+    $username_test = "SELECT Username, Email FROM user WHERE Username = '$username' OR Email = '$email'";
+    //prepare sql statement for username check
+    if($stmt = mysqli_prepare($con, $username_test)){
+        // Attempt to execute the sql statement
+        if (mysqli_stmt_execute($stmt)) {
+            // Store the result of the sql statement
+            mysqli_stmt_store_result($stmt);
+            //bind results from stmt to variables to be used
+            /*  if both the username and email are in use but in use by two different accounts,
+                only the first result returned (earliest) will be bound to the variables username_stored and email_stored,
+                therefore only the earliest instance of the username or email will be returned and only one error will show.
+                Works for now, can be improved to show both errors at once.
+            */
+            mysqli_stmt_bind_result($stmt, $username_stored, $email_stored);
+            //fetch the results of the stmt
+            if (mysqli_stmt_fetch($stmt)) {
+                //if the result returns with a username matching the one entered by the user, the username is already in use
+                if ($username == $username_stored) {
+                    $username_err = "Username is already in use";
+                }
+                //if the result returns with an email matching the one entered by the user, the email is already in use
+                if($email == $email_stored) {
+                    $email_err = "Email is already in use";
+                }
+            }
+        }else{echo "Oops! Something went wrong. Please try again later.";}
+        //Close statement
+        mysqli_stmt_close($stmt);
+    }
+
+    if($username_err == '' && $email_err == ''){
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $insert = "INSERT INTO user (UserID, Username, Firstname, Surname, Email, Password) VALUES (DEFAULT,'$username', '$firstname', '$surname', '$email','$hashed_password')";
+        if($stmt = mysqli_prepare($con, $insert)){
+            // Attempt to execute the sql statement
+            if (mysqli_stmt_execute($stmt)) {
+                if($id = mysqli_insert_id($con)){
+                    // Starting a new session for the user due to password being correct
+                    session_start();
+                    // Storing user data in the session variables
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['id'] = $id;
+                    $_SESSION['username'] = $username;
+                    // Redirect to the Home page of Account
+                    header("location: Home.php");
+                }
+            } else{echo "it failed";}
+        }
+    }
+    mysqli_close($con);
 }
 ?>
 <!DOCTYPE html>
@@ -28,34 +98,46 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         <section class="vh-100">
             <div class="container py-5 h-100">
                 <div class="row d-flex align-items-center justify-content-center h-100">
+                <div class="col-md-8 col-lg-7 col-xl-6">
+                        <img src="" class="img-fluid" alt="image to be found">
+                    </div>
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                        <?php
+                        // Error informing should go here above the input form
+                        ?>
                         <form action="signup.php" method="POST">
                             <div class="form-floating mb-4">
-                                <input name="username" type="text" class="form-control form-control-lg" id="username" placeholder="Username">
+                                <input name="username" type="text" data-toggle="tooltip" class="form-control form-control-lg <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" id="username" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores.">
                                 <label for="username">Username</label>
                                 <span id="usermsg"></span>
+                                <span class="invalid-feedback"><?php echo $username_err; ?></span>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="firstname" type="text" class="form-control form-control-lg" id="firstname" placeholder="First Name">
+                                <input name="firstname" type="text" class="form-control form-control-lg <?php echo (!empty($firstname_err)) ? 'is-invalid' : ''; ?>" id="firstname" placeholder="First Name">
                                 <label for="firstname">First Name</label>
+                                <span class="invalid-feedback"><?php echo $firstname_err; ?></span>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="surname" type="text" class="form-control form-control-lg" id="surname" placeholder="Surname">
+                                <input name="surname" type="text" class="form-control form-control-lg <?php echo (!empty($surname_err)) ? 'is-invalid' : ''; ?>" id="surname" placeholder="Surname">
                                 <label for="surname">Surname</label>
+                                <span class="invalid-feedback"><?php echo $surname_err; ?></span>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="email" type="email" class="form-control form-control-lg" id="email" placeholder="Email Address">
+                                <input name="email" type="email" class="form-control form-control-lg <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" id="email" placeholder="Email Address">
                                 <label for="email">Email Address</label>
+                                <span class="invalid-feedback"><?php echo $email_err; ?></span>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="password" type="password" class="form-control form-control-lg" id="pwd" placeholder="Password">
+                                <input name="password" type="password" data-toggle="tooltip" class="form-control form-control-lg <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" id="pwd" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long.">
                                 <label for="password">Password</label>
+                                <span class="invalid-feedback"><?php echo $password_err; ?></span>
                                 <span id="pwdmsg"></span>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="confirmpassword" type="password" class="form-control form-control-lg" id="confirmpwd" placeholder="Confirm Password">
+                                <input name="confirmpassword" type="password" class="form-control form-control-lg <?php echo (!empty($confirmpassword_err)) ? 'is-invalid' : ''; ?>" id="confirmpwd" placeholder="Confirm Password">
                                 <label for="confirmpassword">Confirm password</label>
                                 <span id="confirmpwdmsg"></span>
+                                <span class="invalid-feedback"><?php echo $confirmpassword_err; ?></span>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                             <div class="divider d-flex align-items-center my-4">
@@ -96,6 +178,16 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             } else {
                 $("#confirmpwdmsg").html("Not Matching").css("color", "red");
             }
+        });
+        $(document).keyup(() => {
+            if ($("#username").val() === "" || $("#pwd").val() === "" || $("#confirmpwd").val() === "" || $("#email").val() === "" || $("#surname").val() === "" || $("#firstname").val() === "") {
+                $("#submit").prop('disabled', true);
+            } else {
+                $("#submit").prop('disabled', false);
+            }
+        });
+        $(document).ready(() => {
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 </body>
