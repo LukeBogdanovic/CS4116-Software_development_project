@@ -22,13 +22,13 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 
 <body>
     <?php
-    require "navbar.php";
+    require_once "includes/navbar.php";
     ?>
     <h1>Welcome</h1>
     <a href="login.php" class="btn btn-primary btn-lg btn-block">Login Page</a>
     <a href="signup.php" class="btn btn-primary btn-lg btn-block">Registration Page</a>
     <?php
-    require "footer.php";
+    require_once "includes/footer.php";
     ?>
 </body>
 
