@@ -1,5 +1,8 @@
 <?php
 session_start();
+require "database.php";
+require_once "utils.php";
+
 // Checking if the user is already logged in to the website and redirecting to Home if they are
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     header("location: Home.php");
@@ -20,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     //must run checks on email and username to see if theyre already taken
     //Username check
+    //I've noticed a bug with this code I will comment it beside the relevant line of code
     $username_test = "SELECT Username, Email FROM user WHERE Username = '$username' OR Email = '$email'";
     //prepare sql statement for username check
     if($stmt = mysqli_prepare($con, $username_test)){
@@ -28,6 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             // Store the result of the sql statement
             mysqli_stmt_store_result($stmt);
             //bind results from stmt to variables to be used
+            /*  if both the username and email are in use but in use by two different accounts,
+                only the first result returned (earliest) will be bound to the variables username_stored and email_stored,
+                therefore only the earliest instance of the username or email will be returned and only one error will show.
+                Works for now, can be improved to show both errors at once.
+            */
             mysqli_stmt_bind_result($stmt, $username_stored, $email_stored);
             //fetch the results of the stmt
             if (mysqli_stmt_fetch($stmt)) {
@@ -51,20 +60,21 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if($stmt = mysqli_prepare($con, $insert)){
             // Attempt to execute the sql statement
             if (mysqli_stmt_execute($stmt)) {
-                // Starting a new session for the user due to password being correct
-                session_start();
-                // Storing user data in the session variables
-                $_SESSION['loggedin'] = true;
-                $_SESSION['id'] = $id; //trying to figure out a way to retrieve the id created for the user without a whole ass sql statement. Bear with me, hit me with suggestioons if you have
-                $_SESSION['username'] = $username;
-                // Redirect to the Home page of Account
-                header("location: Home.php");
+                if($id = mysqli_insert_id($con)){
+                    // Starting a new session for the user due to password being correct
+                    session_start();
+                    // Storing user data in the session variables
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['id'] = $id;
+                    $_SESSION['username'] = $username;
+                    // Redirect to the Home page of Account
+                    header("location: Home.php");
+                }
             } else{echo "it failed";}
         }
     }
     mysqli_close($con);
 }
-?>
 ?>
 <!DOCTYPE html>
 <html lang="en">
