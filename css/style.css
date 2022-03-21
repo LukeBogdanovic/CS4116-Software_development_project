@@ -17,13 +17,13 @@ img {
 }
 
 
-.image2 img {
+.backgrnd img {
     width: 100%;
     object-fit: cover;
     height: 100vh;
     object-position: 50% 14%;
 }
-.image2 .text2 {
+.backgrnd .text2 {
     position:absolute;
     top:10px;
     left: 15vw;
@@ -35,26 +35,21 @@ img {
     font-weight: 700;
 }
 
-.bouton{
+.bouton2{
+    margin-top: 15px;
+}
+
+.bouton3{
+    margin-top: 100px;
+}
+
+
+.container{
+    justify-content: center;
+    display: inline-block;
     display: flex;
-    margin-left: 225px;
-    margin-right: 225px;
-    justify-content: space-evenly;
-    padding-bottom: 0px;
-    padding-top: 100px;
+    flex-wrap: wrap;
 }
-
-.text3{
-    position:absolute;
-    top:10px;
-    left: 15vw;
-    right: 15vw;
-    text-align: center;
-    padding-top: 450px;
-    font-size: 20px;
-    font-weight: 700;
-}
-
 
 
 

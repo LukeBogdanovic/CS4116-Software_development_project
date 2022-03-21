@@ -8,7 +8,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 }
 ?>
 <!DOCTYPE html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8" />
     <title>Welcome</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
@@ -23,35 +25,50 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         </body>
     </header>
 
-    <div class="image2">
-        <img alt="" src="images/fond_coeurs.PNG" />
+    <div class="backgrnd">
+        <img alt="" src="images/fond_coeurs.jpg" />
         <div class="text2">
-        
-            <div class="">
                 <div class="container">
 
-                    <div class="bouton">
+                    <div class="bouton1">
                         <form>
                             <input type="button" onclick="window.location.href = '';" value="Sign up" />
                           </form>
+                    </div>
 
-                          <form>
-                            <input type="button" onclick="window.location.href = '';" value="Log in" />
-                          </form>
+                </div>
+
+                <div class="bouton2">
+                    <form>
+                      <input type="button" onclick="window.location.href = '';" value="Log in" />
+                    </form>
+                    </div>
+        
+                <div class="bouton3">
+                    <form>
+                        <input type="button" onclick="window.location.href = '';" value="Help" />
+                      </form>
+                </div>
+
         </div>
 
-        <div class="text3">
-            <form>
-                <input type="button" onclick="window.location.href = '';" value="Help" />
-              </form>
-        </div>
+       
 
       </div>
     
-       
+        
             
             
-    </main> 
+    </main>
+
+    
+   
+
+
+
+   
+
+   
    
 </body>
 </html>
