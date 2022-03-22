@@ -36,25 +36,8 @@ function get_Security_Questions($username)
     $results = [];
     // Check that the request method is a POST request
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        $username = trim($username);
-        $stmt = "SELECT UserID FROM `user` WHERE Username = ?";
-        if ($stmt = mysqli_prepare($con, $stmt)) {
-            // Bind the params to the statement
-            mysqli_stmt_bind_param($stmt, "s", $db_username);
-            $db_username = $username;
-            if (mysqli_stmt_execute($stmt)) {
-                mysqli_stmt_store_result($stmt);
-                // Check that there is only one user matching
-                if (mysqli_stmt_num_rows($stmt) == 1) {
-                    mysqli_stmt_bind_result($stmt, $id);
-                    mysqli_stmt_fetch($stmt);
-                } else {
-                    // If the user can't be found return this information to the user and exit function
-                    $result = array('status' => 403, 'message' => "Username cannot be found");
-                    echo json_encode($result);
-                    return;
-                }
-            }
+        if (!$id = get_userID($username)) {
+            return;
         }
         // Statement to find all security Questions answered by the user in the database
         $stmt = "SELECT SecurityQuestion FROM SecurityQA WHERE UserID = ?";
@@ -87,25 +70,8 @@ function get_Security_Answers($username, $securityQ, $securityAnswer)
     require "../../includes/database.php";
     $result = [];
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        $username = trim($username);
-        $stmt = "SELECT UserID FROM `user` WHERE Username = ?";
-        if ($stmt = mysqli_prepare($con, $stmt)) {
-            // Bind the params to the statement
-            mysqli_stmt_bind_param($stmt, "s", $db_username);
-            $db_username = $username;
-            if (mysqli_stmt_execute($stmt)) {
-                mysqli_stmt_store_result($stmt);
-                // Check that there is only one user matching
-                if (mysqli_stmt_num_rows($stmt) == 1) {
-                    mysqli_stmt_bind_result($stmt, $id);
-                    mysqli_stmt_fetch($stmt);
-                } else {
-                    // If the user can't be found return this information to the user and exit function
-                    $result = array('status' => 403, 'message' => "Username cannot be found");
-                    echo json_encode($result);
-                    return;
-                }
-            }
+        if (!$id = get_userID($username)) {
+            return;
         }
         $stmt = "SELECT SecurityAnswer FROM SecurityQA WHERE UserID = ? AND SecurityQuestion = ?";
         if ($stmt = mysqli_prepare($con, $stmt)) {
@@ -137,24 +103,8 @@ function reset_password($username, $password, $confirm_password)
         // Init our database connection
         require "../../includes/database.php";
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $username = trim($username);
-            $stmt = "SELECT UserID FROM `user` WHERE Username = ?";
-            if ($stmt = mysqli_prepare($con, $stmt)) {
-                // Bind the params to the statement
-                mysqli_stmt_bind_param($stmt, "s", $db_username);
-                $db_username = $username;
-                if (mysqli_stmt_execute($stmt)) {
-                    mysqli_stmt_store_result($stmt);
-                    if (mysqli_stmt_num_rows($stmt) == 1) {
-                        mysqli_stmt_bind_result($stmt, $id);
-                        mysqli_stmt_fetch($stmt);
-                    } else {
-                        // If the user can't be found return this information to the user and exit function
-                        $result = array('status' => 403, 'message' => "Username cannot be found");
-                        echo json_encode($result);
-                        return;
-                    }
-                }
+            if (!$id = get_userID($username)) {
+                return;
             }
             $stmt = "SELECT Password FROM user WHERE UserID = ?";
             if ($stmt = mysqli_prepare($con, $stmt)) {
@@ -196,4 +146,34 @@ function reset_password($username, $password, $confirm_password)
     $result = array('status' => 403, 'message' => "Password and Confirm Password entered do not match.");
     echo json_encode($result);
     return;
+}
+
+/**
+ * Returns the userID of the username queried in the database
+ * @param string $username
+ */
+function get_userID($username)
+{
+    require "../../includes/database.php";
+    $username = trim($username);
+    $stmt = "SELECT UserID FROM `user` WHERE Username = ?";
+    if ($stmt = mysqli_prepare($con, $stmt)) {
+        // Bind the params to the statement
+        mysqli_stmt_bind_param($stmt, "s", $db_username);
+        $db_username = $username;
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_store_result($stmt);
+            // Check that there is only one user matching
+            if (mysqli_stmt_num_rows($stmt) == 1) {
+                mysqli_stmt_bind_result($stmt, $id);
+                mysqli_stmt_fetch($stmt);
+                return $id;
+            } else {
+                // If the user can't be found return this information to the user and exit function
+                $result = array('status' => 403, 'message' => "Username cannot be found");
+                echo json_encode($result);
+                return;
+            }
+        }
+    }
 }
