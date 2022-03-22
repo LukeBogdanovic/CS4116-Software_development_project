@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 <body>
     <?php
-    require_once "navbar.php";
+    require_once "includes/navbar.php";
     ?>
     <div>
         <section class="vh-100">
@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </section>
     </div>
     <?php
-    require_once "footer.php";
+    require_once "includes/footer.php";
     ?>
     <script>
         $(document).keyup(() => {
