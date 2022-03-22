@@ -31,7 +31,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         <div class="container py-5 h-5">
             <form onsubmit="getSearchResults(event);" method="POST" id="search">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="search">
+                    <input name="search" type="text" id="search" class="form-control" placeholder="Search" >
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="submit">Search</i></button>
                     </div>
@@ -40,11 +40,14 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         </div>
         <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
             <div class="col">
-                <div class="card h-100 shadow-sm"> <img src="assets/images/logo.PNG" class="card-img-top" alt="Profile Picture">
+                <div class="card h-100 shadow-sm"> 
+                    <img src="assets/images/logo.PNG" class="card-img-top" alt="Profile Picture">
                     <div class="card-body">
                         <h5 class="card-title">Name, Age</h5>
                         <p class="card-content">Bio</p>
-                        <div class="text-center my-4"> <a class="btn btn-dark">View Profile</a> </div>
+                        <div class="text-center my-4">
+                            <a class="btn btn-dark">View Profile</a> 
+                        </div>
                     </div>
                 </div>
             </div>
