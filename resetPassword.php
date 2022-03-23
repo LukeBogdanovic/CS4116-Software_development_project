@@ -23,7 +23,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 
 <body>
     <?php
-    require_once "navbar.php";
+    require_once "includes/navbar.php";
     ?>
     <div>
         <section class="vh-100">
@@ -46,7 +46,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         </section>
     </div>
     <?php
-    require_once "footer.php";
+    require_once "includes/footer.php";
     ?>
     <script>
         $(document).ready(() => {

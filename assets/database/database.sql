@@ -82,7 +82,7 @@ SET
     ) NOT NULL COMMENT 'Enumerated type because there are several answers, but the available answers won''t change',
     `Gender` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
-    `Description` blob NOT NULL COMMENT 'Blob type because this will contain a free text description of the person',
+    `Description` varchar(512) NOT NULL COMMENT 'Store description as varchar, limit user to 512 characters',
     `County` enum(
       'Antrim',
       'Armagh',
@@ -202,6 +202,34 @@ SET
     CONSTRAINT `Liked_ibfk_1` FOREIGN KEY (UserID1) REFERENCES user(UserID),
     CONSTRAINT `Liked_ibfk_2` FOREIGN KEY (UserID2) REFERENCES user(UserID)
   ) ENGINE = INNODB DEFAULT CHARSET = latin1 COMMENT = 'Store the likes made between users';
+  -- --------------------------------------------------------
+  --
+  -- Fill user table with user info
+  --
+  INSERT INTO user VALUES
+  (NULL, 'Lukabog', 'Luke', 'Boggie', '$2y$10$5djR4GUfSLIgz20jixUCfOLNzygFGQJ87CUo2RbG2ZjmRwO4fu0WS','asdfg@gmail.com', '1', DEFAULT),
+  (NULL, 'Jackcon', 'Jack', 'Murphy', '$2y$10$jFzSOlINTfW.YN1.Rewp5uN55b2.IDvu5MvIgLlsONi0TmUNyhEye','asdfasdaqrdf@gmail.com', '1', DEFAULT),
+  (NULL, 'Mindygirl', 'Mindy', 'Dwyer', '$2y$10$/n5dcTHz3ch1WX912z1GuO5Vx2TL1kiU.vx0UpfMT/GpvBXDUZXa6','asdfasdvcxz@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'jackryan', 'Jack', 'Ryan', '$2y$10$jFzSOlINTfW.YN1.Rewp5uN55b2.IDvu5MvIgLlsONi0TmUNyhEye','asdfasdcvbnm@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'luke420', 'Luka', 'Kelly', '$2y$10$5djR4GUfSLIgz20jixUCfOLNzygFGQJ87CUo2RbG2ZjmRwO4fu0WS','asdfasdqwert@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'mintysally', 'Sally', 'Brennan', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','minty@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'Caoimhe123', 'Caoimhe', 'Boyle', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','qweertyy@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'Kelly123', 'Kelly', 'Carroll', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','pofgdh@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'Johnboy', 'John', 'Farrell', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','mohjdda@gmail.com', DEFAULT, DEFAULT);
+  -- --------------------------------------------------------
+  --
+  -- Insert data for users into profile table
+  -- 
+  INSERT INTO profile VALUES
+  (1, '21', 'Non Smoker', 'Constantly', 'Male','Male', 'Hi, Im luke Boggie I like smoking', 'Clare', NULL, NULL, NULL, NULL, NULL),
+  (2, '23', 'Social Smoker', 'Most Days', 'Male','Female', 'Hi, Im Jack Murphy I like games', 'Limerick', NULL, NULL, NULL, NULL, NULL),
+  (3, '20', 'Smoker', 'Constantly','Female', 'Male', 'Hi, Im Mindy I like trains', 'Tipperary', NULL, NULL, NULL, NULL, NULL),
+  (4, '19', 'Non Smoker', 'No', 'Male','Female', 'Hi, Im Jack Ryan I like nothing o.O', 'Waterford', NULL, NULL, NULL, NULL, NULL),
+  (5, '18', 'Social Smoker', 'Social Drinker', 'Male','Male', 'Hi, Im Luka Kelly I like Code', 'Dublin', NULL, NULL, NULL, NULL, NULL),
+  (6, '20', 'Non Smoker', 'Social Drinker','Female', 'Female', 'Hi, Im Sally Murphy I like trains too', 'Galway', NULL, NULL, NULL, NULL, NULL),
+  (7, '21', 'Smoker', 'Constantly','Female', 'Female', 'Hi, Im Caoimhe I like myself', 'Galway', NULL, NULL, NULL, NULL, NULL),
+  (8, '23', 'Smoker', 'No','Female', 'Male', 'Hi, Im Kelly I like galway', 'Galway', NULL, NULL, NULL, NULL, NULL),
+  (9, '22', 'Non Smoker', 'Social Drinker', 'Male','Female', 'Hi, Im John I like drink too', 'Galway', NULL, NULL, NULL, NULL, NULL);
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
   /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
   /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
