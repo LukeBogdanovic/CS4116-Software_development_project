@@ -6,10 +6,8 @@
  * Calls the function that is requested and provides all data sent from the frontend
  * to the backend via ajax request.
  */
-if (isset($_POST['function'])) 
-{
-    if (isset($_POST['search']))
-    {
+if (isset($_POST['function'])) {
+    if (isset($_POST['search'])) {
         get_Search_result_username($_POST['search']);
     }
 }
@@ -23,9 +21,8 @@ function get_Search_result_username($search)
     // Check that the request method is a POST request
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         //statement to find all usernames similar to inputted username 
-        $stmt = "SELECT UserID FROM user WHERE Username = %?%";
+        $stmt = "SELECT UserID FROM user WHERE Username LIKE '%$search%'";
         if ($stmt = mysqli_prepare($con, $stmt)) {
-            mysqli_stmt_bind_param($stmt, "s", $search);
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
                 //bind results of search to user variable 
