@@ -20,10 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $email = mysqli_real_escape_string($con,trim($_POST['email']));
     $password = mysqli_real_escape_string($con,trim($_POST['password']));
     $confirmpassword = mysqli_real_escape_string($con,trim($_POST['confirmpassword']));
-    //must run checks on email and username to see if theyre already taken
-    //Username check
-    //I've noticed a bug with this code I will comment it beside the relevant line of code
-    $username_test = "SELECT Username, Email FROM user WHERE Username = '$username' OR Email = '$email'";
     
     //Check date of birth entered by user
     if (get_age($dob)<18){
@@ -32,6 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $dob_err= "You have provided an invalid age";
     }
 
+    //must run checks on email and username to see if theyre already taken
+    //Username check
+    $username_test = "SELECT Username, Email FROM user WHERE Username = '$username' OR Email = '$email'";
     //prepare sql statement for username check
     if ($stmt = mysqli_prepare($con, $username_test)) {
         // Attempt to execute the sql statement
