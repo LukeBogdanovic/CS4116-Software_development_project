@@ -1,17 +1,15 @@
+<?php 
+session_start(); 
+/* Checking if the user is not logged in 
+* If user is not logged in: the user is redirected to the login page and the script exits 
+*/ 
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) { 
+    header("location: login.php"); 
+exit; 
+} 
+?> 
 <!DOCTYPE html>
-<html>
-
-    <?php 
-    session_start(); 
-    /* Checking if the user is not logged in 
-    * If user is not logged in: the user is redirected to the login page and the script exits 
-    */ 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) { 
-        header("location: login.php"); 
-    exit; 
-    } 
-    ?> 
-  
+<html>  
     <head>
         <title>Connections</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
