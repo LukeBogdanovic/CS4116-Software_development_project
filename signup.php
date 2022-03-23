@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                 <label for="confirmpassword">Confirm password</label>
                                 <span id="confirmpwdmsg"></span>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                            <button type="submit" id="submit" class="btn btn-primary btn-lg btn-block" disabled="disabled">Submit</button>
                             <div class="divider d-flex align-items-center my-4">
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
                             </div>

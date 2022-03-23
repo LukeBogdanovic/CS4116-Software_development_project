@@ -16,7 +16,7 @@ session_start();
 <body>
 
     <?php
-    require_once "navbar.php";
+    require_once "includes/navbar.php";
     ?>
 
     <section class="vh-100">
@@ -60,7 +60,7 @@ session_start();
     </section>
 
     <?php
-    require_once "footer.php";
+    require_once "includes/footer.php";
     ?>
 
 </body>
