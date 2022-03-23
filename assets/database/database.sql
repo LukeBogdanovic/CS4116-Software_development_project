@@ -82,7 +82,7 @@ SET
     ) NOT NULL COMMENT 'Enumerated type because there are several answers, but the available answers won''t change',
     `Gender` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
     `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
-    `Description` varchar(512) NOT NULL COMMENT 'Blob type because this will contain a free text description of the person',
+    `Description` varchar(512) NOT NULL COMMENT 'Store description as varchar, limit user to 512 characters',
     `County` enum(
       'Antrim',
       'Armagh',
@@ -221,13 +221,13 @@ SET
   -- Insert data for users into profile table
   -- 
   INSERT INTO profile VALUES
-  (1, '21', 'Non Smoker', 'Constantly', 'Male','Female', 'Hi, Im luke Boggie I like smoking', 'Clare', NULL, NULL, NULL, NULL, NULL),
+  (1, '21', 'Non Smoker', 'Constantly', 'Male','Male', 'Hi, Im luke Boggie I like smoking', 'Clare', NULL, NULL, NULL, NULL, NULL),
   (2, '23', 'Social Smoker', 'Most Days', 'Male','Female', 'Hi, Im Jack Murphy I like games', 'Limerick', NULL, NULL, NULL, NULL, NULL),
   (3, '20', 'Smoker', 'Constantly','Female', 'Male', 'Hi, Im Mindy I like trains', 'Tipperary', NULL, NULL, NULL, NULL, NULL),
   (4, '19', 'Non Smoker', 'No', 'Male','Female', 'Hi, Im Jack Ryan I like nothing o.O', 'Waterford', NULL, NULL, NULL, NULL, NULL),
-  (5, '18', 'Social Smoker', 'Social Drinker', 'Male','Female', 'Hi, Im Luka Kelly I like Code', 'Dublin', NULL, NULL, NULL, NULL, NULL),
-  (6, '20', 'Non Smoker', 'Social Drinker','Female', 'Male', 'Hi, Im Sally Murphy I like trains too', 'Galway', NULL, NULL, NULL, NULL, NULL),
-  (7, '21', 'Smoker', 'Constantly','Female', 'Male', 'Hi, Im Caoimhe I like myself', 'Galway', NULL, NULL, NULL, NULL, NULL),
+  (5, '18', 'Social Smoker', 'Social Drinker', 'Male','Male', 'Hi, Im Luka Kelly I like Code', 'Dublin', NULL, NULL, NULL, NULL, NULL),
+  (6, '20', 'Non Smoker', 'Social Drinker','Female', 'Female', 'Hi, Im Sally Murphy I like trains too', 'Galway', NULL, NULL, NULL, NULL, NULL),
+  (7, '21', 'Smoker', 'Constantly','Female', 'Female', 'Hi, Im Caoimhe I like myself', 'Galway', NULL, NULL, NULL, NULL, NULL),
   (8, '23', 'Smoker', 'No','Female', 'Male', 'Hi, Im Kelly I like galway', 'Galway', NULL, NULL, NULL, NULL, NULL),
   (9, '22', 'Non Smoker', 'Social Drinker', 'Male','Female', 'Hi, Im John I like drink too', 'Galway', NULL, NULL, NULL, NULL, NULL);
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
