@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         mysqli_stmt_close($stmt);
     }
 
-    if ($username_err == '' && $email_err == '' && $dob_err=='') {
+    if ($username_err === '' && $email_err === '' && $dob_err === '') {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $insert = "INSERT INTO user (UserID, Username, Firstname, Surname, DateOfBirth, Email, Password) VALUES (DEFAULT,'$username', '$firstname', '$surname', '$dob', '$email','$hashed_password')";
         if ($stmt = mysqli_prepare($con, $insert)) {
