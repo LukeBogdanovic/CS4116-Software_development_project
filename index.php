@@ -33,7 +33,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 
                     <div class="bouton1">
                         <form>
-                            <a class="btn btn-secondary btn-outline-secondary btn-lg" style="background-color: #6D071A;" href="" role="button">
+                            <a class="btn btn-secondary btn-outline-secondary btn-lg" style="background-color: #6D071A;" href="signup.php" role="button">
                                 Sign Up
                             </a>
                           </form>
@@ -43,7 +43,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 
                 <div class="bouton2">
                     <form>
-                      <a class="btn btn-secondary btn-outline-secondary btn-lg" style="background-color: #6D071A;" href="" role="button">
+                      <a class="btn btn-secondary btn-outline-secondary btn-lg" style="background-color: #6D071A;" href="login.php" role="button">
                                 Log In
                             </a>
                     </form>
@@ -51,7 +51,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         
                 <div class="bouton3">
                     <form>
-                        <a class="btn btn-primary btn-outline-dark btn-lg" style="background-color: #8B4513;" href="" role="button">
+                        <a class="btn btn-primary btn-outline-dark btn-lg" style="background-color: #8B4513;" href="help.php" role="button">
                                 Help
                             </a>
                       </form>
