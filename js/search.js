@@ -12,7 +12,10 @@ function getSearchResults(event) {
     success: (response) => {
       var data = JSON.parse(response);
       if (data.status == 200) {
-        console.log(data[0]);
+        if (document.getElementById("user-cards").children) {
+          document.getElementById("user-cards").innerHTML = "";
+        }
+        addUserCards(data[0]);
       } else {
         if (!document.getElementById("warning")) {
           var newNode = document.createElement("div");
@@ -24,5 +27,22 @@ function getSearchResults(event) {
         }
       }
     },
+  });
+}
+
+function addUserCards(data) {
+  const userCardTemplate = document.querySelector("[data-user-template]");
+  const userCardContainer = document.querySelector(
+    "[data-user-cards-container]"
+  );
+  data.forEach((user) => {
+    const card = userCardTemplate.content.cloneNode(true).children[0];
+    const header = card.querySelector("[data-header]");
+    const age = card.querySelector("[data-age]");
+    const body = card.querySelector("[data-body]");
+    header.textContent = `${user.firstname} ${user.surname}`;
+    age.textContent = user.age;
+    body.textContent = user.description;
+    userCardContainer.append(card);
   });
 }

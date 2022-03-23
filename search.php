@@ -19,7 +19,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <link rel="stylesheet" type="text/css" href="css/utils.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="js\search.js"></script>
+    <script src="js\search.js" defer></script>
     <title>Search</title>
 </head>
 
@@ -39,27 +39,15 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                 </div>
             </form>
         </div>
-        <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <img src="assets/images/logo.PNG" class="card-img-top" alt="Profile Picture">
-                    <div class="card-body">
-                        <h5 class="card-title">Name, Age</h5>
-                        <p class="card-content">Bio</p>
-                        <div class="text-center my-4">
-                            <a class="btn btn-dark">View Profile</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" id="user-cards" data-user-cards-container></div>
 
-        <template>
+        <template data-user-template>
             <div class="col">
                 <div class="card h-100 shadow-sm"> <img src="assets/images/logo.PNG" class="card-img-top" alt="Profile Picture">
                     <div class="card-body">
-                        <h5 class="card-title">Name, Age</h5>
-                        <p class="card-content">Bio</p>
+                        <h5 class="card-title" data-header>Name</h5>
+                        <h5 class="card-title" data-age>Age</h5>
+                        <p class="card-content" data-body>Bio</p>
                         <div class="text-center my-4"> <a class="btn btn-dark">View Profile</a> </div>
                     </div>
                 </div>

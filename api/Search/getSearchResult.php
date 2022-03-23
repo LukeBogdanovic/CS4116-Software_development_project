@@ -18,20 +18,22 @@ function get_Search_result_username($search)
     require "../../includes/database.php";
     $result = [];
     $results = [];
+    $user = [];
     // Check that the request method is a POST request
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         //statement to find all usernames similar to inputted username 
-        $stmt = "SELECT UserID FROM user WHERE Username LIKE '%$search%'";
+        $stmt = "SELECT user.UserID, user.Firstname, user.Surname, profile.Age, profile.Description FROM user INNER JOIN profile ON user.UserID=profile.UserID WHERE user.Username LIKE '%$search%'";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
                 //bind results of search to user variable 
-                mysqli_stmt_bind_result($stmt, $userID);
+                mysqli_stmt_bind_result($stmt, $userID, $firstname, $surname, $age, $description);
                 if (mysqli_stmt_num_rows($stmt) > 0) {
                     $result = array('status' => 200, 'message' => 'Users found matching search criteria');
                     // Put all retrieved UserIDs into results array
                     while (mysqli_stmt_fetch($stmt)) {
-                        array_push($results, $userID);
+                        $user = array('userID' => $userID, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description);
+                        array_push($results, $user);
                     }
                     array_push($result, $results);
                 } else {
