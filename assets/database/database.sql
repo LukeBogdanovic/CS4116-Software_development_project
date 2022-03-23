@@ -34,6 +34,15 @@ SET
     UNIQUE (Email),
     UNIQUE (Username)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
+  -- --------------------------------------------------------
+  --
+  -- Fill user table with user info
+  --
+  INSERT INTO user VALUES
+  (NULL, 'Lukabog', 'Luke', 'Boggie', '$2y$10$5djR4GUfSLIgz20jixUCfOLNzygFGQJ87CUo2RbG2ZjmRwO4fu0WS','asdfg@gmail.com', '1', '1'),
+  (NULL, 'Jackcon', 'Jack', 'Ryan', '$2y$10$jFzSOlINTfW.YN1.Rewp5uN55b2.IDvu5MvIgLlsONi0TmUNyhEye','asdfasd@gmail.com', '1', '1'),
+  (NULL, 'Mindygirl', 'Mindy', 'Dwyer', '$2y$10$/n5dcTHz3ch1WX912z1GuO5Vx2TL1kiU.vx0UpfMT/GpvBXDUZXa6','asdfasd@gmail.com', NULL, NULL);
+
 -- --------------------------------------------------------
   --
   -- Table structure for table `AvailableInterests`
