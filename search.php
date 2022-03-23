@@ -28,17 +28,19 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <?php
     require_once "includes/navbar.php";
     ?>
-    <div>
-        <div class="container py-5 h-5">
-            <form onsubmit="getSearchResults(event);" method="POST" id="searchForm">
-                <div class="input-group">
-                    <input name="search" type="text" id="search" class="form-control" placeholder="Search">
-                    <div class="input-group-btn">
-                        <button class="btn submit btn-default" type="submit">Search</button>
-                    </div>
+
+
+    <div class="container py-5 h-5">
+        <form onsubmit="getSearchResults(event);" method="POST" id="searchForm">
+            <div class="input-group">
+                <input name="search" type="text" id="search" class="form-control" placeholder="Search">
+                <div class="input-group-btn">
+                    <button class="btn submit btn-default" type="submit">Search</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
+    </div>
+    <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
         <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" id="user-cards" data-user-cards-container></div>
 
         <template data-user-template>
