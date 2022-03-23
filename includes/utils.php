@@ -58,7 +58,7 @@ function console_log($output, $with_script_tags  = true)
  * @return int
  */
 function get_age($date_of_birth){
-    //date in mm/dd/yyyy format; or it can be in other formats as well
+    //date in mm-dd-yyyy format; or it can be in other formats as well
     //explode the date to get month, day and year
     $date_of_birth = explode("-", $date_of_birth);
     //get age from date or date_of_birth
