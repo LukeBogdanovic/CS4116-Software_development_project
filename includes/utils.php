@@ -53,7 +53,7 @@ function console_log($output, $with_script_tags  = true)
 }
 
 /**
- * Logs output param provided to the function to the developer console of the browser in use 
+ * returns an int $age when given a date of birth in the format yyyy-mm-dd
  * @param $date_of_birth String formatted yyyy-mm-dd
  * @return int
  */
