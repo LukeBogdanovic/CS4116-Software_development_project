@@ -9,21 +9,29 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 }
 // Intializing all form variables & err
 $username = $password = $confirmpassword = $firstname = $surname = $email = "";
-$username_err = $email_err = "";
+$username_err = $email_err = $dob_err = "";
 // Check for if the form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // Fill in all variables from the form
-    $username = trim($_POST['username']);
-    $firstname = trim($_POST['firstname']);
-    $surname = trim($_POST['surname']);
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
-    $confirmpassword = trim($_POST['confirmpassword']);
-
+    $username = mysqli_real_escape_string($con,trim($_POST['username']));
+    $firstname = mysqli_real_escape_string($con,trim($_POST['firstname']));
+    $surname = mysqli_real_escape_string($con,trim($_POST['surname']));
+    $dob = mysqli_real_escape_string($con,trim($_POST['dob']));
+    $email = mysqli_real_escape_string($con,trim($_POST['email']));
+    $password = mysqli_real_escape_string($con,trim($_POST['password']));
+    $confirmpassword = mysqli_real_escape_string($con,trim($_POST['confirmpassword']));
     //must run checks on email and username to see if theyre already taken
     //Username check
     //I've noticed a bug with this code I will comment it beside the relevant line of code
     $username_test = "SELECT Username, Email FROM user WHERE Username = '$username' OR Email = '$email'";
+    
+    //Check date of birth entered by user
+    if (get_age($dob)<18){
+        $dob_err= "Unfortunately you are too young to avail of our service";
+    } else if (get_age($dob)>130){
+        $dob_err= "You have provided an invalid age";
+    }
+
     //prepare sql statement for username check
     if ($stmt = mysqli_prepare($con, $username_test)) {
         // Attempt to execute the sql statement
@@ -50,9 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         mysqli_stmt_close($stmt);
     }
 
-    if ($username_err == '' && $email_err == '') {
+    if ($username_err == '' && $email_err == '' && $dob_err=='') {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $insert = "INSERT INTO user (UserID, Username, Firstname, Surname, Email, Password) VALUES (DEFAULT,'$username', '$firstname', '$surname', '$email','$hashed_password')";
+        $insert = "INSERT INTO user (UserID, Username, Firstname, Surname, DateOfBirth, Email, Password) VALUES (DEFAULT,'$username', '$firstname', '$surname', '$dob', '$email','$hashed_password')";
         if ($stmt = mysqli_prepare($con, $insert)) {
             // Attempt to execute the sql statement
             if (mysqli_stmt_execute($stmt)) {
@@ -119,6 +127,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                 <label for="surname">Surname</label>
                             </div>
                             <div class="form-floating mb-4">
+                                <input name="dob" type="date" class="form-control form-control-lg <?php echo (!empty($dob_err)) ? 'is-invalid' : ''; ?>" id="dob" placeholder="Date Of Birth">
+                                <label for="dob">Date Of Birth</label>
+                                <span class="invalid-feedback"><?php echo $dob_err; ?></span>
+                            </div>
+                            <div class="form-floating mb-4">
                                 <input name="email" type="email" class="form-control form-control-lg <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" id="email" placeholder="Email Address">
                                 <label for="email">Email Address</label>
                                 <span class="invalid-feedback"><?php echo $email_err; ?></span>
@@ -174,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             }
         });
         $(document).keyup(() => {
-            if ($("#username").val() === "" || $("#pwd").val() === "" || $("#confirmpwd").val() === "" || $("#email").val() === "" || $("#surname").val() === "" || $("#firstname").val() === "") {
+            if ($("#username").val() === "" || $("#pwd").val() === "" || $("#confirmpwd").val() === "" || $("#email").val() === "" || $("#surname").val() === "" || $("#firstname").val() === "" || $("#dob").val() === "") {
                 $("#submit").prop('disabled', true);
             } else {
                 $("#submit").prop('disabled', false);
