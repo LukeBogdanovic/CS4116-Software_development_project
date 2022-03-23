@@ -19,7 +19,7 @@
             <?php echo (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) ?
                 '<form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn submit" type="submit">Search</button>
+                <a class="btn submit" type="submit" href="search.php">Search</a>
             </form>
             <a href="logout.php" class="btn ml-3">Sign Out</a>' : '' ?>
         </div>
