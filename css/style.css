@@ -2,8 +2,6 @@
     box-sizing: border-box;
 }
 
-
-
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 16px;
@@ -45,27 +43,6 @@ img {
 .bouton3{
     margin-top: 90px;
 }
-
-
-.container{
-    justify-content: center;
-    display: inline-block;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
  
 @media (min-width: 769px) {
     
