@@ -1,5 +1,6 @@
 /**
- *
+ * Sends the user request from the frontend to the server and returns
+ * the data retrieved from the database
  * @param {Event} event
  */
 function getSearchResults(event) {
@@ -12,6 +13,10 @@ function getSearchResults(event) {
     success: (response) => {
       var data = JSON.parse(response);
       if (data.status == 200) {
+        if (document.getElementById("warning"))
+          document
+            .getElementById("searchForm")
+            .parentElement.removeChild(document.getElementById("warning"));
         if (document.getElementById("user-cards").children) {
           document.getElementById("user-cards").innerHTML = "";
         }
@@ -24,12 +29,17 @@ function getSearchResults(event) {
           newNode.innerHTML = data.message;
           var parentDiv = document.getElementById("searchForm").parentElement;
           parentDiv.appendChild(newNode);
+          document.getElementById("user-cards").innerHTML = "";
         }
       }
     },
   });
 }
 
+/**
+ * Creates the user cards for the search functionality
+ * @param {Array} data
+ */
 function addUserCards(data) {
   const userCardTemplate = document.querySelector("[data-user-template]");
   const userCardContainer = document.querySelector(
@@ -38,9 +48,11 @@ function addUserCards(data) {
   data.forEach((user) => {
     const card = userCardTemplate.content.cloneNode(true).children[0];
     const header = card.querySelector("[data-header]");
+    const username = card.querySelector("[data-username]");
     const age = card.querySelector("[data-age]");
     const body = card.querySelector("[data-body]");
     header.textContent = `${user.firstname} ${user.surname}`;
+    username.textContent = user.username;
     age.textContent = user.age;
     body.textContent = user.description;
     userCardContainer.append(card);

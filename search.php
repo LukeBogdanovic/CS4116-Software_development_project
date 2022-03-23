@@ -46,9 +46,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                 <div class="card h-100 shadow-sm"> <img src="assets/images/logo.PNG" class="card-img-top" alt="Profile Picture">
                     <div class="card-body">
                         <h5 class="card-title" data-header>Name</h5>
-                        <h5 class="card-title" data-age>Age</h5>
-                        <p class="card-content" data-body>Bio</p>
-                        <div class="text-center my-4"> <a class="btn btn-dark">View Profile</a> </div>
+                        <h5 class="card-subtitle mb-2 text-muted" data-username>Username</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" data-age>Age</h5>
+                            <p class="card-content" data-body>Bio</p>
+                            <div class="text-center my-4">
+                                <a class="btn btn-dark">View Profile</a>
+                            </div>
                     </div>
                 </div>
             </div>
