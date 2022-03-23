@@ -22,7 +22,7 @@
                 <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
                     
                     <div class="col">
-                        <div class="card h-100 shadow-sm"> <img src="profile_pic.png" class="card-img-top" alt="Profile Picture">
+                        <div class="card h-100 shadow-sm"> <img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture">
                             <div class="card-body">
                                 <h5 class="card-title">Name, Age</h5>
                                 <p class="card-content">Bio</p>
@@ -32,7 +32,7 @@
                     </div>
                     
                     <div class="col">
-                        <div class="card h-100 shadow-sm"> <img src="profile_pic.png" class="card-img-top" alt="Profile Picture">
+                        <div class="card h-100 shadow-sm"> <img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture">
                             <div class="card-body">
                                 <h5 class="card-title">Name, Age</h5>
                                 <p class="card-content">Bio</p>
@@ -42,7 +42,7 @@
                     </div>
             
                     <div class="col">
-                        <div class="card h-100 shadow-sm"> <img src="profile_pic.png" class="card-img-top" alt="Profile Picture">
+                        <div class="card h-100 shadow-sm"> <img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture">
                             <div class="card-body">
                                 <h5 class="card-title">Name, Age</h5>
                                 <p class="card-content">Bio</p>
@@ -52,7 +52,7 @@
                     </div>
             
                     <div class="col">
-                        <div class="card h-100 shadow-sm"> <img src="profile_pic.png" class="card-img-top" alt="Profile Picture">
+                        <div class="card h-100 shadow-sm"> <img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture">
                             <div class="card-body">
                                 <h5 class="card-title">Name, Age</h5>
                                 <p class="card-content">Bio</p>
