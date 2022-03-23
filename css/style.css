@@ -36,7 +36,7 @@ img {
 }
 
 .bouton1{
-    margin-top: 150px;
+    margin-top: 300px;
 }
 .bouton2{
     margin-top: 25px;
@@ -46,13 +46,6 @@ img {
     margin-top: 90px;
 }
 
-
-.container{
-    justify-content: center;
-    display: inline-block;
-    display: flex;
-    flex-wrap: wrap;
-}
 
 
 
