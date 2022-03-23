@@ -1,35 +1,48 @@
 :root {
-    --gradient: linear-gradient(90deg, #843CAF, #D43A98, #FF5979, #FF8D5E, #FFC455);
+  --gradient: linear-gradient(
+    90deg,
+    #843caf,
+    #d43a98,
+    #ff5979,
+    #ff8d5e,
+    #ffc455
+  );
 }
 
 .navbar {
-    background-size: 300%;
-    background-image: var(--gradient);
-    animation: bg-animation 25s infinite;
-  }
-
-@keyframes bg-animation {
-    0% {background-position: left}
-    50% {background-position: right}
-    100% {background-position: left}
+  background-size: 300%;
+  background-image: var(--gradient);
+  animation: bg-animation 25s infinite;
 }
 
-.btn.submit{
-    cursor: pointer;
-    background: linear-gradient(90deg, #ee6352, #D43A98, #ee6352);
-    background-size: 300%;
+@keyframes bg-animation {
+  0% {
     background-position: left;
-    transition: background-position 350ms;
+  }
+  50% {
+    background-position: right;
+  }
+  100% {
+    background-position: left;
+  }
+}
+
+.btn.submit {
+  cursor: pointer;
+  background: linear-gradient(90deg, #ee6352, #d43a98, #ee6352);
+  background-size: 300%;
+  background-position: left;
+  transition: background-position 350ms;
 }
 
 .btn.submit:hover {
-    background-position: right;
+  background-position: right;
 }
 
-.card {
-    transition: all 0.2s ease;
+.usercard {
+  transition: all 0.2s ease;
 }
 
-.card:hover {
-    transform: scale(1.05)
+.usercard:hover {
+  transform: scale(1.05);
 }
