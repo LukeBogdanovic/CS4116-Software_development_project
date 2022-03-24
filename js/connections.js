@@ -2,12 +2,15 @@
  *
  * @param {Event} event
  */
-function getConnectedUsers(event) {
-  event.preventDefault();
+function getConnectedUsers() {
+  const id = $("#userID").val();
   $.ajax({
     method: "POST",
-    url: "",
-    data: {},
+    url: "../api/Connections/connections.php",
+    data: {
+      function: "get_Connected_Users",
+      id: id,
+    },
     success: (response) => {
       var data = JSON.parse(response);
       if (data.status == 200) {
@@ -15,6 +18,7 @@ function getConnectedUsers(event) {
           document
             .getElementById("searchForm")
             .parentElement.removeChild(document.getElementById("warning"));
+        addUserCards(data[0]);
       } else {
         if (!document.getElementById("warning")) {
           var newNode = document.createElement("div");
@@ -29,3 +33,26 @@ function getConnectedUsers(event) {
     },
   });
 }
+
+function addUserCards(data) {
+  const userCardTemplate = document.querySelector("[data-user-template]");
+  const userCardContainer = document.querySelector(
+    "[data-user-cards-container]"
+  );
+  data.forEach((user) => {
+    const card = userCardTemplate.content.cloneNode(true).children[0];
+    const header = card.querySelector("[data-header]");
+    const username = card.querySelector("[data-username]");
+    const age = card.querySelector("[data-age]");
+    const body = card.querySelector("[data-body]");
+    const connectionDate = card.querySelector("[data-connection]");
+    header.textContent = `${user.firstname} ${user.surname}`;
+    username.textContent = user.username;
+    age.textContent = user.age;
+    body.textContent = user.description;
+    connectionDate.textContent = `Date Connected: ${user.connectionDate}`;
+    userCardContainer.append(card);
+  });
+}
+
+$(document).on("ready", getConnectedUsers());

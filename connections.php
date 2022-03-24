@@ -17,6 +17,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/utils.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="js/connections.js" defer></script>
 </head>
 
@@ -25,24 +27,22 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <?php
     require_once "includes/navbar.php";
     ?>
-
+    <input type="hidden" id="userID" name="userID" value="<?php echo $_SESSION['id'] ?>">
     <main>
         <div id="container" class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
-
-            <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" data-user-cards-container>
-            </div>
-
+            <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" data-user-cards-container></div>
         </div>
     </main>
 
     <template data-user-template>
         <div class="col">
-            <div class="card h-100 shadow-sm"> <img src="assets/images/logo.PNG" class="card-img-top" alt="Profile Picture">
+            <div class="usercard card h-100 shadow-sm"> <img src="assets/images/logo.PNG" class="card-img-top" alt="Profile Picture">
                 <div class="card-body">
                     <h5 class="card-title" data-header>Name</h5>
                     <h5 class="card-subtitle mb-2 text-muted" data-username>Username</h5>
                     <h6 class="card-subtitle mb-2 text-muted" data-age>Age</h5>
                         <p class="card-content" data-body>Bio</p>
+                        <p class="card-content text-muted" data-connection>Connected date</p>
                         <div class="text-center my-4">
                             <a class="btn btn-dark">View Profile</a>
                         </div>
@@ -54,9 +54,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <?php
     require_once "includes/footer.php";
     ?>
-    <script>
-        setTimeout(getConnectedUsers(event), 5000);
-    </script>
 </body>
 
 </html>
