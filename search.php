@@ -28,24 +28,23 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <?php
     require_once "includes/navbar.php";
     ?>
-
-
-    <div class="container py-5 h-5">
-        <form onsubmit="getSearchResults(event);" method="POST" id="searchForm">
-            <div class="input-group">
+    <div>
+        <div class="container py-5 h-5">
+            <div class="input-group" id="searchbox">
                 <input name="search" type="text" id="search" class="form-control" placeholder="Search">
-                <div class="input-group-btn">
-                    <button class="btn submit btn-default" type="submit">Search</button>
-                </div>
             </div>
-        </form>
-    </div>
-    <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
-        <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" id="user-cards" data-user-cards-container></div>
+        </div>
+        <div class="col">
+            <label for="ageRange" class="form-label"></label>
+            <input type="range" class="form-range" id="ageRange" min="18" max="130">
+        </div>
+        <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
+            <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" id="user-cards" data-user-cards-container></div>
+        </div>
 
         <template data-user-template>
             <div class="col">
-                <div class="card h-100 shadow-sm"> <img src="assets/images/logo.PNG" class="card-img-top" alt="Profile Picture">
+                <div class="usercard card h-100 shadow-sm"> <img src="assets/images/logo.PNG" class="card-img-top" alt="Profile Picture">
                     <div class="card-body">
                         <h5 class="card-title" data-header>Name</h5>
                         <h5 class="card-subtitle mb-2 text-muted" data-username>Username</h5>
