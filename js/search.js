@@ -1,12 +1,10 @@
-var search = $("#search");
-var typingTimer;
-var interval = 500;
 /**
  * Sends the user request from the frontend to the server and returns
  * the data retrieved from the database
  * @param {Event} event
  */
-function getSearchResults() {
+function getSearchResults(event) {
+  event.preventDefault();
   const searchTerm = $("#search").val();
   $.ajax({
     method: "POST",
@@ -17,7 +15,7 @@ function getSearchResults() {
       if (data.status == 200) {
         if (document.getElementById("warning"))
           document
-            .getElementById("searchbox")
+            .getElementById("searchForm")
             .parentElement.removeChild(document.getElementById("warning"));
         if (document.getElementById("user-cards").children) {
           document.getElementById("user-cards").innerHTML = "";
@@ -29,7 +27,7 @@ function getSearchResults() {
           newNode.id = "warning";
           newNode.classList.add("alert", "alert-danger");
           newNode.innerHTML = data.message;
-          var parentDiv = document.getElementById("searchbox").parentElement;
+          var parentDiv = document.getElementById("searchForm").parentElement;
           parentDiv.appendChild(newNode);
           document.getElementById("user-cards").innerHTML = "";
         }
@@ -60,8 +58,3 @@ function addUserCards(data) {
     userCardContainer.append(card);
   });
 }
-
-search.on("keyup", () => {
-  clearTimeout(typingTimer);
-  typingTimer = setTimeout(getSearchResults, interval);
-});
