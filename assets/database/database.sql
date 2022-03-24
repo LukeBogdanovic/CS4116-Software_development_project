@@ -17,7 +17,7 @@ SET
 --
   -- Database: `epiz_31123825_group13`
   --
-  -- --------------------------------------------------------
+-- --------------------------------------------------------
   --
   -- Table structure for table `user`
   --
@@ -40,7 +40,7 @@ SET
   -- Table structure for table `AvailableInterests`
   --
   CREATE TABLE `AvailableInterests` (
-    `InterestID` int(3) NOT NULL AUTO_INCREMENT,
+    `InterestID` int(2) NOT NULL AUTO_INCREMENT,
     `InterestName` varchar(26) NOT NULL COMMENT 'The name of the interest',
     PRIMARY KEY (InterestID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Show a list of available interests for registration search';
@@ -202,7 +202,7 @@ SET
     CONSTRAINT `Liked_ibfk_1` FOREIGN KEY (UserID1) REFERENCES user(UserID),
     CONSTRAINT `Liked_ibfk_2` FOREIGN KEY (UserID2) REFERENCES user(UserID)
   ) ENGINE = INNODB DEFAULT CHARSET = latin1 COMMENT = 'Store the likes made between users';
-  -- --------------------------------------------------------
+-- --------------------------------------------------------
   --
   -- Fill user table with user info
   --
@@ -216,7 +216,7 @@ SET
   (NULL, 'Caoimhe123', 'Caoimhe', 'Boyle','1999-06-11', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','qweertyy@gmail.com', DEFAULT, DEFAULT),
   (NULL, 'Kelly123', 'Kelly', 'Carroll','2001-02-21', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','pofgdh@gmail.com', DEFAULT, DEFAULT),
   (NULL, 'Johnboy', 'John', 'Farrell','2000-03-24', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','mohjdda@gmail.com', DEFAULT, DEFAULT);
-  -- --------------------------------------------------------
+-- --------------------------------------------------------
   --
   -- Insert data for users into profile table
   -- 
@@ -230,6 +230,53 @@ SET
   (7, 'Smoker', 'Constantly','Female', 'Female', 'Hi, Im Caoimhe I like myself', 'Galway', NULL, NULL, 1, NULL, NULL),
   (8, 'Smoker', 'No','Female', 'Male', 'Hi, Im Kelly I like galway', 'Galway', NULL, NULL, 1, NULL, NULL),
   (9, 'Non Smoker', 'Social Drinker', 'Male','Female', 'Hi, Im John I like drink too', 'Galway', NULL, NULL, 0, NULL, NULL);
+-- --------------------------------------------------------
+  --
+  -- Insert data for Connections into Connections table
+  -- 
+  INSERT INTO Connections VALUES
+  (NULL, 1, 7, '2022-03-22'),
+  (NULL, 1, 2, '2022-02-14'),
+  (NULL, 1, 8, '2022-03-18'),
+  (NULL, 1, 5, '2022-02-08'),
+  (NULL, 1, 9, '2022-03-06'),
+  (NULL, 2, 5, '2022-03-14'),
+  (NULL, 2, 7, '2022-03-18'),
+  (NULL, 2, 9, '2022-03-02'),
+  (NULL, 3, 5, '2022-02-17'),
+  (NULL, 3, 8, '2022-03-23'),
+  (NULL, 3, 6, '2022-03-16'),
+  (NULL, 4, 7, '2022-02-23'),
+  (NULL, 4, 9, '2022-03-02'),
+  (NULL, 4, 5, '2022-03-21');
+-- --------------------------------------------------------
+  --
+  -- Insert data for avaialble interests into available interest table
+  -- 
+  INSERT INTO AvailableInterests VALUES
+  (NULL, 'Rugby'),
+  (NULL, 'GAA'),
+  (NULL, 'Soccer'),
+  (NULL, 'Golf'),
+  (NULL, 'Fitness'),
+  (NULL, 'Video games'),
+  (NULL, 'Board games'),
+  (NULL, 'Role Playing Games'),
+  (NULL, 'Music'),
+  (NULL, 'TV'),
+  (NULL, 'Movies'),
+  (NULL, 'Art'),
+  (NULL, 'Travelling'),
+  (NULL, 'Animals'),
+  (NULL, 'Reading'),
+  (NULL, 'Computers'),
+  (NULL, 'Drinking'),
+  (NULL, 'Food'),
+  (NULL, 'Baking'),
+  (NULL, 'Cooking'),
+  (NULL, 'Carpentry'),
+  (NULL, 'Gardening'),
+  (NULL, 'DIY');
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
   /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
   /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
