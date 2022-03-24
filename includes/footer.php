@@ -78,19 +78,19 @@
 
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <a href="#!" class="text-dark">Link 2</a>
+                    <a href="https://www.freeprivacypolicy.com/live/bbb0dade-01ed-4d09-aa03-43f632b95d15" class="text-dark">Privacy Policy</a>
                 </div>
                 <!--Grid column-->
 
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <a href="#!" class="text-dark">Link 3</a>
+                    <a href="https://www.freeprivacypolicy.com/live/3d37a708-c617-43ef-862e-ea7dea9adc26" class="text-dark">Terms of Use</a>
                 </div>
                 <!--Grid column-->
 
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <a href="#!" class="text-dark">Link 4</a>
+                    <a href="https://www.freeprivacypolicy.com/live/fb0da1a1-3639-457f-b3d4-7ddcb1c5600e" class="text-dark">Cookie Policy</a>
                 </div>
                 <!--Grid column-->
             </div>
@@ -104,7 +104,7 @@
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
         © 2022 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/">Gragodeo.com </a>
+        <a class="text-dark" href="#!">Gragodeo.com </a>
         <p>All rights reserved.</p>
     </div>
     <!-- Copyright -->
