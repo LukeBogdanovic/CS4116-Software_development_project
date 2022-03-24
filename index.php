@@ -21,11 +21,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 </head>
 </head>
 <body>
-
 <?php
     require_once "includes/navbar.php";
     ?>
-
     <div class="backgrnd">
         <img alt="" src="assets/images/fond_coeurs.jpg" />
         <div class="text2">
@@ -55,10 +53,8 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                 </div>
         </div>
       </div>
-
 <?php
     require_once "includes/footer.php"
     ?>
-
 </body>
 </html>
