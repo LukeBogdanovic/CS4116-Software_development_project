@@ -50,9 +50,19 @@ function addUserCards(data) {
     username.textContent = user.username;
     age.textContent = user.age;
     body.textContent = user.description;
-    connectionDate.textContent = `Date Connected: ${user.connectionDate}`;
+    connectionDate.textContent = `Date Connected: ${formatDate(
+      user.connectionDate
+    )}`;
     userCardContainer.append(card);
   });
 }
 
 $(document).on("ready", getConnectedUsers());
+
+function formatDate(inputDate) {
+  var datePart = inputDate.match(/\d+/g);
+  var year = datePart[0];
+  var month = datePart[1];
+  var day = datePart[2];
+  return day + "/" + month + "/" + year;
+}
