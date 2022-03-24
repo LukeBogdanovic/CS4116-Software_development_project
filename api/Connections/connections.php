@@ -18,6 +18,7 @@ function get_Connected_Users($id)
     $results = [];
     $userIDs = [];
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        // Getting all users with connection to the user that is logged in
         $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, connections.ConnectionDate FROM connections INNER JOIN user ON connections.userID2=user.UserID WHERE connections.userID1 = $id;";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             if (mysqli_stmt_execute($stmt)) {
@@ -27,6 +28,7 @@ function get_Connected_Users($id)
                     $result = array('status' => 200, 'message' => 'Users connected to logged in user found');
                     // Put all retrieved UserIDs into results array
                     while (mysqli_stmt_fetch($stmt)) {
+                        // Changing dob to age and putting in array
                         $age = get_age($dob);
                         $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'connectionDate' => $connectionDate);
                         array_push($results, $user);
@@ -38,6 +40,8 @@ function get_Connected_Users($id)
                 }
             }
         }
+        // Getting the description from profile table
+        // Must be better way to do this
         for ($i = 0; $i < count($userIDs); $i++) {
             $stmt = "SELECT profile.Description FROM profile WHERE profile.UserID = ?";
             if ($stmt = mysqli_prepare($con, $stmt)) {
@@ -46,8 +50,10 @@ function get_Connected_Users($id)
                     mysqli_stmt_store_result($stmt);
                     mysqli_stmt_bind_result($stmt, $description);
                     if (mysqli_stmt_num_rows($stmt) > 0) {
-                        // Put all retrieved UserIDs into results array
+                        $result['status'] = 200;
+                        $result['message'] = "Users connected to logged in user found";
                         while (mysqli_stmt_fetch($stmt)) {
+                            // Inserting description into current user array for js dom insertion
                             $result[0][$i]['description'] = $description;
                         }
                     } else {
