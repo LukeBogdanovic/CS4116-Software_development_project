@@ -26,7 +26,8 @@ SET
     `Username` varchar(26) NOT NULL,
     `Firstname` varchar(26) NOT NULL,
     `Surname` varchar(26) NOT NULL,
-    `Password` varchar(256) NOT NULL COMMENT 'See video for information on how to encrypt password BEFORE storing it. Never store the user''s actual password.',
+    `DateOfBirth` DATE NOT NULL,
+    `Password` varchar(256) NOT NULL COMMENT 'hashed password',
     `Email` varchar(52) NOT NULL,
     `Admin` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Is the user an admin',
     `Banned` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Has the user been banned by an admin?',
@@ -72,7 +73,6 @@ SET
   --
   CREATE TABLE `profile` (
     `UserID` int(11) NOT NULL,
-    `Age` int(2) NOT NULL,
     `Smoker` enum('Smoker', 'Social Smoker', 'Non Smoker') NOT NULL COMMENT 'enum type because people can be social smokers',
     `Drinker` enum(
       'Constantly',
@@ -207,29 +207,29 @@ SET
   -- Fill user table with user info
   --
   INSERT INTO user VALUES
-  (NULL, 'Lukabog', 'Luke', 'Boggie', '$2y$10$5djR4GUfSLIgz20jixUCfOLNzygFGQJ87CUo2RbG2ZjmRwO4fu0WS','asdfg@gmail.com', '1', DEFAULT),
-  (NULL, 'Jackcon', 'Jack', 'Murphy', '$2y$10$jFzSOlINTfW.YN1.Rewp5uN55b2.IDvu5MvIgLlsONi0TmUNyhEye','asdfasdaqrdf@gmail.com', '1', DEFAULT),
-  (NULL, 'Mindygirl', 'Mindy', 'Dwyer', '$2y$10$/n5dcTHz3ch1WX912z1GuO5Vx2TL1kiU.vx0UpfMT/GpvBXDUZXa6','asdfasdvcxz@gmail.com', DEFAULT, DEFAULT),
-  (NULL, 'jackryan', 'Jack', 'Ryan', '$2y$10$jFzSOlINTfW.YN1.Rewp5uN55b2.IDvu5MvIgLlsONi0TmUNyhEye','asdfasdcvbnm@gmail.com', DEFAULT, DEFAULT),
-  (NULL, 'luke420', 'Luka', 'Kelly', '$2y$10$5djR4GUfSLIgz20jixUCfOLNzygFGQJ87CUo2RbG2ZjmRwO4fu0WS','asdfasdqwert@gmail.com', DEFAULT, DEFAULT),
-  (NULL, 'mintysally', 'Sally', 'Brennan', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','minty@gmail.com', DEFAULT, DEFAULT),
-  (NULL, 'Caoimhe123', 'Caoimhe', 'Boyle', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','qweertyy@gmail.com', DEFAULT, DEFAULT),
-  (NULL, 'Kelly123', 'Kelly', 'Carroll', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','pofgdh@gmail.com', DEFAULT, DEFAULT),
-  (NULL, 'Johnboy', 'John', 'Farrell', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','mohjdda@gmail.com', DEFAULT, DEFAULT);
+  (NULL, 'Lukabog', 'Luke', 'Boggie','2001-12-27', '$2y$10$5djR4GUfSLIgz20jixUCfOLNzygFGQJ87CUo2RbG2ZjmRwO4fu0WS','asdfg@gmail.com', '1', DEFAULT),
+  (NULL, 'Jackcon', 'Jack', 'Murphy','2000-07-15', '$2y$10$jFzSOlINTfW.YN1.Rewp5uN55b2.IDvu5MvIgLlsONi0TmUNyhEye','asdfasdaqrdf@gmail.com', '1', DEFAULT),
+  (NULL, 'Mindygirl', 'Mindy', 'Dwyer','1999-11-24', '$2y$10$/n5dcTHz3ch1WX912z1GuO5Vx2TL1kiU.vx0UpfMT/GpvBXDUZXa6','asdfasdvcxz@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'jackryan', 'Jack', 'Ryan','2000-09-20', '$2y$10$jFzSOlINTfW.YN1.Rewp5uN55b2.IDvu5MvIgLlsONi0TmUNyhEye','asdfasdcvbnm@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'luke420', 'Luka', 'Kelly','1998-03-17', '$2y$10$5djR4GUfSLIgz20jixUCfOLNzygFGQJ87CUo2RbG2ZjmRwO4fu0WS','asdfasdqwert@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'mintysally', 'Sally', 'Brennan','2000-08-07', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','minty@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'Caoimhe123', 'Caoimhe', 'Boyle','1999-06-11', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','qweertyy@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'Kelly123', 'Kelly', 'Carroll','2001-02-21', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','pofgdh@gmail.com', DEFAULT, DEFAULT),
+  (NULL, 'Johnboy', 'John', 'Farrell','2000-03-24', '$2y$10$ysUqUNxtSFBhJdDJl.Lok.EHhBQFdlwfhy2CKEsDcPy1dVZ4GyuPq','mohjdda@gmail.com', DEFAULT, DEFAULT);
   -- --------------------------------------------------------
   --
   -- Insert data for users into profile table
   -- 
   INSERT INTO profile VALUES
-  (1, '21', 'Non Smoker', 'Constantly', 'Male','Male', 'Hi, Im luke Boggie I like smoking', 'Clare', NULL, NULL, NULL, NULL, NULL),
-  (2, '23', 'Social Smoker', 'Most Days', 'Male','Female', 'Hi, Im Jack Murphy I like games', 'Limerick', NULL, NULL, NULL, NULL, NULL),
-  (3, '20', 'Smoker', 'Constantly','Female', 'Male', 'Hi, Im Mindy I like trains', 'Tipperary', NULL, NULL, NULL, NULL, NULL),
-  (4, '19', 'Non Smoker', 'No', 'Male','Female', 'Hi, Im Jack Ryan I like nothing o.O', 'Waterford', NULL, NULL, NULL, NULL, NULL),
-  (5, '18', 'Social Smoker', 'Social Drinker', 'Male','Male', 'Hi, Im Luka Kelly I like Code', 'Dublin', NULL, NULL, NULL, NULL, NULL),
-  (6, '20', 'Non Smoker', 'Social Drinker','Female', 'Female', 'Hi, Im Sally Murphy I like trains too', 'Galway', NULL, NULL, NULL, NULL, NULL),
-  (7, '21', 'Smoker', 'Constantly','Female', 'Female', 'Hi, Im Caoimhe I like myself', 'Galway', NULL, NULL, NULL, NULL, NULL),
-  (8, '23', 'Smoker', 'No','Female', 'Male', 'Hi, Im Kelly I like galway', 'Galway', NULL, NULL, NULL, NULL, NULL),
-  (9, '22', 'Non Smoker', 'Social Drinker', 'Male','Female', 'Hi, Im John I like drink too', 'Galway', NULL, NULL, NULL, NULL, NULL);
+  (1, 'Non Smoker', 'Constantly', 'Male','Male', 'Hi, Im luke Boggie I like smoking', 'Clare', NULL, NULL, 1, NULL, NULL),
+  (2, 'Social Smoker', 'Most Days', 'Male','Female', 'Hi, Im Jack Murphy I like games', 'Limerick', NULL, NULL, 1, NULL, NULL),
+  (3, 'Smoker', 'Constantly','Female', 'Male', 'Hi, Im Mindy I like trains', 'Tipperary', NULL, NULL, 0, NULL, NULL),
+  (4, 'Non Smoker', 'No', 'Male','Female', 'Hi, Im Jack Ryan I like nothing o.O', 'Waterford', NULL, NULL, 1, NULL, NULL),
+  (5, 'Social Smoker', 'Social Drinker', 'Male','Male', 'Hi, Im Luka Kelly I like Code', 'Dublin', NULL, NULL, 1, NULL, NULL),
+  (6, 'Non Smoker', 'Social Drinker','Female', 'Female', 'Hi, Im Sally Murphy I like trains too', 'Galway', NULL, NULL, 1, NULL, NULL),
+  (7, 'Smoker', 'Constantly','Female', 'Female', 'Hi, Im Caoimhe I like myself', 'Galway', NULL, NULL, 1, NULL, NULL),
+  (8, 'Smoker', 'No','Female', 'Male', 'Hi, Im Kelly I like galway', 'Galway', NULL, NULL, 1, NULL, NULL),
+  (9, 'Non Smoker', 'Social Drinker', 'Male','Female', 'Hi, Im John I like drink too', 'Galway', NULL, NULL, 0, NULL, NULL);
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
   /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
   /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
