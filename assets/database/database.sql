@@ -248,7 +248,7 @@ SET
   (NULL, 3, 6, '2022-03-16'),
   (NULL, 4, 7, '2022-02-23'),
   (NULL, 4, 9, '2022-03-02'),
-  (NULL, 4, 5, '2022-03-21'),
+  (NULL, 4, 5, '2022-03-21');
 -- --------------------------------------------------------
   --
   -- Insert data for avaialble interests into available interest table
@@ -276,8 +276,7 @@ SET
   (NULL, 'Cooking'),
   (NULL, 'Carpentry'),
   (NULL, 'Gardening'),
-  (NULL, 'DIY'),
-  ();
+  (NULL, 'DIY');
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
   /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
   /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
