@@ -69,7 +69,7 @@ function get_age($date_of_birth){
 }
 
 /**
- * returns an int $age when given a date of birth in the format yyyy-mm-dd
+ * calculates the number of days between a date and now and returns as a string "X days ago"
  * @param $connectiondate String formatted yyyy-mm-dd
  * @return string
  */
