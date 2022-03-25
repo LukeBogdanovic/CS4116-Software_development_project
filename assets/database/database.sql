@@ -37,9 +37,9 @@ SET
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
 -- --------------------------------------------------------
   --
-  -- Table structure for table `AvailableInterests`
+  -- Table structure for table `availableinterests`
   --
-  CREATE TABLE `AvailableInterests` (
+  CREATE TABLE `availableinterests` (
     `InterestID` int(2) NOT NULL AUTO_INCREMENT,
     `InterestName` varchar(26) NOT NULL COMMENT 'The name of the interest',
     PRIMARY KEY (InterestID)
@@ -48,7 +48,7 @@ SET
   --
   -- Table structure for table `Connections`
   --
-  CREATE TABLE `Connections` (
+  CREATE TABLE `connections` (
     `ConnectionID` int(11) NOT NULL AUTO_INCREMENT,
     `userID1` int(11) NOT NULL COMMENT 'Which user initiated the connection?',
     `userID2` int(11) NOT NULL COMMENT 'Which user received the connection',
@@ -61,11 +61,11 @@ SET
   --
   -- Table structure for table `Interests`
   --
-  CREATE TABLE `Interests` (
+  CREATE TABLE `interests` (
     `UserID` int(11) NOT NULL COMMENT 'Which user is this?',
     `InterestID` int(3) NOT NULL COMMENT 'Which interest do they have?',
     CONSTRAINT `Interests_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID),
-    CONSTRAINT `Interests_ibfk_2` FOREIGN KEY (InterestID) REFERENCES AvailableInterests(InterestID)
+    CONSTRAINT `Interests_ibfk_2` FOREIGN KEY (InterestID) REFERENCES availableinterests(InterestID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Interests of ALL users';
 -- --------------------------------------------------------
   --
@@ -128,7 +128,7 @@ SET
   --
   -- Table structure for table `Reports`
   --
-  CREATE TABLE `Reports` (
+  CREATE TABLE `reports` (
     `UserID` int(11) NOT NULL,
     `ReportID` int(11) NOT NULL AUTO_INCREMENT,
     `ReportReason` enum(
@@ -147,7 +147,7 @@ SET
   --
   -- Table structure for table `BannedUsers`
   --
-  CREATE TABLE `BannedUsers` (
+  CREATE TABLE `bannedusers` (
     `UserID` int(11) NOT NULL,
     `BanID` int(11) NOT NULL AUTO_INCREMENT,
     `Date` DATE NOT NULL,
@@ -168,7 +168,7 @@ SET
   --
   -- Table structure for table `SecurityAnswers`
   --
-  CREATE TABLE `SecurityQA` (
+  CREATE TABLE `securityqa` (
     `UserID` int(11) NOT NULL,
     `SecurityQuestion` enum(
       'Mothers maiden name',
@@ -184,7 +184,7 @@ SET
   --
   -- Table structure for table `Photos`
   --
-  CREATE Table `Photos` (
+  CREATE Table `photos` (
     `UserID` int(11) NOT NULL,
     `PhotoID` int (11) NOT NULL AUTO_INCREMENT,
     `Type` enum('primaryPhoto', 'coverPhoto', 'additionalPhoto') NOT NULL,
@@ -195,7 +195,7 @@ SET
   --
   -- Table structure for table `Liked`
   --
-  CREATE Table `Liked` (
+  CREATE Table `liked` (
     `UserID1` int(11) NOT NULL COMMENT 'User that has liked another user',
     `UserID2` int(11) NOT NULL COMMENT 'User that has been liked by another user',
     `LikedDate` DATE NOT NULL COMMENT 'When was the user liked?',
@@ -234,7 +234,7 @@ SET
   --
   -- Insert data for Connections into Connections table
   -- 
-  INSERT INTO Connections VALUES
+  INSERT INTO connections VALUES
   (NULL, 1, 7, '2022-03-22'),
   (NULL, 1, 2, '2022-02-14'),
   (NULL, 1, 8, '2022-03-18'),
@@ -253,7 +253,7 @@ SET
   --
   -- Insert data for avaialble interests into available interest table
   -- 
-  INSERT INTO AvailableInterests VALUES
+  INSERT INTO availableinterests VALUES
   (NULL, 'Rugby'),
   (NULL, 'GAA'),
   (NULL, 'Soccer'),
