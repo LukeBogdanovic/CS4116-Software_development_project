@@ -76,6 +76,10 @@ function get_age($date_of_birth){
 function date_difference($connectiondate){
     $connected = new DateTime($connectiondate);
     $now = new DateTime("now");
-    $interval = $connected->diff($now);
-    return $interval->format('%a days ago');
+    $interval = $connected->diff($now)->format('Connected %a days ago');
+    if($interval == 'Connected 0 days ago'){
+        return 'You connected today';
+    }
+    return $interval;
+    
 }
