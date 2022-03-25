@@ -4,7 +4,7 @@ require_once "includes/utils.php";
 
 // Checking if the user is already logged in to the website and redirecting to Home if they are
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    header("location: Home.php");
+    header("location: home.php");
     exit;
 }
 // Intializing all form variables & err
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     $_SESSION['id'] = $id;
                     $_SESSION['username'] = $username;
                     // Redirect to the Home page of Account
-                    header("location: Home.php");
+                    header("location: home.php");
                 }
             } else {
                 echo "it failed";
