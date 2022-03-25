@@ -44,33 +44,6 @@ function getSearchResults(event) {
 }
 
 /**
- * Returns all data for all users registered with the site
- */
-function getAllUsers() {
-  $.ajax({
-    method: "POST",
-    url: "../api/Search/getSearchResult.php",
-    data: { function: "get_All_Users" },
-    success: (response) => {
-      var data = JSON.parse(response);
-      if (data.status == 200) {
-        addUserCards(data[0]);
-      } else {
-        if (!document.getElementById("warning")) {
-          var newNode = document.createElement("div");
-          newNode.id = "warning";
-          newNode.classList.add("alert", "alert-danger");
-          newNode.innerHTML = data.message;
-          var parentDiv = document.getElementById("searchForm").parentElement;
-          parentDiv.appendChild(newNode);
-          document.getElementById("user-cards").innerHTML = "";
-        }
-      }
-    },
-  });
-}
-
-/**
  * Creates the user cards for the search functionality
  * @param {Array} data
  */
@@ -94,6 +67,7 @@ function addUserCards(data) {
 }
 
 $(document).on("ready", getSearchResults());
+
 search.on("keyup", () => {
   clearTimeout(typingTimer);
   typingTimer = setTimeout(getSearchResults, interval);
