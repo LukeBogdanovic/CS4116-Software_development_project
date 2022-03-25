@@ -4,7 +4,11 @@
  * @param {Event} event
  */
 function getSearchResults(event) {
-  event.preventDefault();
+  try {
+    event.preventDefault();
+  } catch (error) {
+    console.error();
+  }
   const searchTerm = $("#search").val();
   $.ajax({
     method: "POST",
@@ -20,6 +24,33 @@ function getSearchResults(event) {
         if (document.getElementById("user-cards").children) {
           document.getElementById("user-cards").innerHTML = "";
         }
+        addUserCards(data[0]);
+      } else {
+        if (!document.getElementById("warning")) {
+          var newNode = document.createElement("div");
+          newNode.id = "warning";
+          newNode.classList.add("alert", "alert-danger");
+          newNode.innerHTML = data.message;
+          var parentDiv = document.getElementById("searchForm").parentElement;
+          parentDiv.appendChild(newNode);
+          document.getElementById("user-cards").innerHTML = "";
+        }
+      }
+    },
+  });
+}
+
+/**
+ * Returns all data for all users registered with the site
+ */
+function getAllUsers() {
+  $.ajax({
+    method: "POST",
+    url: "../api/Search/getSearchResult.php",
+    data: { function: "get_All_Users" },
+    success: (response) => {
+      var data = JSON.parse(response);
+      if (data.status == 200) {
         addUserCards(data[0]);
       } else {
         if (!document.getElementById("warning")) {
@@ -58,3 +89,5 @@ function addUserCards(data) {
     userCardContainer.append(card);
   });
 }
+
+$(document).on("ready", getSearchResults());
