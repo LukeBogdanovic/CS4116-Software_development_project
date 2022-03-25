@@ -50,9 +50,7 @@ function addUserCards(data) {
     username.textContent = user.username;
     age.textContent = user.age;
     body.textContent = user.description;
-    connectionDate.textContent = `Date Connected: ${formatDate(
-      user.connectionDate
-    )}`;
+    connectionDate.textContent = user.daysSinceConnection;
     userCardContainer.append(card);
   });
 }
