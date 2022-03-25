@@ -19,7 +19,7 @@ function get_Connected_Users($id)
     $userIDs = [];
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // Getting all users with connection to the user that is logged in
-        $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, connections.ConnectionDate, profile.Description FROM connections INNER JOIN user ON connections.userID2=user.UserID INNER JOIN profile ON profile.UserID=user.userID WHERE connections.userID1 = $id;";
+        $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, connections.ConnectionDate, profile.Description FROM connections INNER JOIN user ON connections.userID2=user.UserID INNER JOIN profile ON profile.UserID=user.userID WHERE connections.userID1 = $id  ORDER BY connections.ConnectionDate DESC;;";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
@@ -30,7 +30,7 @@ function get_Connected_Users($id)
                     while (mysqli_stmt_fetch($stmt)) {
                         // Changing dob to age and putting in array
                         $age = get_age($dob);
-                        $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'connectionDate' => $connectionDate, 'description' => $description);
+                        $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'daysSinceConnection' => date_difference($connectionDate), 'description' => $description);
                         array_push($results, $user);
                         array_push($userIDs, $userID);
                     }

@@ -67,3 +67,19 @@ function get_age($date_of_birth){
         : (date("Y") - $date_of_birth[0]));
     return $age;
 }
+
+/**
+ * calculates the number of days between a date and now and returns as a string "X days ago"
+ * @param $connectiondate String formatted yyyy-mm-dd
+ * @return string
+ */
+function date_difference($connectiondate){
+    $connected = new DateTime($connectiondate);
+    $now = new DateTime("now");
+    $interval = $connected->diff($now)->format('Connected %a days ago');
+    if($interval == 'Connected 0 days ago'){
+        return 'You connected today';
+    }
+    return $interval;
+    
+}
