@@ -1,12 +1,12 @@
 <?php 
-// session_start(); 
-// /* Checking if the user is not logged in 
-// * If user is not logged in: the user is redirected to the login page and the script exits 
-// */ 
-// if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) { 
-//     header("location: login.php"); 
-// exit; 
-//}
+session_start(); 
+/* Checking if the user is not logged in 
+* If user is not logged in: the user is redirected to the login page and the script exits 
+*/ 
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) { 
+    header("location: login.php"); 
+exit; 
+}
 ?> 
 
 <!DOCTYPE html>
@@ -152,7 +152,7 @@
                                 
                         <div class="row mt-3">
                             <div class="col-md-12"><label class="labels">Bio</label>
-                            <input type="text" class="form-control" placeholder="enter bio" value=""></div>
+                            <input maxlength="512" type="text" class="form-control" placeholder="enter bio" value=""></div>
                         </div>
 
                         <div class="d-flex justify-content-center">
