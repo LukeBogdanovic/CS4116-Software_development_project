@@ -7,8 +7,10 @@ require "../../includes/utils.php";
  * to the backend via ajax request.
  */
 if (isset($_POST['function'])) {
-    if (isset($_POST['search'])) {
-        get_Search_result_username($_POST['search']);
+    switch ($_POST['function']) {
+        case "get_Search_result_username":
+            get_Search_result_username($_POST['search']);
+            break;
     }
 }
 
@@ -16,7 +18,7 @@ if (isset($_POST['function'])) {
  * Returns the username of all users matching the searched string
  * @param string search
  */
-function get_Search_result_username($search)
+function get_Search_result_username($search = "")
 {
     // Init our database connection
     require "../../includes/database.php";
@@ -26,11 +28,6 @@ function get_Search_result_username($search)
     $search = trim($search);
     // Check that the request method is a POST request
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        if (!$search) {
-            $result = array('status' => 403, 'message' => 'No Users found matching search criteria');
-            echo json_encode($result);
-            return;
-        }
         //statement to find all usernames similar to inputted username 
         $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user INNER JOIN profile ON user.UserID=profile.UserID WHERE user.Username LIKE '%$search%'";
         if ($stmt = mysqli_prepare($con, $stmt)) {

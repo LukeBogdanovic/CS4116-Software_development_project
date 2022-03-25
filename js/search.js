@@ -6,7 +6,12 @@ var interval = 500;
  * the data retrieved from the database
  * @param {Event} event
  */
-function getSearchResults() {
+function getSearchResults(event) {
+  try {
+    event.preventDefault();
+  } catch (error) {
+    console.error();
+  }
   const searchTerm = $("#search").val();
   $.ajax({
     method: "POST",
@@ -60,6 +65,8 @@ function addUserCards(data) {
     userCardContainer.append(card);
   });
 }
+
+$(document).on("ready", getSearchResults());
 
 search.on("keyup", () => {
   clearTimeout(typingTimer);
