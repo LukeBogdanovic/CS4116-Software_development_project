@@ -67,3 +67,15 @@ function get_age($date_of_birth){
         : (date("Y") - $date_of_birth[0]));
     return $age;
 }
+
+/**
+ * returns an int $age when given a date of birth in the format yyyy-mm-dd
+ * @param $connectiondate String formatted yyyy-mm-dd
+ * @return string
+ */
+function date_difference($connectiondate){
+    $connected = new DateTime($connectiondate);
+    $now = new DateTime("now");
+    $interval = $connected->diff($now);
+    return $interval->format('%a days ago');
+}
