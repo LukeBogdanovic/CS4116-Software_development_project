@@ -16,7 +16,7 @@ function getSearchResults(event) {
   $.ajax({
     method: "POST",
     url: "../api/Search/getSearchResult.php",
-    data: { function: "get_Search_result_username", search: searchTerm },
+    data: { function: "get_Search_result", search: searchTerm },
     success: (response) => {
       var data = JSON.parse(response);
       if (data.status == 200) {
