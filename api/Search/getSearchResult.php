@@ -29,7 +29,7 @@ function get_Search_result_username($search = "")
     // Check that the request method is a POST request
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         //statement to find all usernames similar to inputted username 
-        $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user INNER JOIN profile ON user.UserID=profile.UserID WHERE user.Username LIKE '%$search%'";
+        $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user INNER JOIN profile ON user.UserID=profile.UserID WHERE CONCAT(user.firstname, ' ',user.Surname, ' ', user.Username) LIKE '%$search%';";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
