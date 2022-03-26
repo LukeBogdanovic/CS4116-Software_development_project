@@ -8,17 +8,17 @@ require "../../includes/utils.php";
  */
 if (isset($_POST['function'])) {
     switch ($_POST['function']) {
-        case "get_Search_result_username":
-            get_Search_result_username($_POST['search']);
+        case "get_Search_result":
+            get_Search_result($_POST['search']);
             break;
     }
 }
 
 /**
- * Returns the username of all users matching the searched string
+ * Returns the user details of all users whose username/firstname & surname matching the searched string
  * @param string search
  */
-function get_Search_result_username($search = "")
+function get_Search_result($search = "")
 {
     // Init our database connection
     require "../../includes/database.php";
@@ -28,7 +28,7 @@ function get_Search_result_username($search = "")
     $search = trim($search);
     // Check that the request method is a POST request
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        //statement to find all usernames similar to inputted username 
+        //statement to find all usernames or first names similar to inputted username 
         $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user INNER JOIN profile ON user.UserID=profile.UserID WHERE CONCAT(user.firstname, ' ',user.Surname, ' ', user.Username) LIKE '%$search%';";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             if (mysqli_stmt_execute($stmt)) {
