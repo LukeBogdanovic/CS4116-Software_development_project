@@ -16,6 +16,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <title>Profile Setup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="assets/images/logo.PNG">
     <link rel="stylesheet" type="text/css" href="css/utils.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
@@ -159,29 +160,29 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                         <div class="d-flex justify-content-center">
                             <div class="row mt-3">
                             <label class="labels">Add Pictures</label>
-                                <form action="/action_page.php">
-                                    <input type="file" id="myFile" name="filename">
-                                    <input type="submit">
-                                </form>
-                            </div> 
+                            <form action="/action_page.php">
+                                <input type="file" id="myFile" name="filename">
+                                <input type="submit">
+                            </form>
                         </div>
-                        
-                        <div class="mt-5 text-center">
-                            <button class="btn btn-primary profile-button" type="button">Save Profile</button>
-                        </div>
-                            
+                    </div>
+
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="button">Save Profile</button>
                     </div>
 
                 </div>
 
             </div>
 
-        </main>
+        </div>
 
-        <?php
-        require_once "includes/footer.php";
-        ?>
+    </main>
 
-    </body>
+    <?php
+    require_once "includes/footer.php";
+    ?>
+
+</body>
 
 </html>

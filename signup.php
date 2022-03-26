@@ -13,19 +13,19 @@ $username_err = $email_err = $dob_err = "";
 // Check for if the form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // Fill in all variables from the form
-    $username = mysqli_real_escape_string($con,trim($_POST['username']));
-    $firstname = mysqli_real_escape_string($con,trim($_POST['firstname']));
-    $surname = mysqli_real_escape_string($con,trim($_POST['surname']));
-    $dob = mysqli_real_escape_string($con,trim($_POST['dob']));
-    $email = mysqli_real_escape_string($con,trim($_POST['email']));
-    $password = mysqli_real_escape_string($con,trim($_POST['password']));
-    $confirmpassword = mysqli_real_escape_string($con,trim($_POST['confirmpassword']));
-    
+    $username = mysqli_real_escape_string($con, trim($_POST['username']));
+    $firstname = mysqli_real_escape_string($con, trim($_POST['firstname']));
+    $surname = mysqli_real_escape_string($con, trim($_POST['surname']));
+    $dob = mysqli_real_escape_string($con, trim($_POST['dob']));
+    $email = mysqli_real_escape_string($con, trim($_POST['email']));
+    $password = mysqli_real_escape_string($con, trim($_POST['password']));
+    $confirmpassword = mysqli_real_escape_string($con, trim($_POST['confirmpassword']));
+
     //Check date of birth entered by user
-    if (get_age($dob)<18){
-        $dob_err= "Unfortunately you are too young to avail of our service";
-    } else if (get_age($dob)>130){
-        $dob_err= "You have provided an invalid age";
+    if (get_age($dob) < 18) {
+        $dob_err = "Unfortunately you are too young to avail of our service";
+    } else if (get_age($dob) > 130) {
+        $dob_err = "You have provided an invalid age";
     }
 
     //must run checks on email and username to see if theyre already taken
@@ -88,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <title>Sign Up</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/images/logo.PNG">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="css/login.css" rel="stylesheet" type="text/css">
     <link href="css/utils.css" rel="stylesheet" type="text/css">
