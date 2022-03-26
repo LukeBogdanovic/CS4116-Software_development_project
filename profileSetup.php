@@ -152,13 +152,13 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     </div>
 
                     <div class="row mt-3">
-                        <div class="col-md-12"><label class="labels">Bio</label>
-                            <input maxlength="512" type="text" class="form-control" placeholder="enter bio" value="">
+                        <div class="col-md-12">
+                            <label class="labels">Bio</label>
+                            <textarea maxlength="512" type="text" class="form-control" placeholder="enter bio" value=""></div>
                         </div>
-                    </div>
 
-                    <div class="d-flex justify-content-center">
-                        <div class="row mt-3">
+                        <div class="d-flex justify-content-center">
+                            <div class="row mt-3">
                             <label class="labels">Add Pictures</label>
                             <form action="/action_page.php">
                                 <input type="file" id="myFile" name="filename">
