@@ -43,7 +43,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
         <template data-user-template>
             <div class="col">
-                <div class="usercard card h-100 shadow-sm"> <img src="assets/images/logo.PNG" class="card-img-top" alt="Profile Picture">
+                <div class="usercard card h-100 shadow-sm"> <img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture">
                     <div class="card-body">
                         <h5 class="card-title" data-header>Name</h5>
                         <h5 class="card-subtitle mb-2 text-muted" data-username>Username</h5>
