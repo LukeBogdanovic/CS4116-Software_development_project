@@ -22,7 +22,7 @@ function getSearchResults(event) {
       if (data.status == 200) {
         if (document.getElementById("warning"))
           document
-            .getElementById("searchbox")
+            .getElementById("user-cards")
             .parentElement.removeChild(document.getElementById("warning"));
         if (document.getElementById("user-cards").children) {
           document.getElementById("user-cards").innerHTML = "";
@@ -34,7 +34,7 @@ function getSearchResults(event) {
           newNode.id = "warning";
           newNode.classList.add("alert", "alert-danger");
           newNode.innerHTML = data.message;
-          var parentDiv = document.getElementById("searchbox").parentElement;
+          var parentDiv = document.getElementById("user-cards").parentElement;
           parentDiv.appendChild(newNode);
           document.getElementById("user-cards").innerHTML = "";
         }
