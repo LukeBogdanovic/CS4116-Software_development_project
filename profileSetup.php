@@ -151,7 +151,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     </div>
 
                     <div class="row mt-3">
-                        <div class="col-md-12"><label class="labels">Bio</label>
+                        <div class="col-md-12">
+                            <label class="labels">Bio</label>
                             <textarea maxlength="512" type="text" class="form-control" placeholder="enter bio" value=""></div>
                         </div>
 
