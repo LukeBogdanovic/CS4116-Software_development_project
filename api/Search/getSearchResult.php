@@ -29,7 +29,7 @@ function get_Search_result($search = "")
     // Check that the request method is a POST request
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         //statement to find all usernames or first names similar to inputted username 
-        $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user INNER JOIN profile ON user.UserID=profile.UserID WHERE CONCAT(user.firstname, ' ',user.Surname, ' ', user.Username) LIKE '%$search%';";
+        $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE CONCAT(user.firstname, ' ',user.Surname, '¾', user.Username) LIKE '%$search%';";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
@@ -40,6 +40,10 @@ function get_Search_result($search = "")
                     // Put all retrieved UserIDs into results array
                     while (mysqli_stmt_fetch($stmt)) {
                         $age = get_age($dob);
+                        //Create profile description string if profile descritpion returns null
+                        if(is_null($description)){
+                            $description = $firstname. ' ' . $surname . ' has not created their profile yet';
+                        }
                         $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description);
                         array_push($results, $user);
                     }
