@@ -32,7 +32,6 @@ function get_Security_Questions($username)
 {
     // Init our database connection
     require "../../includes/database.php";
-    $result = [];
     $results = [];
     // Check that the request method is a POST request
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -68,7 +67,6 @@ function get_Security_Answers($username, $securityQ, $securityAnswer)
 {
     // Init our database connection
     require "../../includes/database.php";
-    $result = [];
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if (!$id = get_userID($username)) {
             return;
@@ -97,7 +95,6 @@ function get_Security_Answers($username, $securityQ, $securityAnswer)
 
 function reset_password($username, $password, $confirm_password)
 {
-    $result = [];
     // Checking is the password and confirm password entered the exact same 
     if ($password === $confirm_password) {
         // Init our database connection
