@@ -36,9 +36,8 @@
 
                                     <tr>
                                         <th scope="col">Username</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Surname</th>
-                                        <th scope="col">Password</th>
+                                        <th scope="col">Reported By</th>
+                                        <th scope="col">Reason for Report</th>
                                     </tr>
 
                                 </thead>
@@ -47,30 +46,26 @@
 
                                     <tr>
                                         <th scope="row">username1</th>
-                                        <td>Luka</td>
-                                        <td>Bogdanovic</td>
-                                        <td>password1</td>
+                                        <td>The Cool Police</td>
+                                        <td>Not being cool enough</td>
                                     </tr>
 
                                     <tr>
                                         <th scope="row">username2</th>
-                                        <td>Jack</td>
-                                        <td>Ryan</td>
-                                        <td>password2</td>
+                                        <td>The Cool Police</td>
+                                        <td>Being too cool</td>
                                     </tr>
 
                                     <tr>
                                         <th scope="row">username3</th>
-                                        <td>Ylan</td>
-                                        <td>Chattour</td>
-                                        <td>password3</td>
+                                        <td>The Cool Police</td>
+                                        <td>Being too cool</td>
                                     </tr>
 
                                     <tr>
                                         <th scope="row">username4</th>
-                                        <td>Adam</td>
-                                        <td>Parker</td>
-                                        <td>password4</td>
+                                        <td>The Cool Police</td>
+                                        <td>Being too cool</td>
                                     </tr>
 
                                 </tbody>
@@ -127,9 +122,8 @@
 
                                     <tr>
                                         <th scope="col">Username</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Surname</th>
-                                        <th scope="col">Password</th>
+                                        <th scope="col">Banned By</th>
+                                        <th scope="col">Reason for Ban</th>
                                     </tr>
 
                                 </thead>
@@ -138,30 +132,26 @@
 
                                     <tr>
                                         <th scope="row">username1</th>
-                                        <td>Luka</td>
-                                        <td>Bogdanovic</td>
-                                        <td>password1</td>
+                                        <td>Admin</td>
+                                        <td>Reason</td>
                                     </tr>
 
                                     <tr>
                                         <th scope="row">username2</th>
-                                        <td>Jack</td>
-                                        <td>Ryan</td>
-                                        <td>password2</td>
+                                        <td>Admin</td>
+                                        <td>Reason</td>
                                     </tr>
 
                                     <tr>
                                         <th scope="row">username3</th>
-                                        <td>Ylan</td>
-                                        <td>Chattour</td>
-                                        <td>password3</td>
+                                        <td>Admin</td>
+                                        <td>Reason</td>
                                     </tr>
 
                                     <tr>
                                         <th scope="row">username4</th>
-                                        <td>Adam</td>
-                                        <td>Parker</td>
-                                        <td>password4</td>
+                                        <td>Admin</td>
+                                        <td>Reason</td>
                                     </tr>
 
                                 </tbody>
