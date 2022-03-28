@@ -56,5 +56,6 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 <?php
     require_once "includes/footer.php"
     ?>
+
 </body>
 </html>
