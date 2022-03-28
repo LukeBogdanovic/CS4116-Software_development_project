@@ -37,7 +37,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="text-right">Edit Profile</h4>
-                        <span class="font-weight-bold">username</span>
+                        <span class="font-weight-bold"><?php echo $_SESSION['username'] ?></span>
                     </div>
 
                     <div class="row mt-2">
@@ -154,11 +154,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="labels">Bio</label>
-                            <textarea maxlength="512" type="text" class="form-control" placeholder="enter bio" value=""></div>
+                            <textarea maxlength="512" type="text" class="form-control" placeholder="enter bio" value=""> </textarea>
                         </div>
+                    </div>
 
-                        <div class="d-flex justify-content-center">
-                            <div class="row mt-3">
+                    <div class="d-flex justify-content-center">
+                        <div class="row mt-3">
                             <label class="labels">Add Pictures</label>
                             <form action="/action_page.php">
                                 <input type="file" id="myFile" name="filename">

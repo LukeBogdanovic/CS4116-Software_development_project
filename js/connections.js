@@ -12,7 +12,7 @@ function getConnectedUsers() {
       id: id,
     },
     success: (response) => {
-      var data = JSON.parse(response);
+      let data = JSON.parse(response);
       if (data.status == 200) {
         if (document.getElementById("warning"))
           document
@@ -21,11 +21,11 @@ function getConnectedUsers() {
         addUserCards(data[0]);
       } else {
         if (!document.getElementById("warning")) {
-          var newNode = document.createElement("div");
+          let newNode = document.createElement("div");
           newNode.id = "warning";
           newNode.classList.add("alert", "alert-danger");
           newNode.innerHTML = data.message;
-          var parentDiv = document.getElementById("container").parentElement;
+          let parentDiv = document.getElementById("container").parentElement;
           parentDiv.insertBefore(newNode, document.getElementById("container"));
           document.getElementById("user-cards").innerHTML = "";
         }
@@ -58,9 +58,9 @@ function addUserCards(data) {
 $(document).on("ready", getConnectedUsers());
 
 function formatDate(inputDate) {
-  var datePart = inputDate.match(/\d+/g);
-  var year = datePart[0];
-  var month = datePart[1];
-  var day = datePart[2];
+  let datePart = inputDate.match(/\d+/g);
+  let year = datePart[0];
+  let month = datePart[1];
+  let day = datePart[2];
   return day + "/" + month + "/" + year;
 }

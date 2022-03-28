@@ -1,5 +1,5 @@
 // Allows username to be used in multiple functions
-var username = "";
+let username;
 
 /**
  * Gets the securityQuestions answered by the user from the database
@@ -24,7 +24,7 @@ function getSecurityQuestions(event) {
     // On success this function will be executed and receives the data returned from the server
     success: (response) => {
       // convert json string into object
-      var data = JSON.parse(response);
+      let data = JSON.parse(response);
       // Check the status code returned from the server
       if (data.status == 200) {
         // Array with data returned from the server passed to function
@@ -32,12 +32,12 @@ function getSecurityQuestions(event) {
       } else {
         // Creating an alert for user with message returned from server
         if (!document.getElementById("warning")) {
-          var newNode = document.createElement("div");
+          let newNode = document.createElement("div");
           newNode.id = "warning";
           newNode.classList.add("alert", "alert-danger");
           newNode.innerHTML = data.message;
-          var parentDiv = document.getElementById("form").parentElement;
-          var form = document.getElementById("form");
+          let parentDiv = document.getElementById("form").parentElement;
+          let form = document.getElementById("form");
           parentDiv.insertBefore(newNode, form);
         }
       }
@@ -64,19 +64,19 @@ function getSecurityAnswers(event) {
     },
     success: (response) => {
       // convert json string into object
-      var data = JSON.parse(response);
+      let data = JSON.parse(response);
       // Check the status code returned from the server
       if (data.status == 200) {
         updatePage_Answer();
       } else {
         // Creating an alert for user with message returned from server
         if (!document.getElementById("warning")) {
-          var newNode = document.createElement("div");
+          let newNode = document.createElement("div");
           newNode.id = "warning";
           newNode.classList.add("alert", "alert-danger");
           newNode.innerHTML = data.message;
-          var parentDiv = document.getElementById("form").parentElement;
-          var form = document.getElementById("form");
+          let parentDiv = document.getElementById("form").parentElement;
+          let form = document.getElementById("form");
           parentDiv.insertBefore(newNode, form);
         }
       }
@@ -99,7 +99,7 @@ function resetPassword(event) {
     },
     success: (response) => {
       // convert json string into object
-      var data = JSON.parse(response);
+      let data = JSON.parse(response);
       // Check the status code returned from the server
       if (data.status == 200) {
         updatePage_Success(data.message);
@@ -129,7 +129,7 @@ function resetPassword(event) {
  */
 function updatePage_username(response) {
   // HTML code that is to be inserted into the dom
-  var form = `<form onsubmit="getSecurityAnswers(event);" method="post" id="form">
+  let form = `<form onsubmit="getSecurityAnswers(event);" method="post" id="form">
     <div class="mb-4">
       <select class="form-select" name="SecurityQ" id="SecurityQ">
         <option selected>Select a Security Question</option>
