@@ -23,9 +23,9 @@ SET
   --
   CREATE TABLE `user` (
     `UserID` int(11) NOT NULL AUTO_INCREMENT,
-    `Username` varchar(26) NOT NULL,
-    `Firstname` varchar(26) NOT NULL,
-    `Surname` varchar(26) NOT NULL,
+    `Username` varchar(32) NOT NULL,
+    `Firstname` varchar(32) NOT NULL,
+    `Surname` varchar(32) NOT NULL,
     `DateOfBirth` DATE NOT NULL,
     `Password` varchar(256) NOT NULL COMMENT 'hashed password',
     `Email` varchar(52) NOT NULL,
@@ -41,7 +41,7 @@ SET
   --
   CREATE TABLE `availableinterests` (
     `InterestID` int(2) NOT NULL AUTO_INCREMENT,
-    `InterestName` varchar(26) NOT NULL COMMENT 'The name of the interest',
+    `InterestName` varchar(32) NOT NULL COMMENT 'The name of the interest',
     PRIMARY KEY (InterestID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Show a list of available interests for registration search';
 -- --------------------------------------------------------
@@ -74,14 +74,9 @@ SET
   CREATE TABLE `profile` (
     `UserID` int(11) NOT NULL,
     `Smoker` enum('Smoker', 'Social Smoker', 'Non Smoker') NOT NULL COMMENT 'enum type because people can be social smokers',
-    `Drinker` enum(
-      'Constantly',
-      'Most days',
-      'Social Drinker',
-      'No'
-    ) NOT NULL COMMENT 'Enumerated type because there are several answers, but the available answers won''t change',
-    `Gender` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
-    `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
+    `Drinker` enum('Constantly', 'Most days', 'Social Drinker','No') NOT NULL COMMENT 'Enumerated type because there are several answers, but the available answers won''t change',
+    `Gender` enum('Female', 'Male', 'Non-Binary', 'Other', 'Prefer not to say') NOT NULL COMMENT 'See Drinker comment',
+    `Seeking` enum('Female', 'Male', 'All') NOT NULL COMMENT 'See Drinker comment',
     `Description` varchar(512) NOT NULL COMMENT 'Store description as varchar, limit user to 512 characters',
     `County` enum(
       'Antrim',
@@ -117,11 +112,12 @@ SET
       'Wexford',
       'Wicklow'
     ) NOT NULL,
-    `Town` varchar(26),
-    `Employment` VARCHAR(26) DEFAULT 'Unemployed',
+    `Town` varchar(32),
+    `Employment` VARCHAR(32) DEFAULT 'Unemployed',
     `Student` tinyint(1) NOT NULL DEFAULT 0,
-    `College` VARCHAR(26),
-    `Degree` VARCHAR(26),
+    `College` VARCHAR(32),
+    `Degree` VARCHAR(32),
+    UNIQUE (userID),
     CONSTRAINT `profile_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 -- --------------------------------------------------------

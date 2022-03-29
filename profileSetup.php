@@ -1,4 +1,5 @@
 <?php
+require_once "includes/database.php";
 session_start();
 /* Checking if the user is not logged in 
 * If user is not logged in: the user is redirected to the login page and the script exits 
@@ -7,9 +8,78 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("location: login.php");
     exit;
 }
-?>
 
-<!DOCTYPE html>
+$smokerStored = $drinkerStored = $genderStored = $seekingStored =  $descriptionStored = $countyStored = $townStored = $employmentStored = $studentStored = $collegeStored = $degreeStored = NULL;
+
+$id = $_SESSION["id"];
+$fetchinfo = "SELECT Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree FROM profile WHERE userID = ?";
+if ($stmt = mysqli_prepare($con, $fetchinfo)) {
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    if (mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_store_result($stmt);
+        //bind results of search to user variable 
+        mysqli_stmt_bind_result($stmt, $smokerStored, $drinkerStored, $genderStored, $seekingStored, $descriptionStored, $countyStored, $townStored, $employmentStored, $studentStored, $collegeStored, $degreeStored);
+        mysqli_stmt_fetch($stmt);
+        ($studentStored==0) ? $studentStored='No': $studentStored = 'Yes';
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $gender = $seeking = $smoker = $drinker = $employment = $student = $college = $degree = $county = $town = $description =NULL;
+    // Fill in all variables from the form
+    $gender = mysqli_real_escape_string($con, trim($_POST['gender']));
+    $seeking = mysqli_real_escape_string($con, trim($_POST['seeking']));
+    $smoker = mysqli_real_escape_string($con, trim($_POST['smoker']));
+    $drinker = mysqli_real_escape_string($con, trim($_POST['drinker']));
+    $employment = mysqli_real_escape_string($con, trim($_POST['employment']));
+    $student = $_POST['student'];
+    if($student=='Yes'){
+        $student = 1;
+    } 
+    else if ($student=='No'){
+        $student=0;
+    }
+    else{
+        $student=NULL;
+    }
+    $student = mysqli_real_escape_string($con, trim($student));
+    $college = mysqli_real_escape_string($con, trim($_POST['college']));
+    $degree = mysqli_real_escape_string($con, trim($_POST['degree']));
+    $county = mysqli_real_escape_string($con, trim($_POST['county']));
+    $town = mysqli_real_escape_string($con, trim($_POST['town']));
+    $description = mysqli_real_escape_string($con, trim($_POST['description']));
+    
+    $inputs= array(&$gender, &$seeking, &$smoker, &$drinker, &$employment, &$student, &$college, &$degree, &$county, &$town, &$description);
+    foreach ($inputs as &$value) {
+        if($value == "" || $value == ''){
+            $value = null;
+        }
+    }
+
+    //insert data from profile changes into database
+    if($stmt = $con -> prepare("INSERT INTO profile (UserID, Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE UserID = VALUES(UserID), Smoker= VALUES(Smoker), Drinker= VALUES(Drinker), Gender= VALUES(Gender), Seeking = VALUES(Seeking), Description = VALUES(Description), County = VALUES(County), Town = VALUES(Town), Employment = VALUES(Employment), Student = VALUES(Student), College = VALUES(College), Degree = VALUES(Degree);")){
+    //if($stmt = $con -> prepare("INSERT INTO profile (UserID, Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE UserID = VALUES(UserID), Smoker= VALUES(Smoker), Drinker= VALUES(Drinker), Gender= VALUES(Gender), Seeking = VALUES(Seeking), Description = VALUES(Description), County = VALUES(County), Town = VALUES(Town), Employment = VALUES(Employment), Student = VALUES(Student), College = VALUES(College), Degree = VALUES(Degree);")){
+        //bind params to statement
+        if(mysqli_stmt_bind_param($stmt,"issssssssiss",$id, $smoker, $drinker, $gender, $seeking, $description, $county, $town, $employment , $student , $college , $degree)){
+            //Attempt to execute the sql statement
+            if (mysqli_stmt_execute($stmt)) {
+            }
+        }
+    }
+    mysqli_stmt_close($stmt);          
+    mysqli_close($con);        
+        
+    
+    
+    
+    //INSERT INTO profile (UserID, Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree)
+    //VALUES (10, "Social Smoker", "Social Drinker",  "Male", "Female", "compooter", "Tipperary", "cashel", "compooter" , "1" , "UL", "")
+    //ON DUPLICATE KEY UPDATE Smoker= "Social Smoker", Drinker= "Social Drinker",  Gender= "Male", Seeking = "Female",Description = "compooter", County = "Tipperary", Town = "cashel", Employment = "compooter", Student = "1", College = "UL", Degree = "Computer Science";
+
+}
+
+?>
+<!DOCTYPE html> 
 <html>
 
 <head>
@@ -31,8 +101,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
         <div class="container mt-5 mb-5">
 
-            <div class="d-flex justify-content-center">
-
+            <form class="d-flex justify-content-center"action="profileSetup.php" method="POST">
+                    
                 <div class="col-md-6">
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -41,66 +111,76 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     </div>
 
                     <div class="row mt-2">
-                        <div class="col-md-6">
-                            <label class="labels">Name</label>
-                            <input type="text" class="form-control" placeholder="first name" value="">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="labels">Surname</label>
-                            <input type="text" class="form-control" value="" placeholder="surname">
-                        </div>
 
                         <div class="col-md-6">
                             <label class="labels">Gender</label>
-                            <select class="form-select">
+                            <select name="gender" id="gender" class="form-select" value="Female">
+                                <option <?php echo ($genderStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$genderStored ?></option>
                                 <option>Male</option>
                                 <option>Female</option>
+                                <option>Non-binary</option>
+                                <option>Other</option>
                                 <option>Prefer not to say</option>
                             </select>
                         </div>
 
-                        <div class="col-md-6"><label class="labels">Seeking</label>
-                            <select class="form-select">
+                        <div class="col-md-6">
+                            <label class="labels">Seeking</label>
+                            <select name="seeking" id="seeking" class="form-select">
+                                <option <?php echo ($seekingStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$seekingStored ?></option>
                                 <option>Male</option>
                                 <option>Female</option>
-                                <option>Both</option>
+                                <option>All</option>
                             </select>
                         </div>
 
-                        <div class="col-md-12"><label class="labels">Smoker</label>
-                            <select class="form-select">
+                        <div class="col-md-12">
+                            <label class="labels">Smoker</label>
+                            <select name="smoker" id="smoker" class="form-select">
+                                <option <?php echo ($smokerStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$smokerStored ?></option>
+                                <option>Non Smoker</option>
+                                <option>Social Smoker</option>
                                 <option>Yes</option>
-                                <option>No</option>
-                                <option>Sometimes</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="labels">Drinker</label>
+                            <select name="drinker" id="drinker"class="form-select">
+                                <option <?php echo ($drinkerStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$drinkerStored ?></option>
+                                <option>Never</option>
+                                <option>Social Drinker</option>
+                                <option>Most Days</option>
+                                <option>Constantly</option>
                             </select>
                         </div>
 
                         <div class="col-md-12">
                             <label class="labels">Employment</label>
-                            <input type="text" class="form-control" placeholder="enter employment" value="">
+                            <input name="employment" id="employment" type="text" class="form-control" placeholder="enter employment" value="<?php echo $employmentStored?>">
                         </div>
 
                     </div>
 
                     <div class="row mt-3">
 
-                        <div class="col-md-12"><label class="labels">Student</label>
-                            <select class="form-select">
-                                <option>Yes</option>
+                        <div class="col-md-12">
+                            <label class="labels">Student</label>
+                            <select name="student" id="student" class="form-select">
+                                <option <?php echo ($studentStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$studentStored ?></option>
                                 <option>No</option>
-                                <option>Part-time</option>
+                                <option>Yes</option>
                             </select>
                         </div>
 
                         <div class="col-md-12">
                             <label class="labels">College</label>
-                            <input type="text" class="form-control" placeholder="enter college" value="">
+                            <input name="college" id="college" type="text" class="form-control" placeholder="enter college" value="<?php echo $collegeStored?>">
                         </div>
 
                         <div class="col-md-12">
                             <label class="labels">Degree</label>
-                            <input type="text" class="form-control" placeholder="enter degree" value="">
+                            <input name="degree" id="degree" type="text" class="form-control" placeholder="enter degree" value="<?php echo $degreeStored?>">
                         </div>
 
                     </div>
@@ -108,15 +188,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     <div class="row mt-3">
 
                         <div class="col-md-6">
-                            <label class="labels">Town</label>
-                            <input type="text" class="form-control" placeholder="enter town" value="">
-                        </div>
-
-                        <div class="col-md-6"><label class="labels">County</label>
-                            <select class="form-select">
+                            <label class="labels">County</label>
+                            <select name="county" id="county"class="form-select">
+                                <option <?php echo ($countyStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$countyStored ?></option>
                                 <option>Antrim</option>
                                 <option>Armagh</option>
-                                <option>Carlow</option>
+                                <option >Carlow</option>
                                 <option>Cavan</option>
                                 <option>Clare</option>
                                 <option>Cork</option>
@@ -148,32 +225,35 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                                 <option>Wicklow</option>
                             </select>
                         </div>
+                        
+                        <div class="col-md-6">
+                            <label class="labels">Town</label>
+                            <input name= "town" id="town" type="text" class="form-control" placeholder="enter town" value="<?php echo $townStored?>">
+                        </div>
 
                     </div>
 
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="labels">Bio</label>
-                            <textarea maxlength="512" type="text" class="form-control" placeholder="enter bio" value=""></div>
+                            <textarea name="description" id="description" maxlength="512" type="text" class="form-control" rows="5" placeholder="enter bio"><?php echo $descriptionStored?></textarea>
                         </div>
 
                         <div class="d-flex justify-content-center">
                             <div class="row mt-3">
                             <label class="labels">Add Pictures</label>
-                            <form action="/action_page.php">
-                                <input type="file" id="myFile" name="filename">
-                                <input type="submit">
+                            <input type="file" id="myFile" name="filename">
                             </form>
                         </div>
                     </div>
 
                     <div class="mt-5 text-center">
-                        <button class="btn btn-primary profile-button" type="button">Save Profile</button>
+                        <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
                     </div>
 
                 </div>
 
-            </div>
+            </form>
 
         </div>
 
