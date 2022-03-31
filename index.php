@@ -9,7 +9,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 ?>
 <!DOCTYPE html>
 <html>
-
+ <?php
+    require_once "includes/navbar.php";
+    ?>
   <head>
     <title>Welcome Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,9 +23,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     <!-- Custom styles for this template -->
     <link href="cover.css" rel="stylesheet">
   </head>
-
   <body class="text-center vh-100">
-
     <div class="row d-flex align-items-center justify-content-center h-100">
 
       <main role="main" class="inner cover">
@@ -33,8 +33,10 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
           <a href="#" class="btn btn-lg btn-secondary">Log In</a>
         </p>
       </main>
-
     </div>
+  <?php
+    require_once "includes/footer.php"
+   ?>
 
   </body>
 
