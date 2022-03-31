@@ -23,21 +23,21 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     <!-- Custom styles for this template -->
     <link href="cover.css" rel="stylesheet">
   </head>
-  <body class="text-center vh-100">
-    <div class="row d-flex align-items-center justify-content-center h-100">
-
-      <main role="main" class="inner cover">
-        <h1 class="cover-heading text-light">Welcome</h1>
-        <p class="lead">
-          <a href="#" class="btn btn-lg btn-secondary">Sign Up</a>
-          <a href="#" class="btn btn-lg btn-secondary">Log In</a>
-        </p>
-      </main>
-    </div>
+  <div class="has-bg-image">
+    <body class="text-center vh-100">
+     <div class="row d-flex align-items-center justify-content-center h-100">
+        <main role="main" class="inner cover">
+          <h1 class="cover-heading text-light">Welcome</h1>
+          <p class="lead">
+            <a href="#" class="btn btn-lg btn-secondary">Sign Up</a>
+            <a href="#" class="btn btn-lg btn-secondary">Log In</a>
+          </p>
+        </main>
+      </div>
+    </body>
+    <img class="bg-img" src="assets/images/fond_coeurs.jpg" alt="no image">
+  </div>
   <?php
-    require_once "includes/footer.php"
-   ?>
-
-  </body>
-
+    require_once "includes/footer.php";
+    ?>
 </html>

@@ -1,24 +1,4 @@
-.backgrnd img {
-    width: 100%;
-    object-fit: cover;
-    height: 100vh;
-    object-position: 50% 14%;
-}
-.backgrnd .text2 {
-    position:absolute;
-    top:10px;
-    left: 15vw;
-    right: 15vw;
-    color: white;
-    text-align: center;
-    padding-top: 300px;
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.bouton1{
-    margin-top: 300px;
-}
-.bouton2{
-    margin-top: 25px;
+html,
+body {
+  background-color: #333;
 }
