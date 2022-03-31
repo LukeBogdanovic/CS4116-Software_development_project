@@ -7,7 +7,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     exit;
 }
 ?>
-<!DOCTYPE html>F
+<!DOCTYPE html>
 <html>
 
 <head>

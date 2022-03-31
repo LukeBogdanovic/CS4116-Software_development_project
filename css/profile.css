@@ -1,0 +1,55 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+
+.profile{
+    margin-left: 10px;
+    margin-top: 100px;
+}
+
+.container{
+    margin-left: 10px;
+    margin-top: 20px;
+    width: 400px;
+    height: 225px;
+    background-color: white;
+    border-style: solid
+}
+
+.text{
+    margin-left: 15px;
+}
+
+.bouton{
+    margin-top: 175px;
+    margin-left: 90%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+@media (min-width: 769px) {
+    
+    label  {
+        display: none;
+    }
+   
+    nav .main_pages {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: row;
+    }
+
+}
