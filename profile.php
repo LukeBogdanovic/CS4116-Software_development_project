@@ -38,7 +38,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     </select>
   </div>
 -->
-<div class="text-center">
+<div class="container py-5">
         <div class="card mb-4">
           <div class="card-body">
             <div class="row">
@@ -52,7 +52,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Email</p>
+                <p class="mb-0">Age</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">Input</p>
@@ -61,7 +61,16 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Phone</p>
+                <p class="mb-0">Location</p>
+              </div>
+              <div class="col-sm-3">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Height</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">Input</p>
@@ -70,7 +79,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Mobile</p>
+                <p class="mb-0">Interests</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">Input</p>
@@ -79,7 +88,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Address</p>
+                <p class="mb-0">Bio</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">Input</p>
