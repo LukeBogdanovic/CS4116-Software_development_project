@@ -7,11 +7,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/utils.css">
-    <link rel="stylesheet" href="css/profile.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="assets/images/logo.PNG">
@@ -19,53 +17,85 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     <link rel="stylesheet" type="text/css" href="css/utils.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
 </head>
-<body>
+<body class="text-center">
 <?php
     require_once "includes/navbar.php";
     ?>
-    <div class="profile">
-	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="assets/images/profile_pic.png" class="rounded mx-auto d-block" class="d-block w-20" alt="Not Found">
-    </div>
-    <div class="carousel-item">
-      <img src="assets/profile_pic.png" class="rounded mx-auto d-block" class="d-block w-20" alt="Not Found">
-    </div>
-    <div class="carousel-item">
-      <img src="assets/profile_pic.png" class="rounded mx-auto d-block" class="d-block w-20" alt="Not Found">
-    </div>
+
+<!--
+    <div class="form-group">
+    <label>Test</label>
+    <select multiple class="form-control input-lg" id="exampleFormControlSelect2">
+      <div class="col-xs-2 input-lg">
+        <option>Name</option>
+        <option>Age</option>
+        <option>Location</option>
+        <option>Height</option>
+        <option>Interests</option>
+        <option>Bio</option>
+      </div>
+    </select>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-
-    <div class="container">
-        <div class="text">
-            <p>Name</p>
-        <p>Age</p>
-        <p>Location</p>
-        <p>Height</p>
-        <p>Interests</p>
-        <p>Bio</p>
+-->
+<div class="text-center">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Full Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Phone</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Mobile</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Address</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
 
-    <div class="bouton">
-        <form>
-            <a class="btn btn-secondary btn-outline-secondary btn-lg" style="background-color: #6D071A;" href="" role="button">
+
+    <div class="row d-flex align-items-center justify-content-center h-25">
+      <div class="bouton">
+        <a class="btn btn-secondary btn-outline-secondary btn-lg" style="background-color: #6D071A;" href="" role="button">
                                 Edit
-                            </a>
-          </form>
-    </div>      
+            </a>
+      </div>
+    </div>
 <?php
     require_once "includes/footer.php"
     ?>
