@@ -24,20 +24,44 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     ?>
 
 <!--
-    <div class="form-group">
-    <label>Test</label>
-    <select multiple class="form-control input-lg" id="exampleFormControlSelect2">
-      <div class="col-xs-2 input-lg">
-        <option>Name</option>
-        <option>Age</option>
-        <option>Location</option>
-        <option>Height</option>
-        <option>Interests</option>
-        <option>Bio</option>
-      </div>
-    </select>
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
+    </div>
+    <div class="carousel-item">
+      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
+    </div>
+    <div class="carousel-item">
+      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
+    </div>
   </div>
+</div>
 -->
+
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
+    </div>
+    <div class="carousel-item">
+      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
+    </div>
+    <div class="carousel-item">
+      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
 <div class="container py-5">
         <div class="card mb-4">
           <div class="card-body">
@@ -63,7 +87,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
               <div class="col-sm-3">
                 <p class="mb-0">Location</p>
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-9">
                 <p class="text-muted mb-0">Input</p>
               </div>
             </div>
