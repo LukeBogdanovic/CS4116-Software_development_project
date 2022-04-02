@@ -23,47 +23,31 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     require_once "includes/navbar.php";
     ?>
 
-<!--
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
-    </div>
-    <div class="carousel-item">
-      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
-    </div>
-    <div class="carousel-item">
-      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
-    </div>
-  </div>
-</div>
--->
-
-<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
-    </div>
-    <div class="carousel-item">
-      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
-    </div>
-    <div class="carousel-item">
-      <img src="assets/images/profile_pic.png" class="d-block w-100" alt="No Image">
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-
-
 <div class="container py-5">
-        <div class="card mb-4">
+
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="assets/images/profile_pic.png" class="img-fluid rounded mx-auto d-block w-50" alt="No Image">
+      </div>
+      <div class="carousel-item">
+        <img src="assets/images/profile_pic.png" class="img-fluid rounded mx-auto d-block w-50" alt="No Image">
+      </div>
+      <div class="carousel-item">
+        <img src="assets/images/profile_pic.png" class="img-fluid rounded mx-auto d-block w-50" alt="No Image">
+      </div>
+    </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+  </div>
+
+        <div class="card mb-4 mt-2">
           <div class="card-body">
             <div class="row">
               <div class="col-sm-3">
@@ -120,16 +104,17 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             </div>
           </div>
         </div>
-
+</div>
 
     <div class="row d-flex align-items-center justify-content-center h-25">
       <div class="bouton">
-        <a class="btn btn-secondary btn-outline-secondary btn-lg" style="background-color: #6D071A;" href="" role="button">
+        <a class="btn btn-secondary btn-outline-light btn-lg" style="background-color: #6D071A;" href="" role="button">
                                 Edit
             </a>
       </div>
     </div>
-<?php
+    
+    <?php
     require_once "includes/footer.php"
     ?>
 </body>
