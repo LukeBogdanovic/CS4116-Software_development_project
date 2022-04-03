@@ -60,7 +60,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Age</p>
+                <p class="mb-0">Smoker</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">Input</p>
@@ -69,7 +69,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Location</p>
+                <p class="mb-0">Drinker</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">Input</p>
@@ -78,7 +78,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Height</p>
+                <p class="mb-0">Gender</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">Input</p>
@@ -87,7 +87,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Interests</p>
+                <p class="mb-0">Seeking</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">Input</p>
@@ -96,7 +96,61 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Bio</p>
+                <p class="mb-0">County</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Town</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Employment</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Student</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">College</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Degree</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Input</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Description</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">Input</p>
@@ -106,12 +160,10 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         </div>
 </div>
 
-    <div class="row d-flex align-items-center justify-content-center h-25">
-      <div class="bouton">
-        <a class="btn btn-secondary btn-outline-light btn-lg" style="background-color: #6D071A;" href="" role="button">
+    <div class="align-items-center justify-content-center h-25">
+        <a class="btn btn-secondary btn-outline-light btn-lg" style="background-color: #6D071A;" href="profileSetup.php" role="button">
                                 Edit
             </a>
-      </div>
     </div>
     
     <?php
