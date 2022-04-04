@@ -12,8 +12,10 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 $smokerStored = $drinkerStored = $genderStored = $seekingStored =  $descriptionStored = $countyStored = $townStored = $employmentStored = $studentStored = $collegeStored = $degreeStored = NULL;
 
 $id = $_SESSION["id"];
-$fetchinfo = "SELECT Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree FROM profile WHERE userID = ?";
-if ($stmt = mysqli_prepare($con, $fetchinfo)) {
+
+//fetch users profile info, in next satement fetch their interests
+$fetchProfile = "SELECT Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree FROM profile WHERE userID = ?";
+if ($stmt = mysqli_prepare($con, $fetchProfile)) {
     mysqli_stmt_bind_param($stmt, "i", $id);
     if (mysqli_stmt_execute($stmt)) {
         mysqli_stmt_store_result($stmt);
@@ -24,14 +26,30 @@ if ($stmt = mysqli_prepare($con, $fetchinfo)) {
     }
 }
 
+//fetch interests, has issues
+$fetchInterests = "SELECT availableinterests.interestName FROM interests JOIN availableinterests ON interests.InterestID = availableinterests.InterestID WHERE interests.UserID = ? ORDER BY availableinterests.InterestID ASC;";
+if ($stmt = mysqli_prepare($con, $fetchInterests)) {
+    $interestStored = [];
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    if (mysqli_stmt_execute($stmt)) {
+    mysqli_stmt_store_result($stmt);
+        mysqli_stmt_bind_result($stmt, $interestname);
+        if (mysqli_stmt_num_rows($stmt) > 0) {
+        //put retrieved Interests in the interestStored array
+            while (mysqli_stmt_fetch($stmt)) {
+                array_push($interestStored, $interestname);
+            }
+        }
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $gender = $seeking = $smoker = $drinker = $employment = $student = $college = $degree = $county = $town = $description =NULL;
     // Fill in all variables from the form
-    $gender = mysqli_real_escape_string($con, trim($_POST['gender']));
-    $seeking = mysqli_real_escape_string($con, trim($_POST['seeking']));
-    $smoker = mysqli_real_escape_string($con, trim($_POST['smoker']));
-    $drinker = mysqli_real_escape_string($con, trim($_POST['drinker']));
-    $employment = mysqli_real_escape_string($con, trim($_POST['employment']));
+    $gender = $_POST['gender'];
+    $seeking = $_POST['seeking'];
+    $smoker = $_POST['smoker'];
+    $drinker = $_POST['drinker'];
+    $employment = $_POST['employment'];
     $student = $_POST['student'];
     if($student=='Yes'){
         $student = 1;
@@ -42,12 +60,33 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     else{
         $student=NULL;
     }
-    $student = mysqli_real_escape_string($con, trim($student));
-    $college = mysqli_real_escape_string($con, trim($_POST['college']));
-    $degree = mysqli_real_escape_string($con, trim($_POST['degree']));
-    $county = mysqli_real_escape_string($con, trim($_POST['county']));
-    $town = mysqli_real_escape_string($con, trim($_POST['town']));
-    $description = mysqli_real_escape_string($con, trim($_POST['description']));
+    $student = $student;
+    $college = $_POST['college'];
+    $degree = $_POST['degree'];
+    $county = $_POST['county'];
+    $town = $_POST['town'];
+    $description = $_POST['description'];
+    //fill the current selection of interests from the form. 
+    //compare it to the storedInterests which were retrieve on page load. store the items changed in $storedChanged and the new input in $newInput using array_diff
+    $interests = array($_POST['interest1'],$_POST['interest2'],$_POST['interest3'],$_POST['interest4']);
+    
+    $storedChanged=array_diff($interestStored,$interestsInput);
+    $newInput=array_diff($interestsInput,$interestStored);
+
+    $storedChanged=array_diff($interestStored,$interestsInput);
+    $newInput=array_diff($interestsInput,$interestStored);
+    for ($i=0; $i<4; $i++){
+        if($storedChanged[$i]=='' & $newInput[$i]==''){
+            //both are empty I am too tired to know what this means I think it shouldn't ever occur
+        }
+        else if($storedChanged[$i]==''){
+            //storedChanged is empty sql statement must insert new interest
+        }
+        else if($newInput[$i]==''){
+            //new input is empty storedChanged must be deleted with no replacement
+        }
+	    $newSQL= "$storedChanged[$i]"." "."$newInput[$i]";
+    }
     
     $inputs= array(&$gender, &$seeking, &$smoker, &$drinker, &$employment, &$student, &$college, &$degree, &$county, &$town, &$description);
     foreach ($inputs as &$value) {
@@ -55,10 +94,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $value = null;
         }
     }
-
-    //insert data from profile changes into database
-    if($stmt = $con -> prepare("INSERT INTO profile (UserID, Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE UserID = VALUES(UserID), Smoker= VALUES(Smoker), Drinker= VALUES(Drinker), Gender= VALUES(Gender), Seeking = VALUES(Seeking), Description = VALUES(Description), County = VALUES(County), Town = VALUES(Town), Employment = VALUES(Employment), Student = VALUES(Student), College = VALUES(College), Degree = VALUES(Degree);")){
-    //if($stmt = $con -> prepare("INSERT INTO profile (UserID, Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE UserID = VALUES(UserID), Smoker= VALUES(Smoker), Drinker= VALUES(Drinker), Gender= VALUES(Gender), Seeking = VALUES(Seeking), Description = VALUES(Description), County = VALUES(County), Town = VALUES(Town), Employment = VALUES(Employment), Student = VALUES(Student), College = VALUES(College), Degree = VALUES(Degree);")){
+    
+    //insert data from profile into the database or change values in the database
+    $profileInsertUpdate = "INSERT INTO profile (UserID, Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE UserID = VALUES(UserID), Smoker= VALUES(Smoker), Drinker= VALUES(Drinker), Gender= VALUES(Gender), Seeking = VALUES(Seeking), Description = VALUES(Description), County = VALUES(County), Town = VALUES(Town), Employment = VALUES(Employment), Student = VALUES(Student), College = VALUES(College), Degree = VALUES(Degree);";
+    if($stmt = mysqli_prepare($con , $profileInsertUpdate)){
         //bind params to statement
         if(mysqli_stmt_bind_param($stmt,"issssssssiss",$id, $smoker, $drinker, $gender, $seeking, $description, $county, $town, $employment , $student , $college , $degree)){
             //Attempt to execute the sql statement
@@ -66,16 +105,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             }
         }
     }
+    
     mysqli_stmt_close($stmt);          
     mysqli_close($con);        
-        
-    
-    
-    
-    //INSERT INTO profile (UserID, Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree)
-    //VALUES (10, "Social Smoker", "Social Drinker",  "Male", "Female", "compooter", "Tipperary", "cashel", "compooter" , "1" , "UL", "")
-    //ON DUPLICATE KEY UPDATE Smoker= "Social Smoker", Drinker= "Social Drinker",  Gender= "Male", Seeking = "Female",Description = "compooter", County = "Tipperary", Town = "cashel", Employment = "compooter", Student = "1", College = "UL", Degree = "Computer Science";
-
 }
 
 ?>
@@ -184,6 +216,124 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         </div>
 
                     </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label class="labels">Interests</label>
+                            <select name= "interest1" id="interest1"class="form-select">
+                                <option <?php echo (isset($interestStored[0])) ?'selected>'.$interestStored[0]:'value="" selected>---Select An Interest---' ?></option>
+                                <option>Animals</option>
+                                <option>Art</option>
+                                <option>Baking</option>
+                                <option>Board games</option>
+                                <option>Carpentry</option>
+                                <option>Computers</option>
+                                <option>Cooking</option>
+                                <option>DIY</option>
+                                <option>Drinking</option>
+                                <option>Fitness</option>
+                                <option>Food</option>
+                                <option>GAA</option>
+                                <option>Gardening</option>
+                                <option>Golf</option>
+                                <option>Movies</option>
+                                <option>Music</option>
+                                <option>Reading</option>
+                                <option>Role Playing Games</option>
+                                <option>Rugby</option>
+                                <option>Soccer</option>
+                                <option>TV</option>
+                                <option>Travelling</option>
+                                <option>Video Games</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Interests</label>
+                            <select name= "interest2" id="interest2"class="form-select">
+                                <option <?php echo (isset($interestStored[1])) ?'selected>'.$interestStored[1]:'value="" selected>---Select An Interest---' ?></option>
+                                <option>Animals</option>
+                                <option>Art</option>
+                                <option>Baking</option>
+                                <option>Board games</option>
+                                <option>Carpentry</option>
+                                <option>Computers</option>
+                                <option>Cooking</option>
+                                <option>DIY</option>
+                                <option>Drinking</option>
+                                <option>Fitness</option>
+                                <option>Food</option>
+                                <option>GAA</option>
+                                <option>Gardening</option>
+                                <option>Golf</option>
+                                <option>Movies</option>
+                                <option>Music</option>
+                                <option>Reading</option>
+                                <option>Role Playing Games</option>
+                                <option>Rugby</option>
+                                <option>Soccer</option>
+                                <option>TV</option>
+                                <option>Travelling</option>
+                                <option>Video Games</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Interests</label>
+                            <select name= "interest3" id="interest3"class="form-select">
+                                <option <?php echo (isset($interestStored[2])) ?'selected>'.$interestStored[2]:'value="" selected>---Select An Interest---'?></option>
+                                <option>Animals</option>
+                                <option>Art</option>
+                                <option>Baking</option>
+                                <option>Board games</option>
+                                <option>Carpentry</option>
+                                <option>Computers</option>
+                                <option>Cooking</option>
+                                <option>DIY</option>
+                                <option>Drinking</option>
+                                <option>Fitness</option>
+                                <option>Food</option>
+                                <option>GAA</option>
+                                <option>Gardening</option>
+                                <option>Golf</option>
+                                <option>Movies</option>
+                                <option>Music</option>
+                                <option>Reading</option>
+                                <option>Role Playing Games</option>
+                                <option>Rugby</option>
+                                <option>Soccer</option>
+                                <option>TV</option>
+                                <option>Travelling</option>
+                                <option>Video Games</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Interests</label>
+                            <select name= "interest4" id="interest4"class="form-select">
+                                <option <?php echo (isset($interestStored[3])) ?'selected>'.$interestStored[3]:'value="" selected>---Select An Interest---' ?></option>
+                                <option>Animals</option>
+                                <option>Art</option>
+                                <option>Baking</option>
+                                <option>Board games</option>
+                                <option>Carpentry</option>
+                                <option>Computers</option>
+                                <option>Cooking</option>
+                                <option>DIY</option>
+                                <option>Drinking</option>
+                                <option>Fitness</option>
+                                <option>Food</option>
+                                <option>GAA</option>
+                                <option>Gardening</option>
+                                <option>Golf</option>
+                                <option>Movies</option>
+                                <option>Music</option>
+                                <option>Reading</option>
+                                <option>Role Playing Games</option>
+                                <option>Rugby</option>
+                                <option>Soccer</option>
+                                <option>TV</option>
+                                <option>Travelling</option>
+                                <option>Video Games</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="row mt-3">
 
@@ -242,7 +392,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="d-flex justify-content-center">
                             <div class="row mt-3">
                             <label class="labels">Add Pictures</label>
-                            <input type="file" id="myFile" name="filename">
+                            <input type="file" id="myFile" name="filename" multiple accept=".png,.jpg,.jpeg">
                             </form>
                         </div>
                     </div>
