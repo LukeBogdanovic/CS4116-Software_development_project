@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="text-right">Edit Profile</h4>
-                        <span class="font-weight-bold">username</span>
+                        <span class="font-weight-bold"><?php echo $_SESSION['username'] ?></span>
                     </div>
 
                     <div class="row mt-2">
@@ -388,9 +388,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             <label class="labels">Bio</label>
                             <textarea name="description" id="description" maxlength="512" type="text" class="form-control" rows="5" placeholder="enter bio"><?php echo $descriptionStored?></textarea>
                         </div>
+                    </div>
 
-                        <div class="d-flex justify-content-center">
-                            <div class="row mt-3">
+                    <div class="d-flex justify-content-center">
+                        <div class="row mt-3">
                             <label class="labels">Add Pictures</label>
                             <input type="file" id="myFile" name="filename" multiple accept=".png,.jpg,.jpeg">
                             </form>
