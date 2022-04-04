@@ -14,12 +14,10 @@ if (isset($_POST['function'])) {
 function get_Connected_Users($id)
 {
     require "../../includes/database.php";
-    $result = [];
     $results = [];
-    $userIDs = [];
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // Getting all users with connection to the user that is logged in
-        $stmt = "SELECT USER.UserID, USER.Username, USER.Firstname, USER.Surname, USER.DateOfBirth, connections.ConnectionDate, PROFILE.Description FROM connections INNER JOIN USER ON( CASE WHEN connections.userID1 = $id THEN connections.userID2 = USER.UserID WHEN connections.userID2 = $id THEN connections.userID1 = USER.UserID ELSE NULL END ) INNER JOIN PROFILE ON PROFILE .UserID = USER.userID WHERE ( CASE WHEN connections.userID2 = $id THEN connections.userID2 = $id WHEN connections.userID1 = $id THEN connections.userID1 = $id ELSE NULL END ) ORDER BY connections.ConnectionDate DESC;";
+        $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, connections.ConnectionDate, profile.Description FROM connections INNER JOIN user ON( CASE WHEN connections.userID1 = $id THEN connections.userID2 = user.UserID WHEN connections.userID2 = $id THEN connections.userID1 = user.UserID ELSE NULL END ) INNER JOIN profile ON profile.UserID = user.userID WHERE ( CASE WHEN connections.userID2 = $id THEN connections.userID2 = $id WHEN connections.userID1 = $id THEN connections.userID1 = $id ELSE NULL END ) ORDER BY connections.ConnectionDate DESC;";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
@@ -32,7 +30,6 @@ function get_Connected_Users($id)
                         $age = get_age($dob);
                         $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'daysSinceConnection' => date_difference($connectionDate), 'description' => $description);
                         array_push($results, $user);
-                        array_push($userIDs, $userID);
                     }
                     array_push($result, $results);
                 } else {

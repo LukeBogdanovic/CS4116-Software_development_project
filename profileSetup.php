@@ -22,7 +22,7 @@ if ($stmt = mysqli_prepare($con, $fetchProfile)) {
         //bind results of search to user variable 
         mysqli_stmt_bind_result($stmt, $smokerStored, $drinkerStored, $genderStored, $seekingStored, $descriptionStored, $countyStored, $townStored, $employmentStored, $studentStored, $collegeStored, $degreeStored);
         mysqli_stmt_fetch($stmt);
-        ($studentStored==0) ? $studentStored='No': $studentStored = 'Yes';
+        ($studentStored == 0) ? $studentStored = 'No' : $studentStored = 'Yes';
     }
 }
 
@@ -32,10 +32,10 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
     $interestStored = [];
     mysqli_stmt_bind_param($stmt, "i", $id);
     if (mysqli_stmt_execute($stmt)) {
-    mysqli_stmt_store_result($stmt);
+        mysqli_stmt_store_result($stmt);
         mysqli_stmt_bind_result($stmt, $interestname);
         if (mysqli_stmt_num_rows($stmt) > 0) {
-        //put retrieved Interests in the interestStored array
+            //put retrieved Interests in the interestStored array
             while (mysqli_stmt_fetch($stmt)) {
                 array_push($interestStored, $interestname);
             }
@@ -51,14 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $drinker = $_POST['drinker'];
     $employment = $_POST['employment'];
     $student = $_POST['student'];
-    if($student=='Yes'){
+    if ($student == 'Yes') {
         $student = 1;
-    } 
-    else if ($student=='No'){
-        $student=0;
-    }
-    else{
-        $student=NULL;
+    } else if ($student == 'No') {
+        $student = 0;
+    } else {
+        $student = NULL;
     }
     $student = $student;
     $college = $_POST['college'];
@@ -68,50 +66,48 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $description = $_POST['description'];
     //fill the current selection of interests from the form. 
     //compare it to the storedInterests which were retrieve on page load. store the items changed in $storedChanged and the new input in $newInput using array_diff
-    $interests = array($_POST['interest1'],$_POST['interest2'],$_POST['interest3'],$_POST['interest4']);
-    
-    $storedChanged=array_diff($interestStored,$interestsInput);
-    $newInput=array_diff($interestsInput,$interestStored);
+    $interests = array($_POST['interest1'], $_POST['interest2'], $_POST['interest3'], $_POST['interest4']);
 
-    $storedChanged=array_diff($interestStored,$interestsInput);
-    $newInput=array_diff($interestsInput,$interestStored);
-    for ($i=0; $i<4; $i++){
-        if($storedChanged[$i]=='' & $newInput[$i]==''){
+    $storedChanged = array_diff($interestStored, $interestsInput);
+    $newInput = array_diff($interestsInput, $interestStored);
+
+    $storedChanged = array_diff($interestStored, $interestsInput);
+    $newInput = array_diff($interestsInput, $interestStored);
+    for ($i = 0; $i < 4; $i++) {
+        if ($storedChanged[$i] == '' & $newInput[$i] == '') {
             //both are empty I am too tired to know what this means I think it shouldn't ever occur
-        }
-        else if($storedChanged[$i]==''){
+        } else if ($storedChanged[$i] == '') {
             //storedChanged is empty sql statement must insert new interest
-        }
-        else if($newInput[$i]==''){
+        } else if ($newInput[$i] == '') {
             //new input is empty storedChanged must be deleted with no replacement
         }
-	    $newSQL= "$storedChanged[$i]"." "."$newInput[$i]";
+        $newSQL = "$storedChanged[$i]" . " " . "$newInput[$i]";
     }
-    
-    $inputs= array(&$gender, &$seeking, &$smoker, &$drinker, &$employment, &$student, &$college, &$degree, &$county, &$town, &$description);
+
+    $inputs = array(&$gender, &$seeking, &$smoker, &$drinker, &$employment, &$student, &$college, &$degree, &$county, &$town, &$description);
     foreach ($inputs as &$value) {
-        if($value == "" || $value == ''){
+        if ($value == "" || $value == '') {
             $value = null;
         }
     }
-    
+
     //insert data from profile into the database or change values in the database
     $profileInsertUpdate = "INSERT INTO profile (UserID, Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE UserID = VALUES(UserID), Smoker= VALUES(Smoker), Drinker= VALUES(Drinker), Gender= VALUES(Gender), Seeking = VALUES(Seeking), Description = VALUES(Description), County = VALUES(County), Town = VALUES(Town), Employment = VALUES(Employment), Student = VALUES(Student), College = VALUES(College), Degree = VALUES(Degree);";
-    if($stmt = mysqli_prepare($con , $profileInsertUpdate)){
+    if ($stmt = mysqli_prepare($con, $profileInsertUpdate)) {
         //bind params to statement
-        if(mysqli_stmt_bind_param($stmt,"issssssssiss",$id, $smoker, $drinker, $gender, $seeking, $description, $county, $town, $employment , $student , $college , $degree)){
+        if (mysqli_stmt_bind_param($stmt, "issssssssiss", $id, $smoker, $drinker, $gender, $seeking, $description, $county, $town, $employment, $student, $college, $degree)) {
             //Attempt to execute the sql statement
             if (mysqli_stmt_execute($stmt)) {
             }
         }
     }
-    
-    mysqli_stmt_close($stmt);          
-    mysqli_close($con);        
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($con);
 }
 
 ?>
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -133,13 +129,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         <div class="container mt-5 mb-5">
 
-            <form class="d-flex justify-content-center"action="profileSetup.php" method="POST">
-                    
+            <form class="d-flex justify-content-center" action="profileSetup.php" method="POST">
+
                 <div class="col-md-6">
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="text-right">Edit Profile</h4>
-                        <span class="font-weight-bold">username</span>
+                        <span class="font-weight-bold"><?php echo $_SESSION['username'] ?></span>
                     </div>
 
                     <div class="row mt-2">
@@ -147,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-6">
                             <label class="labels">Gender</label>
                             <select name="gender" id="gender" class="form-select" value="Female">
-                                <option <?php echo ($genderStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$genderStored ?></option>
+                                <option <?php echo ($genderStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $genderStored ?></option>
                                 <option>Male</option>
                                 <option>Female</option>
                                 <option>Non-binary</option>
@@ -159,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-6">
                             <label class="labels">Seeking</label>
                             <select name="seeking" id="seeking" class="form-select">
-                                <option <?php echo ($seekingStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$seekingStored ?></option>
+                                <option <?php echo ($seekingStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $seekingStored ?></option>
                                 <option>Male</option>
                                 <option>Female</option>
                                 <option>All</option>
@@ -169,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-12">
                             <label class="labels">Smoker</label>
                             <select name="smoker" id="smoker" class="form-select">
-                                <option <?php echo ($smokerStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$smokerStored ?></option>
+                                <option <?php echo ($smokerStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $smokerStored ?></option>
                                 <option>Non Smoker</option>
                                 <option>Social Smoker</option>
                                 <option>Yes</option>
@@ -178,8 +174,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                         <div class="col-md-12">
                             <label class="labels">Drinker</label>
-                            <select name="drinker" id="drinker"class="form-select">
-                                <option <?php echo ($drinkerStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$drinkerStored ?></option>
+                            <select name="drinker" id="drinker" class="form-select">
+                                <option <?php echo ($drinkerStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $drinkerStored ?></option>
                                 <option>Never</option>
                                 <option>Social Drinker</option>
                                 <option>Most Days</option>
@@ -189,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                         <div class="col-md-12">
                             <label class="labels">Employment</label>
-                            <input name="employment" id="employment" type="text" class="form-control" placeholder="enter employment" value="<?php echo $employmentStored?>">
+                            <input name="employment" id="employment" type="text" class="form-control" placeholder="enter employment" value="<?php echo $employmentStored ?>">
                         </div>
 
                     </div>
@@ -199,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-12">
                             <label class="labels">Student</label>
                             <select name="student" id="student" class="form-select">
-                                <option <?php echo ($studentStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$studentStored ?></option>
+                                <option <?php echo ($studentStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $studentStored ?></option>
                                 <option>No</option>
                                 <option>Yes</option>
                             </select>
@@ -207,20 +203,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                         <div class="col-md-12">
                             <label class="labels">College</label>
-                            <input name="college" id="college" type="text" class="form-control" placeholder="enter college" value="<?php echo $collegeStored?>">
+                            <input name="college" id="college" type="text" class="form-control" placeholder="enter college" value="<?php echo $collegeStored ?>">
                         </div>
 
                         <div class="col-md-12">
                             <label class="labels">Degree</label>
-                            <input name="degree" id="degree" type="text" class="form-control" placeholder="enter degree" value="<?php echo $degreeStored?>">
+                            <input name="degree" id="degree" type="text" class="form-control" placeholder="enter degree" value="<?php echo $degreeStored ?>">
                         </div>
 
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <label class="labels">Interests</label>
-                            <select name= "interest1" id="interest1"class="form-select">
-                                <option <?php echo (isset($interestStored[0])) ?'selected>'.$interestStored[0]:'value="" selected>---Select An Interest---' ?></option>
+                            <select name="interest1" id="interest1" class="form-select">
+                                <option <?php echo (isset($interestStored[0])) ? 'selected>' . $interestStored[0] : 'value="" selected>---Select An Interest---' ?></option>
                                 <option>Animals</option>
                                 <option>Art</option>
                                 <option>Baking</option>
@@ -248,8 +244,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         </div>
                         <div class="col-md-6">
                             <label class="labels">Interests</label>
-                            <select name= "interest2" id="interest2"class="form-select">
-                                <option <?php echo (isset($interestStored[1])) ?'selected>'.$interestStored[1]:'value="" selected>---Select An Interest---' ?></option>
+                            <select name="interest2" id="interest2" class="form-select">
+                                <option <?php echo (isset($interestStored[1])) ? 'selected>' . $interestStored[1] : 'value="" selected>---Select An Interest---' ?></option>
                                 <option>Animals</option>
                                 <option>Art</option>
                                 <option>Baking</option>
@@ -277,8 +273,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         </div>
                         <div class="col-md-6">
                             <label class="labels">Interests</label>
-                            <select name= "interest3" id="interest3"class="form-select">
-                                <option <?php echo (isset($interestStored[2])) ?'selected>'.$interestStored[2]:'value="" selected>---Select An Interest---'?></option>
+                            <select name="interest3" id="interest3" class="form-select">
+                                <option <?php echo (isset($interestStored[2])) ? 'selected>' . $interestStored[2] : 'value="" selected>---Select An Interest---' ?></option>
                                 <option>Animals</option>
                                 <option>Art</option>
                                 <option>Baking</option>
@@ -306,8 +302,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         </div>
                         <div class="col-md-6">
                             <label class="labels">Interests</label>
-                            <select name= "interest4" id="interest4"class="form-select">
-                                <option <?php echo (isset($interestStored[3])) ?'selected>'.$interestStored[3]:'value="" selected>---Select An Interest---' ?></option>
+                            <select name="interest4" id="interest4" class="form-select">
+                                <option <?php echo (isset($interestStored[3])) ? 'selected>' . $interestStored[3] : 'value="" selected>---Select An Interest---' ?></option>
                                 <option>Animals</option>
                                 <option>Art</option>
                                 <option>Baking</option>
@@ -339,11 +335,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                         <div class="col-md-6">
                             <label class="labels">County</label>
-                            <select name="county" id="county"class="form-select">
-                                <option <?php echo ($countyStored == NULL) ?'value="" selected>---Select An Option---':'selected>'.$countyStored ?></option>
+                            <select name="county" id="county" class="form-select">
+                                <option <?php echo ($countyStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $countyStored ?></option>
                                 <option>Antrim</option>
                                 <option>Armagh</option>
-                                <option >Carlow</option>
+                                <option>Carlow</option>
                                 <option>Cavan</option>
                                 <option>Clare</option>
                                 <option>Cork</option>
@@ -375,10 +371,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                 <option>Wicklow</option>
                             </select>
                         </div>
-                        
+
                         <div class="col-md-6">
                             <label class="labels">Town</label>
-                            <input name= "town" id="town" type="text" class="form-control" placeholder="enter town" value="<?php echo $townStored?>">
+                            <input name="town" id="town" type="text" class="form-control" placeholder="enter town" value="<?php echo $townStored ?>">
                         </div>
 
                     </div>
@@ -386,24 +382,25 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="labels">Bio</label>
-                            <textarea name="description" id="description" maxlength="512" type="text" class="form-control" rows="5" placeholder="enter bio"><?php echo $descriptionStored?></textarea>
+                            <textarea name="description" id="description" maxlength="512" type="text" class="form-control" rows="5" placeholder="enter bio"><?php echo $descriptionStored ?></textarea>
                         </div>
+                    </div>
 
-                        <div class="d-flex justify-content-center">
-                            <div class="row mt-3">
+                    <div class="d-flex justify-content-center">
+                        <div class="row mt-3">
                             <label class="labels">Add Pictures</label>
                             <input type="file" id="myFile" name="filename" multiple accept=".png,.jpg,.jpeg">
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="mt-5 text-center">
-                        <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
-                    </div>
-
-                </div>
-
             </form>
+        </div>
+        </div>
+
+        <div class="mt-5 text-center">
+            <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
+        </div>
+
+        </div>
+
+        </form>
 
         </div>
 

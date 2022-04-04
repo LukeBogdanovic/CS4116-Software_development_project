@@ -1,6 +1,6 @@
-var search = $("#search");
-var typingTimer;
-var interval = 500;
+let search = $("#search");
+let typingTimer;
+let interval = 500;
 /**
  * Sends the user request from the frontend to the server and returns
  * the data retrieved from the database
@@ -18,7 +18,7 @@ function getSearchResults(event) {
     url: "../api/Search/getSearchResult.php",
     data: { function: "get_Search_result", search: searchTerm },
     success: (response) => {
-      var data = JSON.parse(response);
+      let data = JSON.parse(response);
       if (data.status == 200) {
         if (document.getElementById("warning"))
           document
