@@ -94,6 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
         else if(empty($newInput[$i])){
             //The stored interest was changed but the input is empty. the stored interest must be deleted
+            // IMPORTANT, this has not been tested yet 5am and I couldn't be fucked changing the inputs on the page to allow it
             $DeleteInterest ="DELETE I FROM interests I 
             JOIN availableinterests A
             WHERE I.UserID = ? AND A.InterestName = ?;";
