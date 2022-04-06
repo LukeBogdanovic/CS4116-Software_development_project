@@ -64,7 +64,7 @@ SET
   CREATE TABLE `interests` (
     `UserID` int(11) NOT NULL COMMENT 'Which user is this?',
     `InterestID` int(3) NOT NULL COMMENT 'Which interest do they have?',
-    Constraint `Interests_composite_key` PRIMARY KEY (UserID,InterestID),
+    Constraint PRIMARY KEY (UserID,InterestID),
     CONSTRAINT `Interests_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID),
     CONSTRAINT `Interests_ibfk_2` FOREIGN KEY (InterestID) REFERENCES availableinterests(InterestID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Interests of ALL users';

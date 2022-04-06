@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $storedChanged = array_diff($interestStored, $interestsInput);
     $newInput = array_diff($interestsInput, $interestStored);
 
-
+    //Loop through storedChanged and newInput in order to make the necessary updates inserts and deletions 
     for ($i = 0; $i < 4; $i++) {
         if (empty($storedChanged[$i]) && empty($newInput[$i])) {
             //both are empty. Either no change to this interest and no new input OR theres no interest here and nothing entered
@@ -88,9 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 }
                 mysqli_stmt_close($stmt);
             }
-        } else if (empty($newInput[$i])) {
-            //The stored interest was changed but the input is empty. the stored interest must be deleted
-            // IMPORTANT, this has not been tested yet 5am and I couldn't be fucked changing the inputs on the page to allow it
+        } else if ($newInput[$i] = "del") {
+            //The stored interest was changed but the input is "del". the stored interest must be deleted
             $DeleteInterest = "DELETE I FROM interests I 
             JOIN availableinterests A
             WHERE I.UserID = ? AND A.InterestName = ?;";
@@ -250,6 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             <label class="labels">Interests</label>
                             <select name="interest1" id="interest1" class="form-select">
                                 <option <?php echo (isset($interestStored[0])) ? 'selected>' . $interestStored[0] : 'value="" selected>---Select An Interest---' ?></option>
+                                <option value="del">Remove this interest</option>
                                 <option>Animals</option>
                                 <option>Art</option>
                                 <option>Baking</option>
@@ -279,6 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             <label class="labels">Interests</label>
                             <select name="interest2" id="interest2" class="form-select">
                                 <option <?php echo (isset($interestStored[1])) ? 'selected>' . $interestStored[1] : 'value="" selected>---Select An Interest---' ?></option>
+                                <option value="del">Remove this interest</option>
                                 <option>Animals</option>
                                 <option>Art</option>
                                 <option>Baking</option>
@@ -308,6 +309,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             <label class="labels">Interests</label>
                             <select name="interest3" id="interest3" class="form-select">
                                 <option <?php echo (isset($interestStored[2])) ? 'selected>' . $interestStored[2] : 'value="" selected>---Select An Interest---' ?></option>
+                                <option value="del">Remove this interest</option>
                                 <option>Animals</option>
                                 <option>Art</option>
                                 <option>Baking</option>
@@ -337,6 +339,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             <label class="labels">Interests</label>
                             <select name="interest4" id="interest4" class="form-select">
                                 <option <?php echo (isset($interestStored[3])) ? 'selected>' . $interestStored[3] : 'value="" selected>---Select An Interest---' ?></option>
+                                <option value="del">Remove this interest</option>
                                 <option>Animals</option>
                                 <option>Art</option>
                                 <option>Baking</option>
