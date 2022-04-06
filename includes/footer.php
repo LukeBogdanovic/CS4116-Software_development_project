@@ -78,19 +78,19 @@
 
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <a href="tos.php" class="text-dark">Privacy Policy</a>
+                    <a href="tos.php#section1" class="text-dark">Privacy Policy</a>
                 </div>
                 <!--Grid column-->
 
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <a href="tos.php" class="text-dark">Terms of Use</a>
+                    <a href="tos.php#section3" class="text-dark">Terms of Use</a>
                 </div>
                 <!--Grid column-->
 
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <a href="tos.php" class="text-dark">Cookie Policy</a>
+                    <a href="tos.php#section2" class="text-dark">Cookie Policy</a>
                 </div>
                 <!--Grid column-->
             </div>

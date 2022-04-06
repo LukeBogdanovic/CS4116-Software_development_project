@@ -27,6 +27,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     </div>
     <div class="col d-flex">
           <div class="container">
+            <section id="section1">
             <h1>Privacy Policy</h1>
                 <p>Last updated: March 24, 2022</p>
                 <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
@@ -192,6 +193,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                 <p>We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the &quot;Last updated&quot; date at the top of this Privacy Policy.</p>
                 <p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
 
+            <section id="section2">
             <h1>Cookies Policy</h1>
                 <p>Last updated: March 24, 2022</p>
                 <p>This Cookies Policy explains what Cookies are and how We use them. You should read this policy so You can understand what type of cookies We use, or the information We collect using Cookies and how that information is used. This Cookies Policy has been created with the help of the <a href="https://www.freeprivacypolicy.com/free-cookies-policy-generator/" target="_blank">Cookies Policy Generator</a>.</p>
@@ -249,6 +251,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                 <p>You can learn more about cookies: <a href="https://www.freeprivacypolicy.com/blog/cookies/" target="_blank">Cookies: What Do They Do?</a>.</p>
                 </ul>
 
+            <section id="section3">
             <h1>Terms and Conditions</h1>
                 <p>Last updated: March 24, 2022</p>
                 <p>Please read these terms and conditions carefully before using Our Service.</p>
