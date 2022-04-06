@@ -78,19 +78,19 @@
 
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <a href="https://www.freeprivacypolicy.com/live/bbb0dade-01ed-4d09-aa03-43f632b95d15" class="text-dark">Privacy Policy</a>
+                    <a href="tos.php" class="text-dark">Privacy Policy</a>
                 </div>
                 <!--Grid column-->
 
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <a href="https://www.freeprivacypolicy.com/live/3d37a708-c617-43ef-862e-ea7dea9adc26" class="text-dark">Terms of Use</a>
+                    <a href="tos.php" class="text-dark">Terms of Use</a>
                 </div>
                 <!--Grid column-->
 
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <a href="https://www.freeprivacypolicy.com/live/fb0da1a1-3639-457f-b3d4-7ddcb1c5600e" class="text-dark">Cookie Policy</a>
+                    <a href="tos.php" class="text-dark">Cookie Policy</a>
                 </div>
                 <!--Grid column-->
             </div>

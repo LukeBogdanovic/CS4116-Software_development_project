@@ -22,11 +22,11 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 <?php
     require_once "includes/navbar.php";
     ?>
-    <div class="row d-flex">
-          <div class="container justify-content-center text-center">
+    <div class="container justify-content-center text-center">
             <img src="assets/images/logo.png" alt="no image">
-          </div>
-          <div class="container ms-5">
+    </div>
+    <div class="col d-flex">
+          <div class="container">
             <h1>Privacy Policy</h1>
                 <p>Last updated: March 24, 2022</p>
                 <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
@@ -191,9 +191,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                 <p>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.</p>
                 <p>We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the &quot;Last updated&quot; date at the top of this Privacy Policy.</p>
                 <p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
-          </div>
 
-          <div class="container ms-5">
             <h1>Cookies Policy</h1>
                 <p>Last updated: March 24, 2022</p>
                 <p>This Cookies Policy explains what Cookies are and how We use them. You should read this policy so You can understand what type of cookies We use, or the information We collect using Cookies and how that information is used. This Cookies Policy has been created with the help of the <a href="https://www.freeprivacypolicy.com/free-cookies-policy-generator/" target="_blank">Cookies Policy Generator</a>.</p>
@@ -250,9 +248,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                 <h2>More Information about Cookies</h2>
                 <p>You can learn more about cookies: <a href="https://www.freeprivacypolicy.com/blog/cookies/" target="_blank">Cookies: What Do They Do?</a>.</p>
                 </ul>
-          </div>
 
-          <div class="container ms-5">
             <h1>Terms and Conditions</h1>
                 <p>Last updated: March 24, 2022</p>
                 <p>Please read these terms and conditions carefully before using Our Service.</p>
@@ -336,10 +332,10 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                 <li>By email: gragodeo@gmail.com</li>
                 </ul>
           </div>
-          <div class="container justify-content-center text-center">
+        </div>
+        <div class="container justify-content-center text-center">
             <img src="assets/images/logo.png" alt="no image">
           </div>
-        </div>
 
     <?php
     require_once "includes/footer.php"
