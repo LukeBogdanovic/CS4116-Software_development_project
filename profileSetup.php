@@ -14,13 +14,17 @@ $smokerStored = $drinkerStored = $genderStored = $seekingStored =  $descriptionS
 $id = $_SESSION["id"];
 
 //fetch users profile info, in next satement fetch their interests
-$fetchProfile = "SELECT Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree FROM profile WHERE userID = ?";
+$fetchProfile = "SELECT user.Username, user.Firstname, user.Surname, user.DateOfBirth,
+profile.Smoker, profile.Drinker, profile.Gender, profile.Seeking, profile.Description, profile.County, profile.Town, profile.Employment, profile.Student, profile.College, profile.Degree 
+FROM profile JOIN user 
+ON user.UserID = profile.UserID 
+WHERE user.userID = ?";
 if ($stmt = mysqli_prepare($con, $fetchProfile)) {
     mysqli_stmt_bind_param($stmt, "i", $id);
     if (mysqli_stmt_execute($stmt)) {
         mysqli_stmt_store_result($stmt);
         //bind results of search to user variable 
-        mysqli_stmt_bind_result($stmt, $smokerStored, $drinkerStored, $genderStored, $seekingStored, $descriptionStored, $countyStored, $townStored, $employmentStored, $studentStored, $collegeStored, $degreeStored);
+        mysqli_stmt_bind_result($stmt, $username, $firstnameStored, $surnameStored, $dobStored, $smokerStored, $drinkerStored, $genderStored, $seekingStored, $descriptionStored, $countyStored, $townStored, $employmentStored, $studentStored, $collegeStored, $degreeStored);
         mysqli_stmt_fetch($stmt);
         ($studentStored==0) ? $studentStored='No': $studentStored = 'Yes';
     }
@@ -171,8 +175,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <div class="col-md-6">
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Edit Profile</h4>
-                        <span class="font-weight-bold"><?php echo $_SESSION['username'] ?></span>
+                        <h4 class="text-right">Edit <?php echo $firstnameStored . " " . $surnameStored . "'s"?> Profile</h4>
+                        <span class="font-weight-bold"><?php echo $username?></span>
                     </div>
 
                     <div class="row mt-2">
