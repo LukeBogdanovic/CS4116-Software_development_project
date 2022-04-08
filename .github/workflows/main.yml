@@ -1,0 +1,20 @@
+name: Upload to main site
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        
+      - name: Upload to site
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ftpupload.net
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
+          protocol: ftps
+          port: 21
+          server-dir: htdocs/
