@@ -1,13 +1,3 @@
-<?php
-session_start();
-
-// Checking if the user is already logged in to the website and redirecting to Home if they are
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    header("location: home.php");
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
