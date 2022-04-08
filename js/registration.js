@@ -141,7 +141,7 @@ function inputValidation(email, password, confirmPassword) {
   return false;
 }
 
-$(document).on("keyup", () => {
+$(document).on("keyup", function () {
   if (
     $("#username").val() === "" ||
     $("#pwd").val() === "" ||
@@ -155,4 +155,40 @@ $(document).on("keyup", () => {
   } else {
     $("#submit").prop("disabled", false);
   }
+});
+
+$("#username").on("keyup", function () {
+  if ($(this).val().length > 16) {
+    $("#usermsg")
+      .html("Username must not exceed 16 characters")
+      .css("color", "red");
+  } else {
+    $("#usermsg").html("");
+  }
+});
+
+$("#pwd").on("keyup", function () {
+  if ($(this).val().length < 8) {
+    $("#pwdmsg")
+      .html("Password must be at least 8 characters")
+      .css("color", "red");
+  } else if ($(this).val().length > 16) {
+    $("#pwdmsg")
+      .html("Password must not exceed 16 characters")
+      .css("color", "red");
+  } else {
+    $("#pwdmsg").html("");
+  }
+});
+
+$("#confirmpwd").on("keyup", function () {
+  if ($("#pwd").val() == $(this).val()) {
+    $("#confirmpwdmsg").html("Matching").css("color", "green");
+  } else {
+    $("#confirmpwdmsg").html("Not Matching").css("color", "red");
+  }
+});
+
+$(document).on("ready", function () {
+  $('[data-toggle="tooltip"]').tooltip();
 });

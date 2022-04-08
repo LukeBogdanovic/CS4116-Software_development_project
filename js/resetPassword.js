@@ -84,6 +84,10 @@ function getSecurityAnswers(event) {
   });
 }
 
+/**
+ * Sends the new password created by the user to be hashed and stored within the database
+ * @param {Event} event
+ */
 function resetPassword(event) {
   event.preventDefault();
   const password = $("#pwd").val();
@@ -209,3 +213,7 @@ function updatePage_Success(response) {
   // Inserting after element with id input
   $("#input").html(form);
 }
+
+$(document).on("ready", function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});

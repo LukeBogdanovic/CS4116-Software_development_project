@@ -26,34 +26,27 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     <?php
     require_once "includes/navbar.php";
     ?>
-    <div>
-        <section class="vh-100">
-            <div class="container py-5 h-100">
-                <div class="row d-flex align-items-center justify-content-center h-100">
-                    <div class="col-md-8 col-lg-7 col-xl-6">
-                        <img src="" class="img-fluid" alt="image to be found">
-                    </div>
-                    <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1" id="input">
-                        <form onsubmit="getSecurityQuestions(event);" method="POST" id="form">
-                            <div class="form-floating mb-4">
-                                <input name="username" type="text" id="username" data-toggle="tooltip" class="form-control form-control-lg" pattern="[A-Za-z0-9_]{1,16}" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." />
-                                <label for="username">Username</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-                        </form>
-                    </div>
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex align-items-center justify-content-center h-100">
+                <div class="col-md-8 col-lg-7 col-xl-6">
+                    <img src="" class="img-fluid" alt="image to be found">
+                </div>
+                <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1" id="input">
+                    <form onsubmit="getSecurityQuestions(event);" method="POST" id="form">
+                        <div class="form-floating mb-4">
+                            <input name="username" type="text" id="username" data-toggle="tooltip" class="form-control form-control-lg" pattern="[A-Za-z0-9_]{1,16}" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." />
+                            <label for="username">Username</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                    </form>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
     <?php
     require_once "includes/footer.php";
     ?>
-    <script>
-        $(document).ready(() => {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
-    </script>
 </body>
 
 </html>

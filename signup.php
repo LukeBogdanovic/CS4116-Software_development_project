@@ -84,40 +84,6 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     <?php
     require_once "includes/footer.php";
     ?>
-    <script>
-        $("#username").on("keyup", () => {
-            if ($("#username").val().length > 16) {
-                $("#usermsg")
-                    .html("Username must not exceed 16 characters")
-                    .css("color", "red");
-            } else {
-                $("#usermsg").html("");
-            }
-        });
-        $("#pwd").on("keyup", () => {
-            if ($("#pwd").val().length < 8) {
-                $("#pwdmsg")
-                    .html("Password must be at least 8 characters")
-                    .css("color", "red");
-            } else if ($("#pwd").val().length > 16) {
-                $("#pwdmsg")
-                    .html("Password must not exceed 16 characters")
-                    .css("color", "red");
-            } else {
-                $("#pwdmsg").html("");
-            }
-        });
-        $("#confirmpwd").on("keyup", () => {
-            if ($("#pwd").val() == $("#confirmpwd").val()) {
-                $("#confirmpwdmsg").html("Matching").css("color", "green");
-            } else {
-                $("#confirmpwdmsg").html("Not Matching").css("color", "red");
-            }
-        });
-        $(document).on("ready", () => {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
 </body>
 
 </html>

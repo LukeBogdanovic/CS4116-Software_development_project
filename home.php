@@ -24,7 +24,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-
     <?php
     require_once "includes/navbar.php";
     ?>
@@ -32,7 +31,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <?php
     require_once "includes/footer.php"
     ?>
-
 </body>
 
 </html>

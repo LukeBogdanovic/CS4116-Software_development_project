@@ -24,7 +24,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-
     <?php
     require_once "includes/navbar.php";
     ?>
@@ -34,7 +33,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" data-user-cards-container></div>
         </div>
     </main>
-
     <template data-user-template>
         <div class="col">
             <div class="usercard card h-100 shadow-sm"> <img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture">
@@ -51,7 +49,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             </div>
         </div>
     </template>
-
     <?php
     require_once "includes/footer.php";
     ?>
