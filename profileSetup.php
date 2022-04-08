@@ -153,6 +153,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <link rel="icon" type="image/x-icon" href="assets/images/logo.PNG">
     <link rel="stylesheet" type="text/css" href="css/utils.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="js/profileSetup.js" defer></script>
 </head>
 
 <body>
@@ -161,17 +164,21 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     require_once "includes/navbar.php";
     ?>
 
-    <main>
+    <main class="vh-100">
 
-        <div class="container mt-5 mb-5">
+        <div class="d-flex vh-100 justify-content-center" id="spinner">
+            <div class="spinner-border" role="status"></div>
+        </div>
+        <div class="container mt-5 mb-5" id="hide" hidden>
 
-            <form class="d-flex justify-content-center" action="profileSetup.php" method="POST">
+            <form class="d-flex justify-content-center" id="form" action="profileSetup.php" method="POST">
 
                 <div class="col-md-6">
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Edit <?php echo $firstnameStored . " " . $surnameStored . "'s"?> Profile</h4>
-                        <span class="font-weight-bold"><?php echo $username?></span>
+                        <h4 class="text-right">Edit <?php echo $firstnameStored . " " . $surnameStored . "'s" ?> Profile</h4>
+                        <span class="font-weight-bold"><?php echo $username ?></span>
+                        <input id="userID" value="<?php echo $_SESSION['id']; ?>" hidden>
                     </div>
 
                     <div class="row mt-2">
@@ -179,7 +186,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-6">
                             <label class="labels">Gender</label>
                             <select name="gender" id="gender" class="form-select" value="Female">
-                                <option <?php echo ($genderStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $genderStored ?></option>
                                 <option>Male</option>
                                 <option>Female</option>
                                 <option>Non-binary</option>
@@ -191,7 +197,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-6">
                             <label class="labels">Seeking</label>
                             <select name="seeking" id="seeking" class="form-select">
-                                <option <?php echo ($seekingStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $seekingStored ?></option>
                                 <option>Male</option>
                                 <option>Female</option>
                                 <option>All</option>
@@ -201,7 +206,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-12">
                             <label class="labels">Smoker</label>
                             <select name="smoker" id="smoker" class="form-select">
-                                <option <?php echo ($smokerStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $smokerStored ?></option>
                                 <option>Non Smoker</option>
                                 <option>Social Smoker</option>
                                 <option>Yes</option>
@@ -211,7 +215,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-12">
                             <label class="labels">Drinker</label>
                             <select name="drinker" id="drinker" class="form-select">
-                                <option <?php echo ($drinkerStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $drinkerStored ?></option>
                                 <option>Never</option>
                                 <option>Social Drinker</option>
                                 <option>Most Days</option>
@@ -221,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                         <div class="col-md-12">
                             <label class="labels">Employment</label>
-                            <input name="employment" id="employment" type="text" class="form-control" placeholder="enter employment" value="<?php echo $employmentStored ?>">
+                            <input name="employment" id="employment" type="text" class="form-control" placeholder="enter employment" value="">
                         </div>
 
                     </div>
@@ -231,7 +234,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-12">
                             <label class="labels">Student</label>
                             <select name="student" id="student" class="form-select">
-                                <option <?php echo ($studentStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $studentStored ?></option>
                                 <option>No</option>
                                 <option>Yes</option>
                             </select>
@@ -239,12 +241,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                         <div class="col-md-12">
                             <label class="labels">College</label>
-                            <input name="college" id="college" type="text" class="form-control" placeholder="enter college" value="<?php echo $collegeStored ?>">
+                            <input name="college" id="college" type="text" class="form-control" placeholder="enter college" value="">
                         </div>
 
                         <div class="col-md-12">
                             <label class="labels">Degree</label>
-                            <input name="degree" id="degree" type="text" class="form-control" placeholder="enter degree" value="<?php echo $degreeStored ?>">
+                            <input name="degree" id="degree" type="text" class="form-control" placeholder="enter degree" value="">
                         </div>
 
                     </div>
@@ -252,7 +254,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-6">
                             <label class="labels">Interests</label>
                             <select name="interest1" id="interest1" class="form-select">
-                                <option <?php echo (isset($interestStored[0])) ? 'selected>' . $interestStored[0] : 'value="" selected>---Select An Interest---' ?></option>
                                 <option value="del">Remove this interest</option>
                                 <option>Animals</option>
                                 <option>Art</option>
@@ -282,7 +283,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-6">
                             <label class="labels">Interests</label>
                             <select name="interest2" id="interest2" class="form-select">
-                                <option <?php echo (isset($interestStored[1])) ? 'selected>' . $interestStored[1] : 'value="" selected>---Select An Interest---' ?></option>
                                 <option value="del">Remove this interest</option>
                                 <option>Animals</option>
                                 <option>Art</option>
@@ -312,7 +312,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-6">
                             <label class="labels">Interests</label>
                             <select name="interest3" id="interest3" class="form-select">
-                                <option <?php echo (isset($interestStored[2])) ? 'selected>' . $interestStored[2] : 'value="" selected>---Select An Interest---' ?></option>
                                 <option value="del">Remove this interest</option>
                                 <option>Animals</option>
                                 <option>Art</option>
@@ -342,7 +341,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-6">
                             <label class="labels">Interests</label>
                             <select name="interest4" id="interest4" class="form-select">
-                                <option <?php echo (isset($interestStored[3])) ? 'selected>' . $interestStored[3] : 'value="" selected>---Select An Interest---' ?></option>
                                 <option value="del">Remove this interest</option>
                                 <option>Animals</option>
                                 <option>Art</option>
@@ -376,7 +374,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col-md-6">
                             <label class="labels">County</label>
                             <select name="county" id="county" class="form-select">
-                                <option <?php echo ($countyStored == NULL) ? 'value="" selected>---Select An Option---' : 'selected>' . $countyStored ?></option>
                                 <option>Antrim</option>
                                 <option>Armagh</option>
                                 <option>Carlow</option>
@@ -414,7 +411,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                         <div class="col-md-6">
                             <label class="labels">Town</label>
-                            <input name="town" id="town" type="text" class="form-control" placeholder="enter town" value="<?php echo $townStored ?>">
+                            <input name="town" id="town" type="text" class="form-control" placeholder="enter town" value="">
                         </div>
 
                     </div>
@@ -430,17 +427,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="row mt-3">
                             <label class="labels">Add Pictures</label>
                             <input type="file" id="myFile" name="filename" multiple accept=".png,.jpg,.jpeg">
+                        </div>
+                    </div>
             </form>
-        </div>
-        </div>
 
-        <div class="mt-5 text-center">
-            <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
-        </div>
-
-        </div>
-
-        </form>
+            <div class="mt-5 text-center">
+                <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
+            </div>
 
         </div>
 
