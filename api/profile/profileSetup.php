@@ -7,6 +7,9 @@ if (isset($_POST['function'])) {
         case "fetch_interests":
             fetch_interests($_POST['id']);
             break;
+        case "update_profile":
+            update_profile();
+            break;
     }
 }
 
@@ -75,4 +78,108 @@ function fetch_interests($id)
     $result = array('status' => 403, 'message' => 'User Interests unable to be retrieved.');
     echo json_encode($result);
     return;
+}
+
+/**
+ * 
+ */
+function update_profile()
+{
+    require "../../includes/database.php";
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        // Fill in all variables from the form
+        $id = $_POST['id'];
+        $interestStored = $_POST['interestStored'];
+        $gender = $_POST['gender'];
+        $seeking = $_POST['seeking'];
+        $smoker = $_POST['smoker'];
+        $drinker = $_POST['drinker'];
+        $employment = $_POST['employment'];
+        $student = $_POST['student'];
+        if ($student == 'Yes') $student = 1;
+        else if ($student == 'No') $student = 0;
+        else $student = NULL;
+        $college = $_POST['college'];
+        $degree = $_POST['degree'];
+        $county = $_POST['county'];
+        $town = $_POST['town'];
+        $description = $_POST['description'];
+        //fill the current selection of interests from the form. 
+        //compare it to the storedInterests which were retrieve on page load. store the items changed in $storedChanged and the new input in $newInput using array_diff
+        $interestsInput = array($_POST['interest1'], $_POST['interest2'], $_POST['interest3'], $_POST['interest4']);
+
+        $storedChanged = array_diff($interestStored, $interestsInput);
+        $newInput = array_diff($interestsInput, $interestStored);
+
+        //Loop through storedChanged and newInput in order to make the necessary updates inserts and deletions 
+        for ($i = 0; $i < 4; $i++) {
+            if (empty($storedChanged[$i]) && empty($newInput[$i])) {
+                //both are empty. Either no change to this interest and no new input OR theres no interest here and nothing entered
+            } else if (empty($storedChanged[$i])) {
+                //The stored interest is was empty but the new input is not. sql statement must insert new interest
+                $newInterest = "INSERT INTO interests (interests.UserID, interests.InterestID) 
+                SELECT ?, availableinterests.InterestID 
+                FROM availableinterests 
+                WHERE availableinterests.InterestName = ?;";
+                if ($stmt = mysqli_prepare($con, $newInterest)) {
+                    //bind params to statement
+                    if (mysqli_stmt_bind_param($stmt, "is", $id, $newInput[$i])) {
+                        mysqli_stmt_execute($stmt);
+                    }
+                    mysqli_stmt_close($stmt);
+                }
+            } else if ($newInput[$i] = "del") {
+                //The stored interest was changed but the input is "del". the stored interest must be deleted
+                $DeleteInterest = "DELETE I FROM interests I 
+                JOIN availableinterests A
+                WHERE I.UserID = ? AND A.InterestName = ?;";
+                if ($stmt = mysqli_prepare($con, $DeleteInterest)) {
+                    //bind params to statement
+                    if (mysqli_stmt_bind_param($stmt, "is", $id, $storedChanged[$i])) {
+                        mysqli_stmt_execute($stmt);
+                    }
+                    mysqli_stmt_close($stmt);
+                }
+            } else {
+                //if both are set we must update stored interest with new input
+                $updateInterest = "UPDATE interests I join availableinterests A 
+                ON A.InterestID = I.InterestID
+                SET I.InterestID = (SELECT availableinterests.InterestID from availableinterests WHERE availableinterests.InterestName = ? )
+                WHERE  I.UserID = ?
+                AND A.InterestName = ?;";
+                if ($stmt = mysqli_prepare($con, $updateInterest)) {
+                    //bind params to statement
+                    if (mysqli_stmt_bind_param($stmt, "sis", $newInput[$i], $id, $storedChanged[$i])) {
+                        mysqli_stmt_execute($stmt);
+                    }
+                    mysqli_stmt_close($stmt);
+                }
+            }
+        }
+        $inputs = array(&$gender, &$seeking, &$smoker, &$drinker, &$employment, &$student, &$college, &$degree, &$county, &$town, &$description);
+        foreach ($inputs as &$value) {
+            if ($value == "" || $value == '') {
+                $value = null;
+            }
+        }
+        //insert data from profile into the database or change values in the database
+        $profileInsertUpdate = "INSERT INTO profile (UserID, Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE UserID = VALUES(UserID), Smoker= VALUES(Smoker), Drinker= VALUES(Drinker), Gender= VALUES(Gender), Seeking = VALUES(Seeking), Description = VALUES(Description), County = VALUES(County), Town = VALUES(Town), Employment = VALUES(Employment), Student = VALUES(Student), College = VALUES(College), Degree = VALUES(Degree);";
+        if ($stmt = mysqli_prepare($con, $profileInsertUpdate)) {
+            //bind params to statement
+            if (mysqli_stmt_bind_param($stmt, "issssssssiss", $id, $smoker, $drinker, $gender, $seeking, $description, $county, $town, $employment, $student, $college, $degree)) {
+                //Attempt to execute the sql statement
+                if (mysqli_stmt_execute($stmt)) {
+                    $result = array('status' => 200, 'message' => "User's profile has been updated succesfully");
+                } else {
+                    $result = array('status' => 403, 'message' => "Unable to update the User's profile");
+                    echo json_encode($result);
+                    return;
+                }
+            }
+            mysqli_stmt_close($stmt);
+        }
+        mysqli_close($con);
+        echo json_encode($result);
+        return;
+    }
 }

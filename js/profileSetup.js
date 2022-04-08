@@ -22,7 +22,7 @@ function fetchProfile() {
         delete data[0].degree;
         delete data[0].town;
         fillProfileDetails(data[0]);
-        fetchInterests(id);
+        fetchInterests();
         document.getElementById("spinner").remove();
         document.getElementById("hide").removeAttribute("hidden");
       } else {
@@ -42,9 +42,9 @@ function fetchProfile() {
 
 /**
  * Fetches the Interests of the specified User ID
- * @param {number} id
  */
-function fetchInterests(id) {
+function fetchInterests() {
+  const id = $("#userID").val();
   $.ajax({
     method: "POST",
     url: "../api/profile/profileSetup.php",
@@ -111,10 +111,12 @@ function fillInterestDetails(data) {
       newChild.innerHTML = "---Select An Interest---";
       newChild.setAttribute("selected", "");
       parentElement.prepend(newChild);
+      nodes.forEach((node) => {
+        if (node.value == "del") parentElement.removeChild(node);
+      });
     } else {
       nodes.forEach((node) => {
         if (node.value == value) parentElement.removeChild(node);
-        return;
       });
       newChild.value = value;
       newChild.innerHTML = value;
@@ -122,6 +124,110 @@ function fillInterestDetails(data) {
       parentElement.prepend(newChild);
     }
   }
+}
+
+/**
+ *
+ * @param {Event} event
+ */
+function updateProfile(event) {
+  event.preventDefault();
+  const id = $("#userID").val();
+  $.ajax({
+    method: "POST",
+    url: "../api/profile/profileSetup.php",
+    data: {
+      function: "fetch_interests",
+      id: id,
+    },
+    success: (response) => {
+      let data = JSON.parse(response);
+      if (data.status == 200) sendUpdate(data[0]);
+      else {
+        let newChild = document.createElement("div");
+        newChild.id = "warning";
+        newChild.classList.add("alert", "alert-danger");
+        newChild.innerHTML = data.message;
+        let parentElement = document.getElementById("hide");
+        parentElement.prepend(newChild);
+        document.getElementById("spinner").remove();
+        document.getElementById("form").remove();
+        document.getElementById("hide").removeAttribute("hidden");
+      }
+    },
+  });
+}
+
+function sendUpdate(interestStored) {
+  const id = $("#userID").val();
+  const gender = $("#gender").val();
+  const seeking = $("#seeking").val();
+  const smoker = $("#smoker").val();
+  const drinker = $("#drinker").val();
+  const employment = $("#employment").val();
+  const student = $("#student").val();
+  const college = $("#college").val();
+  const degree = $("#degree").val();
+  const interest1 = $("#interest1").val();
+  const interest2 = $("#interest2").val();
+  const interest3 = $("#interest3").val();
+  const interest4 = $("#interest4").val();
+  const county = $("#county").val();
+  const town = $("#town").val();
+  const description = $("#description").val();
+  $.ajax({
+    method: "POST",
+    url: "../api/profile/profileSetup.php",
+    data: {
+      function: "update_profile",
+      id: id,
+      gender: gender,
+      seeking: seeking,
+      smoker: smoker,
+      drinker: drinker,
+      employment: employment,
+      student: student,
+      college: college,
+      degree: degree,
+      interest1: interest1,
+      interest2: interest2,
+      interest3: interest3,
+      interest4: interest4,
+      county: county,
+      town: town,
+      description: description,
+      interestStored: interestStored,
+    },
+    success: (response) => {
+      let data = JSON.parse(response);
+      if (data.status == 200) {
+        let newChild = document.createElement("div");
+        newChild.id = "warning";
+        newChild.classList.add("alert", "alert-success");
+        newChild.innerHTML = data.message;
+        // let parentElement = document.getElementById("main");
+        // parentElement.prepend(newChild);
+        document.getElementById("main").replaceWith(newChild);
+        document.body.classList.add("d-flex", "flex-column", "min-vh-100");
+        // document.getElementById("main").classList.add("vh-100");
+        // document.getElementById("hide").removeAttribute("hidden");
+        window.setTimeout(
+          () => (window.location.href = "../profile.php"),
+          1125
+        );
+      } else {
+        let newChild = document.createElement("div");
+        newChild.id = "warning";
+        newChild.classList.add("alert", "alert-danger");
+        newChild.innerHTML = data.message;
+        let parentElement = document.getElementById("hide");
+        parentElement.prepend(newChild);
+        document.getElementById("spinner").remove();
+        document.getElementById("form").remove();
+        document.getElementById("hide").removeAttribute("hidden");
+      }
+    },
+  });
 }
 
 $(document).on("ready", fetchProfile());
