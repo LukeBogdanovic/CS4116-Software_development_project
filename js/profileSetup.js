@@ -13,10 +13,52 @@ function fetchProfile() {
     success: (response) => {
       let data = JSON.parse(response);
       if (data.status == 200) {
+        if (!data[0].username && !data[0].firstname && !data[0].surname) {
+          $.ajax({
+            method: "POST",
+            url: "../api/profile/profileSetup.php",
+            data: { function: "fetch_user_data", id: id },
+            success: (response) => {
+              let data = JSON.parse(response);
+              if (data.status == 200) {
+                document.getElementById(
+                  "userFirst"
+                ).innerHTML = `Create ${data[0].firstname} ${data[0].surname}'s Profile`;
+                document.getElementById("username").innerHTML =
+                  data[0].username;
+              } else {
+                let newChild = document.createElement("div");
+                newChild.id = "warning";
+                newChild.classList.add("alert", "alert-danger");
+                newChild.innerHTML = data.message;
+                let parentElement = document.getElementById("hide");
+                parentElement.prepend(newChild);
+                document.getElementById("spinner").remove();
+                document.getElementById("form").remove();
+                document.getElementById("hide").removeAttribute("hidden");
+              }
+            },
+          });
+        } else {
+          document.getElementById("username").innerHTML = data[0].username;
+          document.getElementById(
+            "userFirst"
+          ).innerHTML = `Edit ${data[0].firstname} ${data[0].surname}'s Profile`;
+        }
         document.getElementById("employment").value = data[0].employment;
-        document.getElementById("college").value = data[0].college;
-        document.getElementById("degree").value = data[0].degree;
+        if (data[0].student != "Yes") {
+          document.getElementById("college").disabled = true;
+          document.getElementById("degree").disabled = true;
+        } else {
+          document.getElementById("college").value = data[0].college;
+          document.getElementById("degree").value = data[0].degree;
+        }
         document.getElementById("town").value = data[0].town;
+        document.getElementById("description").innerHTML = data[0].description;
+        delete data[0].username;
+        delete data[0].firstname;
+        delete data[0].surname;
+        delete data[0].dob;
         delete data[0].employment;
         delete data[0].college;
         delete data[0].degree;
@@ -132,70 +174,72 @@ function fillInterestDetails(data) {
  */
 function updateProfile(event) {
   event.preventDefault();
-  const id = $("#userID").val();
-  $.ajax({
-    method: "POST",
-    url: "../api/profile/profileSetup.php",
-    data: {
-      function: "fetch_interests",
-      id: id,
-    },
-    success: (response) => {
-      let data = JSON.parse(response);
-      if (data.status == 200) sendUpdate(data[0]);
-      else {
-        let newChild = document.createElement("div");
-        newChild.id = "warning";
-        newChild.classList.add("alert", "alert-danger");
-        newChild.innerHTML = data.message;
-        let parentElement = document.getElementById("hide");
-        parentElement.prepend(newChild);
-        document.getElementById("spinner").remove();
-        document.getElementById("form").remove();
-        document.getElementById("hide").removeAttribute("hidden");
-      }
-    },
-  });
+  if (checkNullFields()) {
+    const id = $("#userID").val();
+    $.ajax({
+      method: "POST",
+      url: "../api/profile/profileSetup.php",
+      data: {
+        function: "fetch_interests",
+        id: id,
+      },
+      success: (response) => {
+        let data = JSON.parse(response);
+        if (data.status == 200) sendUpdate(data[0]);
+        else {
+          let newChild = document.createElement("div");
+          newChild.id = "warning";
+          newChild.classList.add("alert", "alert-danger");
+          newChild.innerHTML = data.message;
+          let parentElement = document.getElementById("hide");
+          parentElement.prepend(newChild);
+          document.getElementById("spinner").remove();
+          document.getElementById("form").remove();
+          document.getElementById("hide").removeAttribute("hidden");
+        }
+      },
+    });
+  }
 }
 
 function sendUpdate(interestStored) {
   const id = $("#userID").val();
-  const gender = $("#gender").val();
-  const seeking = $("#seeking").val();
-  const smoker = $("#smoker").val();
-  const drinker = $("#drinker").val();
-  const employment = $("#employment").val();
-  const student = $("#student").val();
-  const college = $("#college").val();
-  const degree = $("#degree").val();
-  const interest1 = $("#interest1").val();
-  const interest2 = $("#interest2").val();
-  const interest3 = $("#interest3").val();
-  const interest4 = $("#interest4").val();
-  const county = $("#county").val();
-  const town = $("#town").val();
-  const description = $("#description").val();
+  const updatedGender = $("#gender").val();
+  const updatedSeeking = $("#seeking").val();
+  const updatedSmoker = $("#smoker").val();
+  const updatedDrinker = $("#drinker").val();
+  const updatedEmployment = $("#employment").val();
+  const updatedStudent = $("#student").val();
+  const updatedCollege = $("#college").val();
+  const updatedDegree = $("#degree").val();
+  const updatedInterest1 = $("#interest1").val();
+  const updatedInterest2 = $("#interest2").val();
+  const updatedInterest3 = $("#interest3").val();
+  const updatedInterest4 = $("#interest4").val();
+  const updatedCounty = $("#county").val();
+  const updatedTown = $("#town").val();
+  const updatedDescription = $("#description").val();
   $.ajax({
     method: "POST",
     url: "../api/profile/profileSetup.php",
     data: {
       function: "update_profile",
       id: id,
-      gender: gender,
-      seeking: seeking,
-      smoker: smoker,
-      drinker: drinker,
-      employment: employment,
-      student: student,
-      college: college,
-      degree: degree,
-      interest1: interest1,
-      interest2: interest2,
-      interest3: interest3,
-      interest4: interest4,
-      county: county,
-      town: town,
-      description: description,
+      gender: updatedGender,
+      seeking: updatedSeeking,
+      smoker: updatedSmoker,
+      drinker: updatedDrinker,
+      employment: updatedEmployment,
+      student: updatedStudent,
+      college: updatedCollege,
+      degree: updatedDegree,
+      interest1: updatedInterest1,
+      interest2: updatedInterest2,
+      interest3: updatedInterest3,
+      interest4: updatedInterest4,
+      county: updatedCounty,
+      town: updatedTown,
+      description: updatedDescription,
       interestStored: interestStored,
     },
     success: (response) => {
@@ -205,12 +249,8 @@ function sendUpdate(interestStored) {
         newChild.id = "warning";
         newChild.classList.add("alert", "alert-success");
         newChild.innerHTML = data.message;
-        // let parentElement = document.getElementById("main");
-        // parentElement.prepend(newChild);
         document.getElementById("main").replaceWith(newChild);
         document.body.classList.add("d-flex", "flex-column", "min-vh-100");
-        // document.getElementById("main").classList.add("vh-100");
-        // document.getElementById("hide").removeAttribute("hidden");
         window.setTimeout(
           () => (window.location.href = "../profile.php"),
           1125
@@ -230,4 +270,54 @@ function sendUpdate(interestStored) {
   });
 }
 
+/**
+ * Checks if all the fields that are required are filled
+ */
+function checkNullFields() {
+  let phrase = "---Select An Option---";
+  let gender = true,
+    seeking = true,
+    smoker = true,
+    drinker = true,
+    description = true,
+    county = true;
+  if ($("#gender").val() == phrase) {
+    document.getElementById("gender").classList.add("is-invalid");
+    gender = false;
+  }
+  if ($("#seeking").val() == phrase) {
+    document.getElementById("seeking").classList.add("is-invalid");
+    seeking = false;
+  }
+  if ($("#smoker").val() == phrase) {
+    document.getElementById("smoker").classList.add("is-invalid");
+    smoker = false;
+  }
+  if ($("#drinker").val() == phrase) {
+    document.getElementById("drinker").classList.add("is-invalid");
+    drinker = false;
+  }
+  if (!$("#description").val()) {
+    document.getElementById("description").classList.add("is-invalid");
+    description = false;
+  }
+  if ($("#county").val() == phrase) {
+    document.getElementById("county").classList.add("is-invalid");
+    county = false;
+  }
+  let validity =
+    gender && seeking && smoker && drinker && description && county;
+  return validity;
+}
+
 $(document).on("ready", fetchProfile());
+
+$("#student").on("change", function () {
+  if ($(this).val() == "Yes") {
+    document.getElementById("college").disabled = false;
+    document.getElementById("degree").disabled = false;
+  } else {
+    document.getElementById("college").disabled = true;
+    document.getElementById("degree").disabled = true;
+  }
+});

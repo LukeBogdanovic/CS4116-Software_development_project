@@ -10,6 +10,9 @@ if (isset($_POST['function'])) {
         case "update_profile":
             update_profile();
             break;
+        case "fetch_user_data":
+            fetch_user_data();
+            break;
     }
 }
 
@@ -21,16 +24,20 @@ function fetch_profile($id)
 {
     require "../../includes/database.php";
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        $fetchProfile = "SELECT Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree FROM profile WHERE userID = ?";
+        $fetchProfile = "SELECT user.Username, user.Firstname, user.Surname, user.DateOfBirth,
+        profile.Smoker, profile.Drinker, profile.Gender, profile.Seeking, profile.Description, profile.County, profile.Town, profile.Employment, profile.Student, profile.College, profile.Degree 
+        FROM profile JOIN user 
+        ON user.UserID = profile.UserID 
+        WHERE user.userID = ?";
         if ($stmt = mysqli_prepare($con, $fetchProfile)) {
             mysqli_stmt_bind_param($stmt, "i", $id);
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
                 //bind results of search to user variable 
-                mysqli_stmt_bind_result($stmt, $smokerStored, $drinkerStored, $genderStored, $seekingStored, $descriptionStored, $countyStored, $townStored, $employmentStored, $studentStored, $collegeStored, $degreeStored);
+                mysqli_stmt_bind_result($stmt, $username, $firstnameStored, $surnameStored, $dobStored, $smokerStored, $drinkerStored, $genderStored, $seekingStored, $descriptionStored, $countyStored, $townStored, $employmentStored, $studentStored, $collegeStored, $degreeStored);
                 mysqli_stmt_fetch($stmt);
                 ($studentStored == 0) ? $studentStored = 'No' : $studentStored = 'Yes';
-                $user = array('smoker' => $smokerStored, 'drinker' => $drinkerStored, 'gender' => $genderStored, 'seeking' => $seekingStored, 'description' => $descriptionStored, 'county' => $countyStored, 'town' => $townStored, 'employment' => $employmentStored, 'student' => $studentStored, 'college' => $collegeStored, 'degree' => $degreeStored);
+                $user = array('username' => $username, 'firstname' => $firstnameStored, 'surname' => $surnameStored, 'dob' => $dobStored, 'smoker' => $smokerStored, 'drinker' => $drinkerStored, 'gender' => $genderStored, 'seeking' => $seekingStored, 'description' => $descriptionStored, 'county' => $countyStored, 'town' => $townStored, 'employment' => $employmentStored, 'student' => $studentStored, 'college' => $collegeStored, 'degree' => $degreeStored);
                 $result = array('status' => 200, 'message' => 'User profile details found.');
                 array_push($result, $user);
                 echo json_encode($result);
@@ -107,10 +114,8 @@ function update_profile()
         //fill the current selection of interests from the form. 
         //compare it to the storedInterests which were retrieve on page load. store the items changed in $storedChanged and the new input in $newInput using array_diff
         $interestsInput = array($_POST['interest1'], $_POST['interest2'], $_POST['interest3'], $_POST['interest4']);
-
         $storedChanged = array_diff($interestStored, $interestsInput);
         $newInput = array_diff($interestsInput, $interestStored);
-
         //Loop through storedChanged and newInput in order to make the necessary updates inserts and deletions 
         for ($i = 0; $i < 4; $i++) {
             if (empty($storedChanged[$i]) && empty($newInput[$i])) {
@@ -174,6 +179,34 @@ function update_profile()
                     $result = array('status' => 403, 'message' => "Unable to update the User's profile");
                     echo json_encode($result);
                     return;
+                }
+            }
+            mysqli_stmt_close($stmt);
+        }
+        mysqli_close($con);
+        echo json_encode($result);
+        return;
+    }
+}
+
+
+function fetch_user_data()
+{
+    require "../../includes/database.php";
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $stmt = "SELECT user.Username, user.firstname, user.surname FROM user WHERE user.UserID = ?";
+        if ($stmt = mysqli_prepare($con, $stmt)) {
+            if (mysqli_stmt_bind_param($stmt, "i", $_POST['id'])) {
+                if (mysqli_stmt_execute($stmt)) {
+                    mysqli_stmt_store_result($stmt);
+                    mysqli_stmt_bind_result($stmt, $username, $firstname, $surname);
+                    $result = array('status' => 200, 'message' => "User's data has been retrieved");
+                    if (mysqli_stmt_num_rows($stmt) == 1) {
+                        mysqli_stmt_fetch($stmt);
+                        array_push($result, array('username' => $username, 'firstname' => $firstname, 'surname' => $surname));
+                    }
+                } else {
+                    $result = array('status' => 403, 'message' => "User's data unable to be retrieved. Try again later.");
                 }
             }
             mysqli_stmt_close($stmt);

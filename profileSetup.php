@@ -1,5 +1,4 @@
 <?php
-require_once "includes/database.php";
 session_start();
 /* Checking if the user is not logged in 
 * If user is not logged in: the user is redirected to the login page and the script exits 
@@ -8,139 +7,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("location: login.php");
     exit;
 }
-
-$smokerStored = $drinkerStored = $genderStored = $seekingStored =  $descriptionStored = $countyStored = $townStored = $employmentStored = $studentStored = $collegeStored = $degreeStored = NULL;
-
-$id = $_SESSION["id"];
-
-//fetch users profile info, in next satement fetch their interests
-$fetchProfile = "SELECT user.Username, user.Firstname, user.Surname, user.DateOfBirth,
-profile.Smoker, profile.Drinker, profile.Gender, profile.Seeking, profile.Description, profile.County, profile.Town, profile.Employment, profile.Student, profile.College, profile.Degree 
-FROM profile JOIN user 
-ON user.UserID = profile.UserID 
-WHERE user.userID = ?";
-if ($stmt = mysqli_prepare($con, $fetchProfile)) {
-    mysqli_stmt_bind_param($stmt, "i", $id);
-    if (mysqli_stmt_execute($stmt)) {
-        mysqli_stmt_store_result($stmt);
-        //bind results of search to user variable 
-        mysqli_stmt_bind_result($stmt, $username, $firstnameStored, $surnameStored, $dobStored, $smokerStored, $drinkerStored, $genderStored, $seekingStored, $descriptionStored, $countyStored, $townStored, $employmentStored, $studentStored, $collegeStored, $degreeStored);
-        mysqli_stmt_fetch($stmt);
-        ($studentStored == 0) ? $studentStored = 'No' : $studentStored = 'Yes';
-    }
-}
-
-//fetch interests, has issues
-$fetchInterests = "SELECT availableinterests.interestName FROM interests JOIN availableinterests ON interests.InterestID = availableinterests.InterestID WHERE interests.UserID = ? ORDER BY availableinterests.InterestID ASC;";
-if ($stmt = mysqli_prepare($con, $fetchInterests)) {
-    $interestStored = [];
-    mysqli_stmt_bind_param($stmt, "i", $id);
-    if (mysqli_stmt_execute($stmt)) {
-        mysqli_stmt_store_result($stmt);
-        mysqli_stmt_bind_result($stmt, $interestname);
-        if (mysqli_stmt_num_rows($stmt) > 0) {
-            //put retrieved Interests in the interestStored array
-            while (mysqli_stmt_fetch($stmt)) {
-                array_push($interestStored, $interestname);
-            }
-        }
-    }
-}
-
-// if ($_SERVER['REQUEST_METHOD'] == "POST") {
-//     // Fill in all variables from the form
-//     $gender = $_POST['gender'];
-//     $seeking = $_POST['seeking'];
-//     $smoker = $_POST['smoker'];
-//     $drinker = $_POST['drinker'];
-//     $employment = $_POST['employment'];
-//     $student = $_POST['student'];
-//     if ($student == 'Yes') {
-//         $student = 1;
-//     } else if ($student == 'No') {
-//         $student = 0;
-//     } else {
-//         $student = NULL;
-//     }
-//     $college = $_POST['college'];
-//     $degree = $_POST['degree'];
-//     $county = $_POST['county'];
-//     $town = $_POST['town'];
-//     $description = $_POST['description'];
-//     //fill the current selection of interests from the form. 
-//     //compare it to the storedInterests which were retrieve on page load. store the items changed in $storedChanged and the new input in $newInput using array_diff
-//     $interestsInput = array($_POST['interest1'], $_POST['interest2'], $_POST['interest3'], $_POST['interest4']);
-
-//     $storedChanged = array_diff($interestStored, $interestsInput);
-//     $newInput = array_diff($interestsInput, $interestStored);
-
-//     //Loop through storedChanged and newInput in order to make the necessary updates inserts and deletions 
-//     for ($i = 0; $i < 4; $i++) {
-//         if (empty($storedChanged[$i]) && empty($newInput[$i])) {
-//             //both are empty. Either no change to this interest and no new input OR theres no interest here and nothing entered
-//         } else if (empty($storedChanged[$i])) {
-//             //The stored interest is was empty but the new input is not. sql statement must insert new interest
-//             $newInterest = "INSERT INTO interests (interests.UserID, interests.InterestID) 
-//             SELECT ?, availableinterests.InterestID 
-//             FROM availableinterests 
-//             WHERE availableinterests.InterestName = ?;";
-//             if ($stmt = mysqli_prepare($con, $newInterest)) {
-//                 //bind params to statement
-//                 if (mysqli_stmt_bind_param($stmt, "is", $id, $newInput[$i])) {
-//                     mysqli_stmt_execute($stmt);
-//                 }
-//                 mysqli_stmt_close($stmt);
-//             }
-//         } else if ($newInput[$i] = "del") {
-//             //The stored interest was changed but the input is "del". the stored interest must be deleted
-//             $DeleteInterest = "DELETE I FROM interests I 
-//             JOIN availableinterests A
-//             WHERE I.UserID = ? AND A.InterestName = ?;";
-//             if ($stmt = mysqli_prepare($con, $DeleteInterest)) {
-//                 //bind params to statement
-//                 if (mysqli_stmt_bind_param($stmt, "is", $id, $storedChanged[$i])) {
-//                     mysqli_stmt_execute($stmt);
-//                 }
-//                 mysqli_stmt_close($stmt);
-//             }
-//         } else {
-//             //if both are set we must update stored interest with new input
-//             $updateInterest = "UPDATE interests I join availableinterests A 
-//             ON A.InterestID = I.InterestID
-//             SET I.InterestID = (SELECT availableinterests.InterestID from availableinterests WHERE availableinterests.InterestName = ? )
-//             WHERE  I.UserID = ?
-//             AND A.InterestName = ?;";
-//             if ($stmt = mysqli_prepare($con, $updateInterest)) {
-//                 //bind params to statement
-//                 if (mysqli_stmt_bind_param($stmt, "sis", $newInput[$i], $id, $storedChanged[$i])) {
-//                     mysqli_stmt_execute($stmt);
-//                 }
-//                 mysqli_stmt_close($stmt);
-//             }
-//         }
-//     }
-
-//     $inputs = array(&$gender, &$seeking, &$smoker, &$drinker, &$employment, &$student, &$college, &$degree, &$county, &$town, &$description);
-//     foreach ($inputs as &$value) {
-//         if ($value == "" || $value == '') {
-//             $value = null;
-//         }
-//     }
-
-//     //insert data from profile into the database or change values in the database
-//     $profileInsertUpdate = "INSERT INTO profile (UserID, Smoker, Drinker, Gender, Seeking, Description, County, Town, Employment, Student, College, Degree) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE UserID = VALUES(UserID), Smoker= VALUES(Smoker), Drinker= VALUES(Drinker), Gender= VALUES(Gender), Seeking = VALUES(Seeking), Description = VALUES(Description), County = VALUES(County), Town = VALUES(Town), Employment = VALUES(Employment), Student = VALUES(Student), College = VALUES(College), Degree = VALUES(Degree);";
-//     if ($stmt = mysqli_prepare($con, $profileInsertUpdate)) {
-//         //bind params to statement
-//         if (mysqli_stmt_bind_param($stmt, "issssssssiss", $id, $smoker, $drinker, $gender, $seeking, $description, $county, $town, $employment, $student, $college, $degree)) {
-//             //Attempt to execute the sql statement
-//             if (mysqli_stmt_execute($stmt)) {
-//             }
-//         }
-//         mysqli_stmt_close($stmt);
-//     }
-//     mysqli_close($con);
-// }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -158,33 +24,25 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
 </head>
 
 <body>
-
     <?php
     require_once "includes/navbar.php";
     ?>
-
     <main id="main">
-
         <div class="d-flex vh-100 justify-content-center" id="spinner">
             <div class="spinner-border" role="status"></div>
         </div>
         <div class="container mt-5 mb-5" id="hide" hidden>
-
             <form class="d-flex justify-content-center" id="form" method="POST">
-
                 <div class="col-md-6">
-
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Edit <?php echo $firstnameStored . " " . $surnameStored . "'s" ?> Profile</h4>
-                        <span class="font-weight-bold"><?php echo $username ?></span>
+                        <h4 id="userFirst" class="text-right"></h4>
+                        <span id="username" class="font-weight-bold"></span>
                         <input id="userID" value="<?php echo $_SESSION['id']; ?>" hidden>
                     </div>
-
                     <div class="row mt-2">
-
                         <div class="col-md-6">
                             <label class="labels">Gender</label>
-                            <select name="gender" id="gender" class="form-select" value="Female">
+                            <select name="gender" id="gender" class="form-select">
                                 <option>Male</option>
                                 <option>Female</option>
                                 <option>Non-binary</option>
@@ -192,7 +50,6 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                                 <option>Prefer not to say</option>
                             </select>
                         </div>
-
                         <div class="col-md-6">
                             <label class="labels">Seeking</label>
                             <select name="seeking" id="seeking" class="form-select">
@@ -201,7 +58,6 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                                 <option>All</option>
                             </select>
                         </div>
-
                         <div class="col-md-12">
                             <label class="labels">Smoker</label>
                             <select name="smoker" id="smoker" class="form-select">
@@ -210,7 +66,6 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                                 <option>Yes</option>
                             </select>
                         </div>
-
                         <div class="col-md-12">
                             <label class="labels">Drinker</label>
                             <select name="drinker" id="drinker" class="form-select">
@@ -220,16 +75,12 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                                 <option>Constantly</option>
                             </select>
                         </div>
-
                         <div class="col-md-12">
                             <label class="labels">Employment</label>
                             <input name="employment" id="employment" type="text" class="form-control" placeholder="enter employment" value="">
                         </div>
-
                     </div>
-
                     <div class="row mt-3">
-
                         <div class="col-md-12">
                             <label class="labels">Student</label>
                             <select name="student" id="student" class="form-select">
@@ -237,17 +88,14 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                                 <option>Yes</option>
                             </select>
                         </div>
-
                         <div class="col-md-12">
                             <label class="labels">College</label>
                             <input name="college" id="college" type="text" class="form-control" placeholder="enter college" value="">
                         </div>
-
                         <div class="col-md-12">
                             <label class="labels">Degree</label>
                             <input name="degree" id="degree" type="text" class="form-control" placeholder="enter degree" value="">
                         </div>
-
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-6">
@@ -367,9 +215,7 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                             </select>
                         </div>
                     </div>
-
                     <div class="row mt-3">
-
                         <div class="col-md-6">
                             <label class="labels">County</label>
                             <select name="county" id="county" class="form-select">
@@ -407,21 +253,17 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                                 <option>Wicklow</option>
                             </select>
                         </div>
-
                         <div class="col-md-6">
                             <label class="labels">Town</label>
                             <input name="town" id="town" type="text" class="form-control" placeholder="enter town" value="">
                         </div>
-
                     </div>
-
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="labels">Bio</label>
-                            <textarea name="description" id="description" maxlength="512" type="text" class="form-control" rows="5" placeholder="enter bio"><?php echo $descriptionStored ?></textarea>
+                            <textarea name="description" id="description" maxlength="512" type="text" class="form-control" rows="5" placeholder="enter bio"></textarea>
                         </div>
                     </div>
-
                     <div class="d-flex justify-content-center">
                         <div class="row mt-3">
                             <label class="labels">Add Pictures</label>
@@ -432,17 +274,11 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                         <button class="btn btn-primary profile-button" onclick="updateProfile(event);" type="submit">Save Profile</button>
                     </div>
             </form>
-
-
-
         </div>
-
     </main>
-
     <?php
     require_once "includes/footer.php";
     ?>
-
 </body>
 
 </html>
