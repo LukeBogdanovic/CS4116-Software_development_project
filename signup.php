@@ -18,8 +18,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     <link href="css/login.css" rel="stylesheet" type="text/css">
     <link href="css/utils.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="js/registration.js"></script>
+    <script src="js/registration.js" defer></script>
 </head>
 
 <body>
@@ -36,7 +37,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                         <form onsubmit="registerNewUser(event);" method="POST" id="signupform">
                             <div class="form-floating mb-4">
-                                <input name="username" type="text" data-toggle="tooltip" class="form-control form-control-lg" id="username" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores.">
+                                <input name="username" type="text" data-toggle="tooltip" class="form-control form-control-lg" id="username" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." pattern="^(\d?)([a-zA-Z]?)([_]?).{0,16}*$">
                                 <label for="username">Username</label>
                                 <span id="usermsg"></span>
                             </div>
@@ -59,12 +60,12 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                                 <span id="emailmsg"></span>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="password" type="password" data-toggle="tooltip" class="form-control form-control-lg" id="pwd" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long.">
+                                <input name="password" type="password" data-toggle="tooltip" class="form-control form-control-lg" id="pwd" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-?$£!*()&^%_@]).{8,16}">
                                 <label for="password">Password</label>
                                 <span id="pwdmsg"></span>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="confirmpassword" type="password" class="form-control form-control-lg" id="confirmpwd" placeholder="Confirm Password">
+                                <input name="confirmpassword" type="password" class="form-control form-control-lg" id="confirmpwd" placeholder="Confirm Password" pattern="^(?=.*\d\S)(?=.*[a-z\S])(?=.*[A-Z\S])(?=.*[-?$£!*()&^%_@\S]).{8,16}*$">
                                 <label for="confirmpassword">Confirm password</label>
                                 <span id="confirmpwdmsg"></span>
                             </div>
@@ -81,6 +82,11 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             </div>
         </section>
     </div>
+    <script>
+        $(document).ready(() => {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
     <?php
     require_once "includes/footer.php";
     ?>

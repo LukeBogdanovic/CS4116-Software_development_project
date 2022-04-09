@@ -42,7 +42,7 @@ function loginUser(event) {
   });
 }
 
-$(document).on("keyup", () => {
+document.addEventListener("keyup", function () {
   if ($("#username").val() === "" || $("#pwd").val() === "") {
     $("#submit").prop("disabled", true);
   } else {

@@ -36,11 +36,11 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1" id="form">
                         <form onsubmit="loginUser(event);" method="POST" id="loginForm">
                             <div class="form-floating mb-4">
-                                <input name="username" type="text" id="username" class="form-control form-control-lg" pattern="[A-Za-z0-9_]{0,16}" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." />
+                                <input name="username" type="text" id="username" class="form-control form-control-lg" pattern="(?=.*\d)(?=.*[a-zA-Z])(?=.*[_]).{0,16}" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." />
                                 <label for="username">Username</label>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="password" type="password" id="pwd" class="form-control form-control-lg" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." />
+                                <input name="password" type="password" id="pwd" class="form-control form-control-lg" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-?$£!*()&^%_@]).{8,16}" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." />
                                 <label for="password">Password</label>
                             </div>
                             <div class="d-flex justify-content-around align-items-center mb-4">

@@ -157,7 +157,7 @@ $(document).on("keyup", function () {
   }
 });
 
-$("#username").on("keyup", function () {
+document.getElementById("username").addEventListener("keyup", function () {
   if ($(this).val().length > 16) {
     $("#usermsg")
       .html("Username must not exceed 16 characters")
@@ -167,7 +167,7 @@ $("#username").on("keyup", function () {
   }
 });
 
-$("#pwd").on("keyup", function () {
+document.getElementById("pwd").addEventListener("keyup", function () {
   if ($(this).val().length < 8) {
     $("#pwdmsg")
       .html("Password must be at least 8 characters")
@@ -181,14 +181,10 @@ $("#pwd").on("keyup", function () {
   }
 });
 
-$("#confirmpwd").on("keyup", function () {
+document.getElementById("confirmpwd").addEventListener("keyup", function () {
   if ($("#pwd").val() == $(this).val()) {
     $("#confirmpwdmsg").html("Matching").css("color", "green");
   } else {
     $("#confirmpwdmsg").html("Not Matching").css("color", "red");
   }
-});
-
-$(document).on("ready", function () {
-  $('[data-toggle="tooltip"]').tooltip();
 });
