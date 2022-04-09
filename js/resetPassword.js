@@ -213,7 +213,3 @@ function updatePage_Success(response) {
   // Inserting after element with id input
   $("#input").html(form);
 }
-
-$(document).on("ready", function () {
-  $('[data-toggle="tooltip"]').tooltip();
-});

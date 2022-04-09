@@ -1,6 +1,5 @@
 /**
- *
- * @param {Event} event
+ * Gets all users with a connection to the current logged in user
  */
 function getConnectedUsers() {
   const id = $("#userID").val();
@@ -34,6 +33,10 @@ function getConnectedUsers() {
   });
 }
 
+/**
+ * Adds data retrieved from the connection ajax request to the user card template
+ * @param {JSON} data
+ */
 function addUserCards(data) {
   const userCardTemplate = document.querySelector("[data-user-template]");
   const userCardContainer = document.querySelector(
@@ -57,6 +60,11 @@ function addUserCards(data) {
 
 $(document).on("ready", getConnectedUsers());
 
+/**
+ * Formats the data from yyyymmdd to ddmmyyyy
+ * @param {Date} inputDate
+ * @returns Date
+ */
 function formatDate(inputDate) {
   let datePart = inputDate.match(/\d+/g);
   let year = datePart[0];
