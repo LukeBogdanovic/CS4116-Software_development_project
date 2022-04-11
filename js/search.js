@@ -59,13 +59,12 @@ function addUserCards(data) {
     const age = card.querySelector("[data-age]");
     const body = card.querySelector("[data-body]");
     const userID = card.querySelector("[data-userid]");
-    const profileButton = card.querySelector("[data-profile-button]")
     header.textContent = `${user.firstname} ${user.surname}`;
     username.textContent = user.username;
     age.textContent = user.age;
     body.textContent = user.description;
     if(user.description.includes("has not created their profile yet")){
-      profileButton.remove()
+      userID.remove()
     } else {
       userID.setAttribute("href", "/profile.php?profile=" + user.userID);
     }
