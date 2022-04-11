@@ -1,10 +1,40 @@
 <?php
+require_once "includes/database.php";
 session_start();
 
-// Checking if the user is already logged in to the website and redirecting to Home if they are
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    header("location: home.php");
-    exit;
+if(isset($_GET["profile"])){
+  $id = $_GET["profile"];
+}else{
+  $id = $_SESSION["id"];
+}
+//fetch users profile info, in next satement fetch their interests
+$fetchProfile = "SELECT user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Smoker, profile.Drinker, profile.Gender, profile.Seeking, profile.Description, profile.County, profile.Town, profile.Employment, profile.Student, profile.College, profile.Degree FROM profile JOIN user ON user.UserID = profile.UserID WHERE user.userID = ?";
+if ($stmt = mysqli_prepare($con, $fetchProfile)) {
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    if (mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_store_result($stmt);
+        //bind results of search to user variable 
+        mysqli_stmt_bind_result($stmt, $username, $firstnameStored, $surnameStored, $dobStored, $smokerStored, $drinkerStored, $genderStored, $seekingStored, $descriptionStored, $countyStored, $townStored, $employmentStored, $studentStored, $collegeStored, $degreeStored);
+        mysqli_stmt_fetch($stmt);
+        ($studentStored==0) ? $studentStored='No': $studentStored = 'Yes';
+    }
+}
+
+//fetch interests, has issues
+$fetchInterests = "SELECT availableinterests.interestName FROM interests JOIN availableinterests ON interests.InterestID = availableinterests.InterestID WHERE interests.UserID = ? ORDER BY availableinterests.InterestID ASC;";
+if ($stmt = mysqli_prepare($con, $fetchInterests)) {
+    $interestStored = [];
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    if (mysqli_stmt_execute($stmt)) {
+    mysqli_stmt_store_result($stmt);
+        mysqli_stmt_bind_result($stmt, $interestname);
+        if (mysqli_stmt_num_rows($stmt) > 0) {
+        //put retrieved Interests in the interestStored array
+            while (mysqli_stmt_fetch($stmt)) {
+                array_push($interestStored, $interestname);
+            }
+        }
+    }
 }
 ?>
 
@@ -21,27 +51,27 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 <body class="text-center">
 <?php
     require_once "includes/navbar.php";
-    ?>
+?>
 
 <div class="container py-5">
 
-  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div id="profileCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="assets/images/profile_pic.png" class="img-fluid rounded mx-auto d-block w-50" alt="No Image">
+        <img src="assets/images/profile_pic.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
       </div>
       <div class="carousel-item">
-        <img src="assets/images/profile_pic.png" class="img-fluid rounded mx-auto d-block w-50" alt="No Image">
+        <img src="assets/images/1619563.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
       </div>
       <div class="carousel-item">
-        <img src="assets/images/profile_pic.png" class="img-fluid rounded mx-auto d-block w-50" alt="No Image">
+        <img src="assets/images/logo.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
       </div>
     </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <button class="carousel-control-prev" type="button" data-bs-target="#profileCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <button class="carousel-control-next" type="button" data-bs-target="#profileCarousel" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
@@ -54,97 +84,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                 <p class="mb-0">Full Name</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Smoker</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Drinker</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Gender</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Seeking</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">County</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Town</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Employment</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Student</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">College</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Degree</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
+                <p class="text-muted mb-0"><?php echo $firstnameStored . " " . $surnameStored ?></p>
               </div>
             </div>
             <hr>
@@ -153,7 +93,97 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                 <p class="mb-0">Description</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">Input</p>
+                <p class="text-muted mb-0"><?php echo $descriptionStored ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Smoker</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $smokerStored ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Drinker</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $drinkerStored ?> </p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Gender</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $genderStored ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Seeking</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $seekingStored ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">County</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $countyStored ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Town</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $townStored ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Employment</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $employmentStored ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Student</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $studentStored?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">College</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $collegeStored ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Degree</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $degreeStored ?></p>
               </div>
             </div>
           </div>
@@ -162,8 +192,8 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 
     <div class="align-items-center justify-content-center h-25">
         <a class="btn btn-secondary btn-outline-light btn-lg" style="background-color: #6D071A;" href="profileSetup.php" role="button">
-                                Edit
-            </a>
+          Edit
+        </a>
     </div>
     
     <?php
