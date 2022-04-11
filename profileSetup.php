@@ -8,7 +8,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -19,101 +18,207 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <link rel="icon" type="image/x-icon" href="assets/images/logo.PNG">
     <link rel="stylesheet" type="text/css" href="css/utils.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="js/profileSetup.js" defer></script>
 </head>
 
 <body>
-
     <?php
     require_once "includes/navbar.php";
     ?>
-
-    <main>
-
-        <div class="container mt-5 mb-5">
-
-            <div class="d-flex justify-content-center">
-
+    <main id="main">
+        <div class="d-flex vh-100 justify-content-center" id="spinner">
+            <div class="spinner-border" role="status"></div>
+        </div>
+        <div class="container mt-5 mb-5" id="hide" hidden>
+            <form class="d-flex justify-content-center" id="form" method="POST">
                 <div class="col-md-6">
-
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Edit Profile</h4>
-                        <span class="font-weight-bold"><?php echo $_SESSION['username'] ?></span>
+                        <h4 id="userFirst" class="text-right"></h4>
+                        <span id="username" class="font-weight-bold"></span>
+                        <input id="userID" value="<?php echo $_SESSION['id']; ?>" hidden>
                     </div>
-
                     <div class="row mt-2">
                         <div class="col-md-6">
-                            <label class="labels">Name</label>
-                            <input type="text" class="form-control" placeholder="first name" value="">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="labels">Surname</label>
-                            <input type="text" class="form-control" value="" placeholder="surname">
-                        </div>
-
-                        <div class="col-md-6">
                             <label class="labels">Gender</label>
-                            <select class="form-select">
+                            <select name="gender" id="gender" class="form-select">
                                 <option>Male</option>
                                 <option>Female</option>
+                                <option>Non-binary</option>
+                                <option>Other</option>
                                 <option>Prefer not to say</option>
                             </select>
                         </div>
-
-                        <div class="col-md-6"><label class="labels">Seeking</label>
-                            <select class="form-select">
+                        <div class="col-md-6">
+                            <label class="labels">Seeking</label>
+                            <select name="seeking" id="seeking" class="form-select">
                                 <option>Male</option>
                                 <option>Female</option>
-                                <option>Both</option>
+                                <option>All</option>
                             </select>
                         </div>
-
-                        <div class="col-md-12"><label class="labels">Smoker</label>
-                            <select class="form-select">
+                        <div class="col-md-12">
+                            <label class="labels">Smoker</label>
+                            <select name="smoker" id="smoker" class="form-select">
+                                <option>Non Smoker</option>
+                                <option>Social Smoker</option>
                                 <option>Yes</option>
-                                <option>No</option>
-                                <option>Sometimes</option>
                             </select>
                         </div>
-
+                        <div class="col-md-12">
+                            <label class="labels">Drinker</label>
+                            <select name="drinker" id="drinker" class="form-select">
+                                <option>Never</option>
+                                <option>Social Drinker</option>
+                                <option>Most Days</option>
+                                <option>Constantly</option>
+                            </select>
+                        </div>
                         <div class="col-md-12">
                             <label class="labels">Employment</label>
-                            <input type="text" class="form-control" placeholder="enter employment" value="">
+                            <input name="employment" id="employment" type="text" class="form-control" placeholder="enter employment" value="">
                         </div>
-
                     </div>
-
                     <div class="row mt-3">
-
-                        <div class="col-md-12"><label class="labels">Student</label>
-                            <select class="form-select">
-                                <option>Yes</option>
+                        <div class="col-md-12">
+                            <label class="labels">Student</label>
+                            <select name="student" id="student" class="form-select">
                                 <option>No</option>
-                                <option>Part-time</option>
+                                <option>Yes</option>
                             </select>
                         </div>
-
                         <div class="col-md-12">
                             <label class="labels">College</label>
-                            <input type="text" class="form-control" placeholder="enter college" value="">
+                            <input name="college" id="college" type="text" class="form-control" placeholder="enter college" value="">
                         </div>
-
                         <div class="col-md-12">
                             <label class="labels">Degree</label>
-                            <input type="text" class="form-control" placeholder="enter degree" value="">
+                            <input name="degree" id="degree" type="text" class="form-control" placeholder="enter degree" value="">
                         </div>
-
                     </div>
-
                     <div class="row mt-3">
-
                         <div class="col-md-6">
-                            <label class="labels">Town</label>
-                            <input type="text" class="form-control" placeholder="enter town" value="">
+                            <label class="labels">Interests</label>
+                            <select name="interest1" id="interest1" class="form-select">
+                                <option value="del">Remove this interest</option>
+                                <option>Animals</option>
+                                <option>Art</option>
+                                <option>Baking</option>
+                                <option>Board games</option>
+                                <option>Carpentry</option>
+                                <option>Computers</option>
+                                <option>Cooking</option>
+                                <option>DIY</option>
+                                <option>Drinking</option>
+                                <option>Fitness</option>
+                                <option>Food</option>
+                                <option>GAA</option>
+                                <option>Gardening</option>
+                                <option>Golf</option>
+                                <option>Movies</option>
+                                <option>Music</option>
+                                <option>Reading</option>
+                                <option>Role Playing Games</option>
+                                <option>Rugby</option>
+                                <option>Soccer</option>
+                                <option>TV</option>
+                                <option>Travelling</option>
+                                <option>Video Games</option>
+                            </select>
                         </div>
-
-                        <div class="col-md-6"><label class="labels">County</label>
-                            <select class="form-select">
+                        <div class="col-md-6">
+                            <label class="labels">Interests</label>
+                            <select name="interest2" id="interest2" class="form-select">
+                                <option value="del">Remove this interest</option>
+                                <option>Animals</option>
+                                <option>Art</option>
+                                <option>Baking</option>
+                                <option>Board games</option>
+                                <option>Carpentry</option>
+                                <option>Computers</option>
+                                <option>Cooking</option>
+                                <option>DIY</option>
+                                <option>Drinking</option>
+                                <option>Fitness</option>
+                                <option>Food</option>
+                                <option>GAA</option>
+                                <option>Gardening</option>
+                                <option>Golf</option>
+                                <option>Movies</option>
+                                <option>Music</option>
+                                <option>Reading</option>
+                                <option>Role Playing Games</option>
+                                <option>Rugby</option>
+                                <option>Soccer</option>
+                                <option>TV</option>
+                                <option>Travelling</option>
+                                <option>Video Games</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Interests</label>
+                            <select name="interest3" id="interest3" class="form-select">
+                                <option value="del">Remove this interest</option>
+                                <option>Animals</option>
+                                <option>Art</option>
+                                <option>Baking</option>
+                                <option>Board games</option>
+                                <option>Carpentry</option>
+                                <option>Computers</option>
+                                <option>Cooking</option>
+                                <option>DIY</option>
+                                <option>Drinking</option>
+                                <option>Fitness</option>
+                                <option>Food</option>
+                                <option>GAA</option>
+                                <option>Gardening</option>
+                                <option>Golf</option>
+                                <option>Movies</option>
+                                <option>Music</option>
+                                <option>Reading</option>
+                                <option>Role Playing Games</option>
+                                <option>Rugby</option>
+                                <option>Soccer</option>
+                                <option>TV</option>
+                                <option>Travelling</option>
+                                <option>Video Games</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Interests</label>
+                            <select name="interest4" id="interest4" class="form-select">
+                                <option value="del">Remove this interest</option>
+                                <option>Animals</option>
+                                <option>Art</option>
+                                <option>Baking</option>
+                                <option>Board games</option>
+                                <option>Carpentry</option>
+                                <option>Computers</option>
+                                <option>Cooking</option>
+                                <option>DIY</option>
+                                <option>Drinking</option>
+                                <option>Fitness</option>
+                                <option>Food</option>
+                                <option>GAA</option>
+                                <option>Gardening</option>
+                                <option>Golf</option>
+                                <option>Movies</option>
+                                <option>Music</option>
+                                <option>Reading</option>
+                                <option>Role Playing Games</option>
+                                <option>Rugby</option>
+                                <option>Soccer</option>
+                                <option>TV</option>
+                                <option>Travelling</option>
+                                <option>Video Games</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label class="labels">County</label>
+                            <select name="county" id="county" class="form-select">
                                 <option>Antrim</option>
                                 <option>Armagh</option>
                                 <option>Carlow</option>
@@ -148,42 +253,32 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                                 <option>Wicklow</option>
                             </select>
                         </div>
-
+                        <div class="col-md-6">
+                            <label class="labels">Town</label>
+                            <input name="town" id="town" type="text" class="form-control" placeholder="enter town" value="">
+                        </div>
                     </div>
-
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="labels">Bio</label>
-                            <textarea maxlength="512" type="text" class="form-control" placeholder="enter bio" value=""> </textarea>
+                            <textarea name="description" id="description" maxlength="512" type="text" class="form-control" rows="5" placeholder="enter bio"></textarea>
                         </div>
                     </div>
-
                     <div class="d-flex justify-content-center">
                         <div class="row mt-3">
                             <label class="labels">Add Pictures</label>
-                            <form action="/action_page.php">
-                                <input type="file" id="myFile" name="filename">
-                                <input type="submit">
-                            </form>
+                            <input type="file" id="myFile" name="filename" multiple accept=".png,.jpg,.jpeg">
                         </div>
                     </div>
-
                     <div class="mt-5 text-center">
-                        <button class="btn btn-primary profile-button" type="button">Save Profile</button>
+                        <button class="btn btn-primary profile-button" onclick="updateProfile(event);" type="submit">Save Profile</button>
                     </div>
-
-                </div>
-
-            </div>
-
+            </form>
         </div>
-
     </main>
-
     <?php
     require_once "includes/footer.php";
     ?>
-
 </body>
 
 </html>
