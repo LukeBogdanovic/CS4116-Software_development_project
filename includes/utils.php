@@ -57,7 +57,8 @@ function console_log($output, $with_script_tags  = true)
  * @param $date_of_birth String formatted yyyy-mm-dd
  * @return int
  */
-function get_age($date_of_birth){
+function get_age($date_of_birth)
+{
     //date in mm-dd-yyyy format; or it can be in other formats as well
     //explode the date to get month, day and year
     $date_of_birth = explode("-", $date_of_birth);
@@ -73,13 +74,20 @@ function get_age($date_of_birth){
  * @param $connectiondate String formatted yyyy-mm-dd
  * @return string
  */
-function date_difference($connectiondate){
+function date_difference($connectiondate, $type)
+{
     $connected = new DateTime($connectiondate);
     $now = new DateTime("now");
-    $interval = $connected->diff($now)->format('Connected %a days ago');
-    if($interval == 'Connected 0 days ago'){
-        return 'You connected today';
+    if ($type === "Connected") {
+        $interval = $connected->diff($now)->format('Connected %a days ago');
+        if ($interval == 'Connected 0 days ago') {
+            return 'You connected today';
+        }
+    } else {
+        $interval = $connected->diff($now)->format('Liked %a days ago');
+        if ($interval == 'Liked 0 days ago') {
+            return 'You Liked today';
+        }
     }
     return $interval;
-    
 }
