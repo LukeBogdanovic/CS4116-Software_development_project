@@ -33,10 +33,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         <div class="container py-5 h-5">
             <input name="search" type="text" id="search" class="form-control" placeholder="Search">
         </div>
-        <div class="col">
-            <label for="ageRange" class="form-label"></label>
-            <input type="range" class="form-range" id="ageRange" min="18" max="130">
-        </div>
         <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
             <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" id="user-cards" data-user-cards-container></div>
         </div>
@@ -49,8 +45,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                         <h5 class="card-subtitle mb-2 text-muted" data-username>Username</h5>
                         <h6 class="card-subtitle mb-2 text-muted" data-age>Age</h5>
                             <p class="card-content" data-body>Bio</p>
-                            <div class="text-center my-4">
-                                <a class="btn btn-dark">View Profile</a>
+                            <div class="text-center my-4" >
+                                <a class="btn btn-dark" data-profile-button data-userid href="">View Profile</a>
                             </div>
                     </div>
                 </div>
