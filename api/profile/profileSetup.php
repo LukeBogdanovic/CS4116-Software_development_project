@@ -13,6 +13,12 @@ if (isset($_POST['function'])) {
         case "fetch_user_data":
             fetch_user_data();
             break;
+        case "fetch_user_security":
+            fetch_user_security();
+            break;
+        case "update_security":
+            update_security();
+            break;
     }
 }
 
@@ -215,4 +221,77 @@ function fetch_user_data()
         echo json_encode($result);
         return;
     }
+}
+
+function fetch_user_security()
+{
+    require "../../includes/database.php";
+    $results = [];
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $stmt = "SELECT securityqa.SecurityQuestion, securityqa.SecurityAnswer FROM securityqa WHERE securityqa.UserID = ?";
+        if ($stmt = mysqli_prepare($con, $stmt)) {
+            if (mysqli_stmt_bind_param($stmt, "i", $_POST['id'])) {
+                if (mysqli_stmt_execute($stmt)) {
+                    mysqli_stmt_store_result($stmt);
+                    mysqli_stmt_bind_result($stmt, $securityQuestion, $securityAnswer);
+                    $result = array('status' => 200, 'message' => "User's Security details retrieved");
+                    $count = 1;
+                    while (mysqli_stmt_fetch($stmt)) {
+                        $results["securityQuestion{$count}"] = $securityQuestion;
+                        $results["securityAnswer{$count}"] = $securityAnswer;
+                        $count++;
+                    }
+                    $count = 1;
+                    while (count($results) < 4) {
+                        $results["securityQuestion{$count}"] = null;
+                        $results["securityAnswer{$count}"] = null;
+                        $count++;
+                    }
+                    array_push($result, $results);
+                } else {
+                    $result = array('status' => 403, 'message' => "User's Security Details unable to be retrieved");
+                }
+            }
+        }
+        mysqli_stmt_close($stmt);
+    }
+    mysqli_close($con);
+    echo json_encode($result);
+    return $results;
+}
+
+function update_security()
+{
+    require "../../includes/database.php";
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $stmt = "DELETE FROM securityqa WHERE UserID = ?";
+        if ($stmt = mysqli_prepare($con, $stmt)) {
+            if (mysqli_stmt_bind_param($stmt, "i", $_POST['id'])) {
+                if (mysqli_stmt_execute($stmt)) {
+                    $result = array('status' => 200, 'message' => "User Security Questions Deleted succesfully");
+                } else {
+                    $result = array('status' => 403, 'message' => "User Security Questions Unable to be Deleted");
+                }
+            }
+            mysqli_stmt_close($stmt);
+        }
+        $count = 1;
+        while ($count <= 2) {
+            $stmt = "INSERT INTO securityqa (UserID, SecurityQuestion, SecurityAnswer) VALUES (?,?,?);";
+            if ($stmt = mysqli_prepare($con, $stmt)) {
+                if (mysqli_stmt_bind_param($stmt, "iss", $_POST['id'], $_POST["securityQuestion{$count}"], $_POST["securityAnswer{$count}"])) {
+                    if (mysqli_stmt_execute($stmt)) {
+                        $result = array('status' => 200, 'message' => "Updated User's Security Details successfully");
+                    } else {
+                        $result = array('status' => 403, 'message' => "Unable to Update User's Security Details. Please try again later.");
+                    }
+                }
+            }
+            mysqli_stmt_close($stmt);
+            $count++;
+        }
+        mysqli_close($con);
+    }
+    echo json_encode($result);
+    return;
 }

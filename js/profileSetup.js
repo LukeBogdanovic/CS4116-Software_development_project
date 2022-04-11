@@ -65,8 +65,10 @@ function fetchProfile() {
         delete data[0].town;
         fillProfileDetails(data[0]);
         fetchInterests();
+        fetchSecurityQuestionsAnswers();
         document.getElementById("spinner").remove();
         document.getElementById("hide").removeAttribute("hidden");
+        document.getElementById("hide2").removeAttribute("hidden");
       } else {
         let newChild = document.createElement("div");
         newChild.id = "warning";
@@ -170,6 +172,32 @@ function fillInterestDetails(data) {
 
 /**
  *
+ * @param {Object} data
+ */
+function fillSecurityDetails(data) {
+  for (const [key, value] of Object.entries(data)) {
+    let parentElement = document.getElementById(key);
+    let nodes = parentElement.childNodes;
+    let newChild = document.createElement("option");
+    if (!value) {
+      newChild.value = "---Select An Option---";
+      newChild.innerHTML = "---Select An Option---";
+      newChild.setAttribute("selected", "");
+      parentElement.prepend(newChild);
+    } else {
+      nodes.forEach((node) => {
+        if (node.value == value) parentElement.removeChild(node);
+      });
+      newChild.value = value;
+      newChild.innerHTML = value;
+      newChild.setAttribute("selected", "");
+      parentElement.prepend(newChild);
+    }
+  }
+}
+
+/**
+ *
  * @param {Event} event
  */
 function updateProfile(event) {
@@ -202,6 +230,10 @@ function updateProfile(event) {
   }
 }
 
+/**
+ *
+ * @param {Array} interestStored
+ */
 function sendUpdate(interestStored) {
   const id = $("#userID").val();
   const updatedGender = $("#gender").val();
@@ -249,12 +281,7 @@ function sendUpdate(interestStored) {
         newChild.id = "warning";
         newChild.classList.add("alert", "alert-success");
         newChild.innerHTML = data.message;
-        document.getElementById("main").replaceWith(newChild);
-        document.body.classList.add("d-flex", "flex-column", "min-vh-100");
-        window.setTimeout(
-          () => (window.location.href = "../profile.php"),
-          1125
-        );
+        document.getElementById("hide").prepend(newChild);
       } else {
         let newChild = document.createElement("div");
         newChild.id = "warning";
@@ -321,3 +348,97 @@ $("#student").on("change", function () {
     document.getElementById("degree").disabled = true;
   }
 });
+
+/**
+ *
+ */
+function fetchSecurityQuestionsAnswers() {
+  const id = $("#userID").val();
+  $.ajax({
+    method: "POST",
+    url: "../api/profile/profileSetup.php",
+    data: {
+      function: "fetch_user_security",
+      id: id,
+    },
+    success: (response) => {
+      let data = JSON.parse(response);
+      if (data.status == 200) {
+        document.getElementById("securityAnswer1").value =
+          data[0].securityAnswer1;
+        document.getElementById("securityAnswer2").value =
+          data[0].securityAnswer2;
+        delete data[0].securityAnswer1;
+        delete data[0].securityAnswer2;
+        fillSecurityDetails(data[0]);
+        if ($("#securityQuestion1").val()) {
+          let parentElement = document.getElementById("securityQuestion2");
+          let nodes = parentElement.childNodes;
+          nodes.forEach((node) => {
+            if (node.value == $("#securityQuestion1").val())
+              parentElement.removeChild(node);
+          });
+        }
+        if ($("#securityQuestion2").val()) {
+          let parentElement = document.getElementById("securityQuestion1");
+          let nodes = parentElement.childNodes;
+          nodes.forEach((node) => {
+            if (node.value == $("#securityQuestion2").val())
+              parentElement.removeChild(node);
+          });
+        }
+      } else {
+        let newChild = document.createElement("div");
+        newChild.id = "warning";
+        newChild.classList.add("alert", "alert-danger");
+        newChild.innerHTML = data.message;
+        let parentElement = document.getElementById("hide2");
+        parentElement.prepend(newChild);
+        document.getElementById("form2").remove();
+      }
+    },
+  });
+}
+
+/**
+ *
+ * @param {Event} event
+ */
+function updateSecurityQuestionsAnswers(event) {
+  event.preventDefault();
+  const id = $("#userID").val();
+  const securityQuestion1 = $("#securityQuestion1").val();
+  const securityQuestion2 = $("#securityQuestion2").val();
+  const securityAnswer1 = $("#securityAnswer1").val();
+  const securityAnswer2 = $("#securityAnswer2").val();
+  $.ajax({
+    method: "POST",
+    url: "../api/profile/profileSetup.php",
+    data: {
+      function: "update_security",
+      id: id,
+      securityQuestion1: securityQuestion1,
+      securityQuestion2: securityQuestion2,
+      securityAnswer1: securityAnswer1,
+      securityAnswer2: securityAnswer2,
+    },
+    success: (response) => {
+      let data = JSON.parse(response);
+      if (data.status == 200) {
+        let newChild = document.createElement("div");
+        newChild.id = "warning";
+        newChild.classList.add("alert", "alert-success");
+        newChild.innerHTML = data.message;
+        let parentElement = document.getElementById("hide2");
+        parentElement.insertBefore(newChild, document.getElementById("form2"));
+      } else {
+        let newChild = document.createElement("div");
+        newChild.id = "warning";
+        newChild.classList.add("alert", "alert-danger");
+        newChild.innerHTML = data.message;
+        let parentElement = document.getElementById("hide2");
+        parentElement.insertBefore(newChild, document.getElementById("form2"));
+      }
+    },
+  });
+}

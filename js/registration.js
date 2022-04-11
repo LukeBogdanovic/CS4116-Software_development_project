@@ -114,7 +114,8 @@ function registerUser(
 }
 
 /**
- *
+ * Validates the email and password/confirmPassword fields entered by the user to see if they are valid/match
+ * the requirements set
  * @param {string} email
  * @param {string} password
  * @param {string} confirmPassword
