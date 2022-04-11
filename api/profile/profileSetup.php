@@ -103,11 +103,17 @@ function update_profile()
         $drinker = $_POST['drinker'];
         $employment = $_POST['employment'];
         $student = $_POST['student'];
-        if ($student == 'Yes') $student = 1;
-        else if ($student == 'No') $student = 0;
+        if ($student == 'Yes'){
+            $student = 1; 
+            $college = $_POST['college'];
+            $degree = $_POST['degree'];
+        } 
+        else if ($student == 'No') {
+            $student = 0;
+            $college = "";
+            $degree = "";
+        }
         else $student = NULL;
-        $college = $_POST['college'];
-        $degree = $_POST['degree'];
         $county = $_POST['county'];
         $town = $_POST['town'];
         $description = $_POST['description'];

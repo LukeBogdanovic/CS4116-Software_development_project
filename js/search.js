@@ -27,7 +27,7 @@ function getSearchResults(event) {
         if (document.getElementById("user-cards").children) {
           document.getElementById("user-cards").innerHTML = "";
         }
-        addUserCards(data[0]);
+        addUserCards(data[0], "[data-user-cards-container]");
       } else {
         if (!document.getElementById("warning")) {
           var newNode = document.createElement("div");
@@ -58,10 +58,17 @@ function addUserCards(data) {
     const username = card.querySelector("[data-username]");
     const age = card.querySelector("[data-age]");
     const body = card.querySelector("[data-body]");
+    const userID = card.querySelector("[data-userid]");
     header.textContent = `${user.firstname} ${user.surname}`;
     username.textContent = user.username;
     age.textContent = user.age;
     body.textContent = user.description;
+    if(user.description.includes("has not created their profile yet")){
+      userID.remove()
+    } else {
+      userID.setAttribute("href", "/profile.php?profile=" + user.userID);
+    }
+
     userCardContainer.append(card);
   });
 }
