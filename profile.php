@@ -2,16 +2,28 @@
 require_once "includes/database.php";
 session_start();
 
-if(isset($_GET["profile"])){
-  $id = $_GET["profile"];
-}else{
+if(empty($_GET["profile"])){
   $id = $_SESSION["id"];
+}else{
+  $id = $_GET["profile"];
 }
 // Checking if the user is already logged in to the website and redirecting to Home if they are
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("location: login.php");
     exit;
 }
+//must check if the dit button will be displayed
+$editable = false;
+//if GET profile is set, check if its = to current users ID. if its not set then its the users profile and they can edit it.
+//also show edit if current logged in user is admin 
+if(!empty($_GET["profile"])){
+  if ($_GET["profile"] == $_SESSION["id"] || $_SESSION['admin'] == true){
+    $editable=true;
+  }
+}else {
+  $editable=true;
+}
+
 //fetch users profile info, in next satement fetch their interests
 $fetchProfile = "SELECT user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Smoker, profile.Drinker, profile.Gender, profile.Seeking, profile.Description, profile.County, profile.Town, profile.Employment, profile.Student, profile.College, profile.Degree FROM profile JOIN user ON user.UserID = profile.UserID WHERE user.userID = ?";
 if ($stmt = mysqli_prepare($con, $fetchProfile)) {
@@ -40,6 +52,9 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
             }
         }
     }
+  }
+  while(count($interestStored)<4){
+    array_push($interestStored, $interestname);
   }
 ?>
 
@@ -101,6 +116,15 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0"><?php echo $descriptionStored ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Interests</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $interestStored[0] . " " . $interestStored[1] . " " . $interestStored[2] . " " . $interestStored[3] ?></p>
               </div>
             </div>
             <hr>
@@ -175,34 +199,43 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                 <p class="text-muted mb-0"><?php echo $studentStored?></p>
               </div>
             </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">College</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $collegeStored ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Degree</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $degreeStored ?></p>
-              </div>
-            </div>
+            <?php if(!empty($collegeStored)){
+              echo 
+              '<hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">College</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">' . $collegeStored . '</p>
+                </div>
+              </div>';
+            }
+            if(!empty($degreeStored)){
+              echo 
+              '<hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Degree</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">' . $degreeStored . '</p>
+                </div>
+              </div>';
+            } ?>
           </div>
         </div>
     </div>
-
-    <div class="align-items-center justify-content-center h-25">
-        <a class="btn btn-secondary btn-outline-light btn-lg" style="background-color: #6D071A;" href="profileSetup.php" role="button">
-            Edit
-        </a>
-    </div>
-
+    <?php
+      if($editable == true ){
+       echo 
+       '<div class="align-items-center justify-content-center h-25">
+          <a class="btn btn-lg submit" style="background-color: #6D071A;" href="profileSetup.php" role="button">
+              Edit
+          </a>
+        </div>' ;
+      }
+    ?>
     <?php
     require_once "includes/footer.php"
     ?>
