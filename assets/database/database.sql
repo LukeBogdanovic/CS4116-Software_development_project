@@ -23,9 +23,9 @@ SET
   --
   CREATE TABLE `user` (
     `UserID` int(11) NOT NULL AUTO_INCREMENT,
-    `Username` varchar(26) NOT NULL,
-    `Firstname` varchar(26) NOT NULL,
-    `Surname` varchar(26) NOT NULL,
+    `Username` varchar(32) NOT NULL,
+    `Firstname` varchar(32) NOT NULL,
+    `Surname` varchar(32) NOT NULL,
     `DateOfBirth` DATE NOT NULL,
     `Password` varchar(256) NOT NULL COMMENT 'hashed password',
     `Email` varchar(52) NOT NULL,
@@ -41,7 +41,7 @@ SET
   --
   CREATE TABLE `availableinterests` (
     `InterestID` int(2) NOT NULL AUTO_INCREMENT,
-    `InterestName` varchar(26) NOT NULL COMMENT 'The name of the interest',
+    `InterestName` varchar(32) NOT NULL COMMENT 'The name of the interest',
     PRIMARY KEY (InterestID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Show a list of available interests for registration search';
 -- --------------------------------------------------------
@@ -64,6 +64,7 @@ SET
   CREATE TABLE `interests` (
     `UserID` int(11) NOT NULL COMMENT 'Which user is this?',
     `InterestID` int(3) NOT NULL COMMENT 'Which interest do they have?',
+    Constraint PRIMARY KEY (UserID,InterestID),
     CONSTRAINT `Interests_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID),
     CONSTRAINT `Interests_ibfk_2` FOREIGN KEY (InterestID) REFERENCES availableinterests(InterestID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Interests of ALL users';
@@ -74,14 +75,9 @@ SET
   CREATE TABLE `profile` (
     `UserID` int(11) NOT NULL,
     `Smoker` enum('Smoker', 'Social Smoker', 'Non Smoker') NOT NULL COMMENT 'enum type because people can be social smokers',
-    `Drinker` enum(
-      'Constantly',
-      'Most days',
-      'Social Drinker',
-      'No'
-    ) NOT NULL COMMENT 'Enumerated type because there are several answers, but the available answers won''t change',
-    `Gender` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
-    `Seeking` enum('Female', 'Male', 'Other') NOT NULL COMMENT 'See Drinker comment',
+    `Drinker` enum('Constantly', 'Most days', 'Social Drinker','No') NOT NULL COMMENT 'Enumerated type because there are several answers, but the available answers won''t change',
+    `Gender` enum('Female', 'Male', 'Non-Binary', 'Other', 'Prefer not to say') NOT NULL COMMENT 'See Drinker comment',
+    `Seeking` enum('Female', 'Male', 'All') NOT NULL COMMENT 'See Drinker comment',
     `Description` varchar(512) NOT NULL COMMENT 'Store description as varchar, limit user to 512 characters',
     `County` enum(
       'Antrim',
@@ -117,11 +113,12 @@ SET
       'Wexford',
       'Wicklow'
     ) NOT NULL,
-    `Town` varchar(26),
-    `Employment` VARCHAR(26) DEFAULT 'Unemployed',
+    `Town` varchar(32),
+    `Employment` VARCHAR(32) DEFAULT 'Unemployed',
     `Student` tinyint(1) NOT NULL DEFAULT 0,
-    `College` VARCHAR(26),
-    `Degree` VARCHAR(26),
+    `College` VARCHAR(32),
+    `Degree` VARCHAR(32),
+    UNIQUE (userID),
     CONSTRAINT `profile_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 -- --------------------------------------------------------
@@ -254,29 +251,66 @@ SET
   -- Insert data for avaialble interests into available interest table
   -- 
   INSERT INTO availableinterests VALUES
-  (NULL, 'Rugby'),
-  (NULL, 'GAA'),
-  (NULL, 'Soccer'),
-  (NULL, 'Golf'),
-  (NULL, 'Fitness'),
-  (NULL, 'Video games'),
-  (NULL, 'Board games'),
-  (NULL, 'Role Playing Games'),
-  (NULL, 'Music'),
-  (NULL, 'TV'),
-  (NULL, 'Movies'),
-  (NULL, 'Art'),
-  (NULL, 'Travelling'),
-  (NULL, 'Animals'),
-  (NULL, 'Reading'),
-  (NULL, 'Computers'),
-  (NULL, 'Drinking'),
-  (NULL, 'Food'),
-  (NULL, 'Baking'),
-  (NULL, 'Cooking'),
-  (NULL, 'Carpentry'),
-  (NULL, 'Gardening'),
-  (NULL, 'DIY');
+  (NULL,'Animals'),
+  (NULL,'Art'),
+  (NULL,'Baking'),
+  (NULL,'Board games'),
+  (NULL,'Carpentry'),
+  (NULL,'Computers'),
+  (NULL,'Cooking'),
+  (NULL,'DIY'),
+  (NULL,'Drinking'),
+  (NULL,'Fitness'),
+  (NULL,'Food'),
+  (NULL,'GAA'),
+  (NULL,'Gardening'),
+  (NULL,'Golf'),
+  (NULL,'Movies'),
+  (NULL,'Music'),
+  (NULL,'Reading'),
+  (NULL,'Role Playing Games'),
+  (NULL,'Rugby'),
+  (NULL,'Soccer'),
+  (NULL,'TV'),
+  (NULL,'Travelling'),
+  (NULL,'Video games');
+
+-- --------------------------------------------------------
+  --
+  -- Insert data for Interests into the interest table
+  -- 
+  INSERT INTO interests VALUES 
+  (1,5),
+  (1,8),
+  (1,9),
+  (1,2),
+  (2,4),
+  (2,12),
+  (2,18),
+  (3,17),
+  (3,16),
+  (3,4),
+  (3,7),
+  (4,19),
+  (4,17),
+  (4,12),
+  (4,4),
+  (5,5),
+  (5,6),
+  (5,8),
+  (5,9),
+  (6,12),
+  (6,15),
+  (6,16),
+  (6,18),
+  (7,19),
+  (7,15),
+  (7,4),
+  (7,12),
+  (8,15),
+  (8,18),
+  (8,7),
+  (8,21);
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
   /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
   /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
