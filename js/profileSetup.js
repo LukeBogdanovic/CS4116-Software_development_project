@@ -233,10 +233,10 @@ function sendUpdate(interestStored) {
       student: updatedStudent,
       college: updatedCollege,
       degree: updatedDegree,
-      interest1: updatedInterest1,
-      interest2: updatedInterest2,
-      interest3: updatedInterest3,
-      interest4: updatedInterest4,
+      0: updatedInterest1,
+      1: updatedInterest2,
+      2: updatedInterest3,
+      3: updatedInterest4,
       county: updatedCounty,
       town: updatedTown,
       description: updatedDescription,
@@ -252,7 +252,7 @@ function sendUpdate(interestStored) {
         document.getElementById("main").replaceWith(newChild);
         document.body.classList.add("d-flex", "flex-column", "min-vh-100");
         window.setTimeout(
-          () => (window.location.href = "../profile.php?profile="+id),
+          () => (window.location.href = `../profile.php?profile=${id}`),
           1125
         );
       } else {

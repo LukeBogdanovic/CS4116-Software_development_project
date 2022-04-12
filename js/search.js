@@ -107,13 +107,13 @@ function likeUser(event, userID2) {
       if (data.status == 200) {
         document
           .getElementById(`user${userID2}`)
-          .classList.replace("btn-danger", "btn-success");
+          .classList.replace("submit", "btn-success");
         document.getElementById(`user${userID2}`).innerHTML = "User Liked";
         document.getElementById(`user${userID2}`).setAttribute("disabled", "");
         window.setTimeout(() => {
           document
             .getElementById(`user${userID2}`)
-            .classList.replace("btn-success", "btn-danger");
+            .classList.replace("btn-success", "submit");
           document.getElementById(`user${userID2}`).innerHTML = "Like User";
           document.getElementById(`user${userID2}`).removeAttribute("disabled");
         }, 2500);
@@ -130,6 +130,10 @@ function likeUser(event, userID2) {
   });
 }
 
+/**
+ *
+ * @param {String} userID2
+ */
 function checkUserConnection(userID2) {
   const userID1 = $("#userID").val();
   $.ajax({

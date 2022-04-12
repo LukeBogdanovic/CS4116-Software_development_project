@@ -46,7 +46,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                         <h6 class="card-subtitle mb-2 text-muted" data-age>Age</h5>
                             <p class="card-content" data-body>Bio</p>
                             <div class="text-center my-4">
-                                <a class="btn btn-danger" data-like>Like User</a>
+                                <a class="btn submit" data-like>Like User</a>
                                 <a class="btn btn-dark" data-profile>View Profile</a>
                             </div>
                     </div>
