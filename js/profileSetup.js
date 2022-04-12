@@ -252,7 +252,7 @@ function sendUpdate(interestStored) {
         document.getElementById("main").replaceWith(newChild);
         document.body.classList.add("d-flex", "flex-column", "min-vh-100");
         window.setTimeout(
-          () => (window.location.href = "../profile.php"),
+          () => (window.location.href = "../profile.php?profile="+id),
           1125
         );
       } else {

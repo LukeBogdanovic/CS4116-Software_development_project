@@ -30,7 +30,7 @@ function getSearchResults(event) {
         if (document.getElementById("user-cards").children) {
           document.getElementById("user-cards").innerHTML = "";
         }
-        addUserCards(data[0]);
+        addUserCards(data[0], "[data-user-cards-container]");
       } else {
         if (!document.getElementById("warning")) {
           var newNode = document.createElement("div");
@@ -71,10 +71,11 @@ function addUserCards(data) {
     userID.setAttribute("value", user.userID);
     userLike.setAttribute("onclick", `likeUser(event,${user.userID});`);
     userLike.setAttribute("id", `user${user.userID}`);
-    userProfile.setAttribute(
-      "onclick",
-      `viewUserProfile(event,${user.userID});`
-    );
+    if (user.description.includes("has not created their profile yet")) {
+      userProfile.remove();
+    } else {
+      userProfile.setAttribute("href", `/profile.php?profile=${user.userID}`);
+    }
     userCardContainer.append(card);
   });
 }

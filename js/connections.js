@@ -51,7 +51,7 @@ function addUserCards(data, type) {
     age.textContent = user.age;
     body.textContent = user.description;
     connectionDate.textContent = user.daysSinceConnection;
-    userID.setAttribute("value", user.userID);
+    userID.setAttribute("href", "/profile.php?profile=" + user.userID);
     userCardContainer.append(card);
   });
 }
