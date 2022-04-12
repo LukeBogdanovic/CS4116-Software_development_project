@@ -2,10 +2,10 @@
 require_once "includes/database.php";
 session_start();
 
-if(empty($_GET["profile"])){
-  $id = $_SESSION["id"];
-}else{
-  $id = $_GET["profile"];
+if (empty($_GET["profile"])) {
+    $id = $_SESSION["id"];
+} else {
+    $id = $_GET["profile"];
 }
 // Checking if the user is already logged in to the website and redirecting to Home if they are
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
@@ -16,12 +16,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 $editable = false;
 //if GET profile is set, check if its = to current users ID. if its not set then its the users profile and they can edit it.
 //also show edit if current logged in user is admin 
-if(!empty($_GET["profile"])){
-  if ($_GET["profile"] == $_SESSION["id"] || $_SESSION['admin'] == true){
-    $editable=true;
-  }
-}else {
-  $editable=true;
+if (!empty($_GET["profile"])) {
+    if ($_GET["profile"] == $_SESSION["id"] || $_SESSION['admin'] == true) {
+        $editable = true;
+    }
+} else {
+    $editable = true;
 }
 
 //fetch users profile info, in next satement fetch their interests
@@ -33,7 +33,7 @@ if ($stmt = mysqli_prepare($con, $fetchProfile)) {
         //bind results of search to user variable 
         mysqli_stmt_bind_result($stmt, $username, $firstnameStored, $surnameStored, $dobStored, $smokerStored, $drinkerStored, $genderStored, $seekingStored, $descriptionStored, $countyStored, $townStored, $employmentStored, $studentStored, $collegeStored, $degreeStored);
         mysqli_stmt_fetch($stmt);
-        ($studentStored==0) ? $studentStored='No': $studentStored = 'Yes';
+        ($studentStored == 0) ? $studentStored = 'No' : $studentStored = 'Yes';
     }
 }
 
@@ -43,19 +43,19 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
     $interestStored = [];
     mysqli_stmt_bind_param($stmt, "i", $id);
     if (mysqli_stmt_execute($stmt)) {
-    mysqli_stmt_store_result($stmt);
+        mysqli_stmt_store_result($stmt);
         mysqli_stmt_bind_result($stmt, $interestname);
         if (mysqli_stmt_num_rows($stmt) > 0) {
-        //put retrieved Interests in the interestStored array
+            //put retrieved Interests in the interestStored array
             while (mysqli_stmt_fetch($stmt)) {
                 array_push($interestStored, $interestname);
             }
         }
     }
-  }
-  while(count($interestStored)<4){
+}
+while (count($interestStored) < 4) {
     array_push($interestStored, $interestname);
-  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -73,135 +73,133 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
 <body class="text-center">
     <?php
     require_once "includes/navbar.php";
-?>
-
+    ?>
     <div class="container py-5">
-
-  <div id="profileCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="assets/images/profile_pic.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
-      </div>
-      <div class="carousel-item">
-        <img src="assets/images/1619563.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
-      </div>
-      <div class="carousel-item">
-        <img src="assets/images/logo.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
-      </div>
-    </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#profileCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#profileCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-  </div>
+        <div id="profileCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="assets/images/profile_pic.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/images/1619563.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/images/logo.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#profileCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#profileCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
 
         <div class="card mb-4 mt-2">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Full Name</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $firstnameStored . " " . $surnameStored ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Description</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $descriptionStored ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Interests</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $interestStored[0] . " " . $interestStored[1] . " " . $interestStored[2] . " " . $interestStored[3] ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Smoker</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $smokerStored ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Drinker</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $drinkerStored ?> </p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Gender</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $genderStored ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Seeking</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $seekingStored ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">County</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $countyStored ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Town</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $townStored ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Employment</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $employmentStored ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Student</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $studentStored?></p>
-              </div>
-            </div>
-            <?php if(!empty($collegeStored)){
-              echo 
-              '<hr>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Full Name</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $firstnameStored . " " . $surnameStored ?></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Description</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $descriptionStored ?></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Interests</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $interestStored[0] . " " . $interestStored[1] . " " . $interestStored[2] . " " . $interestStored[3] ?></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Smoker</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $smokerStored ?></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Drinker</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $drinkerStored ?> </p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Gender</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $genderStored ?></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Seeking</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $seekingStored ?></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">County</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $countyStored ?></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Town</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $townStored ?></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Employment</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $employmentStored ?></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Student</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"><?php echo $studentStored ?></p>
+                    </div>
+                </div>
+                <?php if (!empty($collegeStored)) {
+                    echo
+                    '<hr>
               <div class="row">
                 <div class="col-sm-3">
                   <p class="mb-0">College</p>
@@ -210,10 +208,10 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                   <p class="text-muted mb-0">' . $collegeStored . '</p>
                 </div>
               </div>';
-            }
-            if(!empty($degreeStored)){
-              echo 
-              '<hr>
+                }
+                if (!empty($degreeStored)) {
+                    echo
+                    '<hr>
               <div class="row">
                 <div class="col-sm-3">
                   <p class="mb-0">Degree</p>
@@ -222,19 +220,19 @@ if ($stmt = mysqli_prepare($con, $fetchInterests)) {
                   <p class="text-muted mb-0">' . $degreeStored . '</p>
                 </div>
               </div>';
-            } ?>
-          </div>
+                } ?>
+            </div>
         </div>
     </div>
     <?php
-      if($editable == true ){
-       echo 
-       '<div class="align-items-center justify-content-center h-25">
+    if ($editable == true) {
+        echo
+        '<div class="align-items-center justify-content-center h-25">
           <a class="btn btn-lg submit" style="background-color: #6D071A;" href="profileSetup.php" role="button">
               Edit
           </a>
-        </div>' ;
-      }
+        </div>';
+    }
     ?>
     <?php
     require_once "includes/footer.php"
