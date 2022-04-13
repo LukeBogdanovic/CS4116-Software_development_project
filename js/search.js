@@ -55,6 +55,20 @@ function addUserCards(data) {
   const userCardContainer = document.querySelector(
     "[data-user-cards-container]"
   );
+  const userID = $("#userID").val();
+  let likedUsers;
+  $.ajax({
+    method: "POST",
+    async: false,
+    url: "../api/Connections/connections.php",
+    data: {
+      function: "get_Liked_Users",
+      id: userID,
+    },
+    success: (response) => {
+      likedUsers = JSON.parse(response);
+    },
+  });
   data.forEach((user) => {
     const card = userCardTemplate.content.cloneNode(true).children[0];
     const header = card.querySelector("[data-header]");
@@ -64,6 +78,7 @@ function addUserCards(data) {
     const userID = card.querySelector("[data-userid]");
     const userLike = card.querySelector("[data-like]");
     const userProfile = card.querySelector("[data-profile]");
+    card.setAttribute("id", `userCard${user.userID}`);
     header.textContent = `${user.firstname} ${user.surname}`;
     username.textContent = user.username;
     age.textContent = user.age;
@@ -76,6 +91,14 @@ function addUserCards(data) {
     } else {
       userProfile.setAttribute("href", `/profile.php?profile=${user.userID}`);
     }
+    likedUsers[0].forEach((likedUser) => {
+      if (
+        likedUser.userID == user.userID ||
+        user.userID == $("#userID").val()
+      ) {
+        userLike.remove();
+      }
+    });
     userCardContainer.append(card);
   });
 }
@@ -116,15 +139,11 @@ function likeUser(event, userID2) {
             .classList.replace("btn-success", "submit");
           document.getElementById(`user${userID2}`).innerHTML = "Like User";
           document.getElementById(`user${userID2}`).removeAttribute("disabled");
+          window.setTimeout(() => {
+            document.getElementById(`user${userID2}`).remove();
+          }, 2500);
         }, 2500);
         checkUserConnection(userID2);
-      } else {
-        document.getElementById(`user${userID2}`).innerHTML = "Try Again Later";
-        document.getElementById(`user${userID2}`).setAttribute("disabled", "");
-        window.setTimeout(() => {
-          document.getElementById(`user${userID2}`).innerHTML = "Like User";
-          document.getElementById(`user${userID2}`).removeAttribute("disabled");
-        }, 2500);
       }
     },
   });
@@ -147,7 +166,25 @@ function checkUserConnection(userID2) {
     success: (response) => {
       let data = JSON.parse(response);
       if (data.status == 200) {
+        let newNode = document.createElement("div");
+        newNode.id = "warning";
+        newNode.classList.add("alert", "alert-success");
+        newNode.innerHTML = data.message;
+        let parentDiv = document.getElementById("user-cards").parentElement;
+        parentDiv.prepend(newNode);
+        window.setTimeout(() => {
+          parentDiv.removeChild(newNode);
+        }, 2500);
       } else {
+        let newNode = document.createElement("div");
+        newNode.id = "warning";
+        newNode.classList.add("alert", "alert-danger");
+        newNode.innerHTML = data.message;
+        let parentDiv = document.getElementById("user-cards").parentElement;
+        parentDiv.prepend(newNode);
+        window.setTimeout(() => {
+          parentDiv.removeChild(newNode);
+        }, 2500);
       }
     },
   });
