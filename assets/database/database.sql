@@ -208,7 +208,7 @@ SET
     `UserID1` int(11) NOT NULL COMMENT 'User that has liked another user',
     `UserID2` int(11) NOT NULL COMMENT 'User that has been liked by another user',
     `LikedDate` DATE NOT NULL COMMENT 'When was the user liked?',
-    CONSTRAINT PRIMARY KEY (UserID1, UserID2),
+    PRIMARY KEY (UserID1, UserID2),
     CONSTRAINT `Liked_ibfk_1` FOREIGN KEY (UserID1) REFERENCES user(UserID),
     CONSTRAINT `Liked_ibfk_2` FOREIGN KEY (UserID2) REFERENCES user(UserID)
   ) ENGINE = INNODB DEFAULT CHARSET = latin1 COMMENT = 'Store the likes made between users';

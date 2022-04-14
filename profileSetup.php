@@ -32,13 +32,53 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             <div class="spinner-border" role="status"></div>
         </div>
         <section>
-            <div class="container mt-5 mb-5" id="hide" hidden>
-                <form class="d-flex justify-content-center" id="form" method="POST">
-                    <div class="col-md-6">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 id="userFirst" class="text-right"></h4>
-                            <span id="username" class="font-weight-bold"></span>
-                            <input id="userID" value="<?php echo $_SESSION['id']; ?>" hidden>
+        <div class="container mt-5 mb-5" id="hide" hidden>
+            <form class="d-flex justify-content-center" id="form" method="POST">
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 id="userFirst" class="text-right"></h4>
+                        <span id="username" class="font-weight-bold"></span>
+                        <input id="userID" value="<?php echo (isset($_GET['profile'])) ? $_GET['profile'] : $_SESSION['id'] ?>" hidden>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels">Gender</label>
+                            <select name="gender" id="gender" class="form-select">
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Non-binary</option>
+                                <option>Other</option>
+                                <option>Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Seeking</label>
+                            <select name="seeking" id="seeking" class="form-select">
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>All</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Smoker</label>
+                            <select name="smoker" id="smoker" class="form-select">
+                                <option>Non Smoker</option>
+                                <option>Social Smoker</option>
+                                <option>Yes</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Drinker</label>
+                            <select name="drinker" id="drinker" class="form-select">
+                                <option>Never</option>
+                                <option>Social Drinker</option>
+                                <option>Most Days</option>
+                                <option>Constantly</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Employment</label>
+                            <input name="employment" id="employment" type="text" class="form-control" placeholder="enter employment" value="">
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6">
