@@ -75,9 +75,7 @@ while (count($interestStored) < 4) {
     <?php
     require_once "includes/navbar.php";
     ?>
-
     <div class="container py-5">
-
         <div id="profileCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
