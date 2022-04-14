@@ -75,7 +75,12 @@ SET
   CREATE TABLE `profile` (
     `UserID` int(11) NOT NULL,
     `Smoker` enum('Smoker', 'Social Smoker', 'Non Smoker') NOT NULL COMMENT 'enum type because people can be social smokers',
-    `Drinker` enum('Constantly', 'Most days', 'Social Drinker', 'No') NOT NULL COMMENT 'Enumerated type because there are several answers, but the available answers won''t change',
+    `Drinker` enum(
+      'Constantly',
+      'Most days',
+      'Social Drinker',
+      'No'
+    ) NOT NULL COMMENT 'Enumerated type because there are several answers, but the available answers won''t change',
     `Gender` enum(
       'Female',
       'Male',
@@ -181,6 +186,7 @@ SET
       'Favourite teacher'
     ) NOT NULL COMMENT 'Users select which security question they are answering need to decide on these',
     `SecurityAnswer` varchar(256) NOT NULL COMMENT 'Users answer to their selected question',
+    CONSTRAINT PRIMARY KEY (UserID, SecurityQuestion),
     CONSTRAINT `SecurityAnswers_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store account recovery questions and answers for each user';
 -- --------------------------------------------------------
