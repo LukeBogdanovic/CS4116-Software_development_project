@@ -120,6 +120,9 @@ function fetchProfile() {
               document.getElementById("userLike").remove();
             }
           });
+          if (document.getElementById("userLike")) {
+            document.getElementById("userLike").removeAttribute("hidden");
+          }
         }
         document.getElementById("cont").removeAttribute("hidden");
       }
