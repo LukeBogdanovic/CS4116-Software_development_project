@@ -27,7 +27,7 @@ function loginUser(event) {
         parentDiv.replaceChild(newNode, document.getElementById("loginForm"));
         window.setTimeout(() => {
           window.location.href = "../home.php";
-        }, 5000);
+        }, 1250);
       } else {
         if (!document.getElementById("warning")) {
           let newNode = document.createElement("div");

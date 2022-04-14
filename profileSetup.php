@@ -37,7 +37,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 id="userFirst" class="text-right"></h4>
                         <span id="username" class="font-weight-bold"></span>
-                        <input id="userID" value="<?php echo $_SESSION['id']; ?>" hidden>
+                        <input id="userID" value="<?php echo (isset($_GET['profile'])) ? $_GET['profile'] : $_SESSION['id'] ?>" hidden>
                     </div>
                     <div class="row mt-2">
                         <div class="col-md-6">
