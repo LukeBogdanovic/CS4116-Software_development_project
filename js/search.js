@@ -91,14 +91,16 @@ function addUserCards(data) {
     } else {
       userProfile.setAttribute("href", `/profile.php?profile=${user.userID}`);
     }
-    likedUsers[0].forEach((likedUser) => {
-      if (
-        likedUser.userID == user.userID ||
-        user.userID == $("#userID").val()
-      ) {
-        userLike.remove();
-      }
-    });
+    if(likedUsers[0]){
+      likedUsers[0].forEach((likedUser) => {
+        if (
+          likedUser.userID == user.userID ||
+          user.userID == $("#userID").val()
+        ) {
+          userLike.remove();
+        }
+      });
+    };
     userCardContainer.append(card);
   });
 }
