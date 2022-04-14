@@ -11,6 +11,12 @@ if (isset($_POST['function'])) {
             if (isset($_POST['id']))
                 get_Liked_Users($_POST['id']);
             break;
+        case "like_user":
+            like_user();
+            break;
+        case "check_connection":
+            check_connection();
+            break;
     }
 }
 
@@ -71,5 +77,81 @@ function get_Liked_Users($id)
                 return;
             }
         }
+    }
+}
+
+function like_user()
+{
+    require "../../includes/database.php";
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $stmt = "SELECT * FROM liked WHERE UserID1 = ? AND UserID2 = ?";
+        if ($stmt = mysqli_prepare($con, $stmt)) {
+            if (mysqli_stmt_bind_param($stmt, "ii", $_POST['userID1'], $_POST['userID2'])) {
+                if (mysqli_stmt_execute($stmt)) {
+                    mysqli_stmt_store_result($stmt);
+                    if (mysqli_stmt_num_rows($stmt) < 1) {
+                        $liked = true;
+                    } else {
+                        $result = array('status' => 403, 'message' => "User liked previously");
+                        $liked = false;
+                    }
+                }
+            }
+            mysqli_stmt_close($stmt);
+        }
+        if ($liked) {
+            $stmt = "INSERT INTO liked (UserID1,UserID2,LikedDate) VALUES (?,?,?)";
+            if ($stmt = mysqli_prepare($con, $stmt)) {
+                $date = date("Y-m-d");
+                if (mysqli_stmt_bind_param($stmt, "iis", $_POST['userID1'], $_POST['userID2'], $date)) {
+                    if (mysqli_stmt_execute($stmt)) {
+                        $result = array('status' => 200, 'message' => "User liked succesfully.");
+                    } else {
+                        $result = array('status' => 403, 'message' => "Unable to like user.");
+                    }
+                }
+            }
+            mysqli_stmt_close($stmt);
+        }
+    }
+    mysqli_close($con);
+    echo json_encode($result);
+    return;
+}
+
+function check_connection()
+{
+    require "../../includes/database.php";
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $userID1 = $_POST['userID1'];
+        $userID2 = $_POST['userID2'];
+        $stmt = "SELECT * FROM liked WHERE(CASE WHEN liked.UserID1 = $userID2 THEN liked.UserID2 = $userID1 WHEN liked.UserID2 = $userID2 THEN liked.UserID1 = $userID1 ELSE NULL END);";
+        if ($stmt = mysqli_prepare($con, $stmt)) {
+            if (mysqli_stmt_execute($stmt)) {
+                mysqli_stmt_store_result($stmt);
+                if (mysqli_stmt_num_rows($stmt) == 2) {
+                    $connect = true;
+                } else {
+                    $connect = false;
+                }
+            }
+            mysqli_stmt_close($stmt);
+        }
+        if ($connect) {
+            $date = date("Y-m-d");
+
+            $stmt = "INSERT INTO connections (ConnectionID,userID1,userID2,ConnectionDate) VALUES (DEFAULT,$userID1,$userID2,?);";
+            if ($stmt = mysqli_prepare($con, $stmt)) {
+                if (mysqli_stmt_bind_param($stmt, "s", $date)) {
+                    if (mysqli_stmt_execute($stmt)) {
+                        $result = array('status' => 200, 'message' => "Connection added succesfully");
+                    }
+                }
+            }
+            mysqli_stmt_close($stmt);
+        }
+        mysqli_close($con);
+        echo json_encode($result);
+        return;
     }
 }

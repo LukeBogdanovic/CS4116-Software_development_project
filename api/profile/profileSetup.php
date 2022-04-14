@@ -97,29 +97,35 @@ function update_profile()
         // Fill in all variables from the form
         $id = $_POST['id'];
         $interestStored = $_POST['interestStored'];
+        $interestStored['0'] = $interestStored['interest1'];
+        $interestStored['1'] = $interestStored['interest2'];
+        $interestStored['2'] = $interestStored['interest3'];
+        $interestStored['3'] = $interestStored['interest4'];
+        unset($interestStored['interest1']);
+        unset($interestStored['interest2']);
+        unset($interestStored['interest3']);
+        unset($interestStored['interest4']);
         $gender = $_POST['gender'];
         $seeking = $_POST['seeking'];
         $smoker = $_POST['smoker'];
         $drinker = $_POST['drinker'];
         $employment = $_POST['employment'];
         $student = $_POST['student'];
-        if ($student == 'Yes'){
-            $student = 1; 
+        if ($student == 'Yes') {
+            $student = 1;
             $college = $_POST['college'];
             $degree = $_POST['degree'];
-        } 
-        else if ($student == 'No') {
+        } else if ($student == 'No') {
             $student = 0;
             $college = "";
             $degree = "";
-        }
-        else $student = NULL;
+        } else $student = NULL;
         $county = $_POST['county'];
         $town = $_POST['town'];
         $description = $_POST['description'];
         //fill the current selection of interests from the form. 
         //compare it to the storedInterests which were retrieve on page load. store the items changed in $storedChanged and the new input in $newInput using array_diff
-        $interestsInput = array($_POST['interest1'], $_POST['interest2'], $_POST['interest3'], $_POST['interest4']);
+        $interestsInput = array($_POST['0'], $_POST['1'], $_POST['2'], $_POST['3']);
         $storedChanged = array_diff($interestStored, $interestsInput);
         $newInput = array_diff($interestsInput, $interestStored);
         //Loop through storedChanged and newInput in order to make the necessary updates inserts and deletions 
@@ -139,11 +145,9 @@ function update_profile()
                     }
                     mysqli_stmt_close($stmt);
                 }
-            } else if ($newInput[$i] = "del") {
+            } else if ($newInput[$i] == "del") {
                 //The stored interest was changed but the input is "del". the stored interest must be deleted
-                $DeleteInterest = "DELETE I FROM interests I 
-                JOIN availableinterests A
-                WHERE I.UserID = ? AND A.InterestName = ?;";
+                $DeleteInterest = "DELETE I FROM interests I JOIN availableinterests A ON A.InterestID = I.InterestID WHERE I.UserID = ? AND A.InterestName = ?";
                 if ($stmt = mysqli_prepare($con, $DeleteInterest)) {
                     //bind params to statement
                     if (mysqli_stmt_bind_param($stmt, "is", $id, $storedChanged[$i])) {
@@ -194,7 +198,6 @@ function update_profile()
         return;
     }
 }
-
 
 function fetch_user_data()
 {
