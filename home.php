@@ -7,6 +7,75 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("location: login.php");
     exit;
 }
+
+require_once "includes/utils.php";
+require_once "includes/database.php";
+
+$id = $_SESSION['id'];
+
+$potentialUsers = [];
+$results = [];
+$result =[];
+//get current users gender and seeking preferences
+//used for validating suggestions 
+$getSeeking = "SELECT Seeking FROM profile WHERE userID = ?";
+if($stmt = mysqli_prepare($con,$getSeeking)){
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    if (mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_store_result($stmt);
+        mysqli_stmt_bind_result($stmt, $seeking);
+        mysqli_stmt_fetch($stmt);
+    }
+}
+
+//return array of userID's of users who share an interest with logged in user
+//array is formatted as id => reason  where reasonm is the interests matching
+$commonInterest = "SELECT I2.UserID, A.InterestName FROM interests I1 INNER JOIN interests I2 ON (I2.InterestID = I1.InterestID) JOIN availableinterests A ON (A.InterestID = I1.InterestID) WHERE I1.UserID = ? AND I2.UserID <> ?";
+if($stmt = mysqli_prepare($con, $commonInterest)){
+    mysqli_stmt_bind_param($stmt, "ii", $id, $id);
+    if (mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_store_result($stmt);
+        //bind results of search to user variable 
+        mysqli_stmt_bind_result($stmt, $userID, $interestShared);
+        if (mysqli_stmt_num_rows($stmt) > 0) {
+            $result = array('status' => 200, 'message' => 'Users found with similar interests');
+            // Put all retrieved UserIDs into results array
+            while (mysqli_stmt_fetch($stmt)) {
+                if(empty($potentialUsers[$userID])){
+                    $potentialUsers[$userID] = "You share these interests, ${interestShared}";
+                }else if ($potentialUsers[$userID]!=null){
+                    $potentialUsers[$userID] = "{$potentialUsers[$userID]}, {$interestShared}";
+                }
+            }
+        }
+    }
+}
+//return users from potentialUSers whos gender matches users preference
+$returnSuitableUsers = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE user.UserID = ? and profile.Gender = ?;";
+$suggestedUsers = [];
+foreach($potentialUsers as $key => $value){
+    if($stmt = mysqli_prepare($con, $returnSuitableUsers)){
+        mysqli_stmt_bind_param($stmt, "is", $key, $seeking);
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_store_result($stmt);
+            mysqli_stmt_bind_result($stmt, $userID, $username, $firstname, $surname, $dob, $description);
+            if (mysqli_stmt_num_rows($stmt) > 0) {
+                $result = array('status' => 200, 'message' => 'Users found matching search criteria');
+                // Put all retrieved UserIDs into results array
+                while (mysqli_stmt_fetch($stmt)) {
+                    $age = get_age($dob);
+                    //Create profile description string if profile descritpion returns null
+                    if(is_null($description)){
+                        $description = $firstname. ' ' . $surname . ' has not created their profile yet';
+                    }
+                    $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description, 'reason'=> $value);
+                    array_push($suggestedUsers, $user);
+                }
+            }
+        }
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +97,11 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <?php
     require_once "includes/navbar.php";
     ?>
-
+    <?php 
+    foreach($suggestedUsers as $value){
+        echo print_r($value);
+    }
+    ?>
     <?php
     require_once "includes/footer.php"
     ?>
