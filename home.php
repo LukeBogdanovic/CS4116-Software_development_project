@@ -41,10 +41,12 @@ if($stmt = mysqli_prepare($con, $commonInterest)){
             $result = array('status' => 200, 'message' => 'Users found with similar interests');
             // Put all retrieved UserIDs into results array
             while (mysqli_stmt_fetch($stmt)) {
+                $usersInterests = [];
+                array_push($usersInterests, $interestShared);
                 if(empty($potentialUsers[$userID])){
-                    $potentialUsers[$userID] = "You share these interests, ${interestShared}";
-                }else if ($potentialUsers[$userID]!=null){
-                    $potentialUsers[$userID] = "{$potentialUsers[$userID]}, {$interestShared}";
+                    $potentialUsers[$userID] = $usersInterests;
+                }else {
+                    array_push($potentialUsers[$userID], $interestShared);
                 }
             }
         }
@@ -68,7 +70,7 @@ foreach($potentialUsers as $key => $value){
                     if(is_null($description)){
                         $description = $firstname. ' ' . $surname . ' has not created their profile yet';
                     }
-                    $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description, 'reason'=> $value);
+                    $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description, 'interests in common'=> $value);
                     array_push($suggestedUsers, $user);
                 }
             }
@@ -99,7 +101,9 @@ foreach($potentialUsers as $key => $value){
     ?>
     <?php 
     foreach($suggestedUsers as $value){
+        echo "<div> <p> 'users' </p></div>";
         echo print_r($value);
+        
     }
     ?>
     <?php
