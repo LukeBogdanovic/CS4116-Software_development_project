@@ -115,11 +115,13 @@ function fetchProfile() {
           },
         });
         if (likedUsers[0]) {
-          likedUsers[0].forEach((likedUser) => {
-            if (likedUser.userID == id) {
+          likedUsers = likedUsers[0];
+          for (const [key, value] of Object.entries(likedUsers)) {
+            if (value.userID == id || sessionID == id) {
               document.getElementById("userLike").remove();
+              break;
             }
-          });
+          }
           if (document.getElementById("userLike")) {
             document.getElementById("userLike").removeAttribute("hidden");
           }
