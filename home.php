@@ -53,7 +53,18 @@ if($stmt = mysqli_prepare($con, $commonInterest)){
     }
 }
 //return users from potentialUSers whos gender matches users preference
-$returnSuitableUsers = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE user.UserID = ? and profile.Gender = ?;";
+$filterStudent = "";
+$returnSuitableUsers = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE user.UserID = ? and profile.Gender = ?";
+
+if(!empty($filterStudent)){
+    if($filterStudent == "yes"){
+        $filterStudent = 1;
+    }else if ($filterStudent == "no"){
+        $filterStudent = 0;
+    }
+    $returnSuitableUsers = "$returnSuitableUsers AND profile.Student = $filterStudent";
+}
+
 $suggestedUsers = [];
 foreach($potentialUsers as $key => $value){
     if($stmt = mysqli_prepare($con, $returnSuitableUsers)){
