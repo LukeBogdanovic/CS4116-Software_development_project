@@ -31,7 +31,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         <div class="d-flex vh-100 justify-content-center" id="spinner">
             <div class="spinner-border" role="status"></div>
         </div>
-        <div class="container py-5" id="cont" hidden>
+        <div class="container mt-5" id="cont" hidden>
             <div id="profileCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
@@ -165,9 +165,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             </div>
         </div>
         <div id="userLike" hidden>
-            <a class="btn btn-lg submit" id="likeButton" role="button" onclick="likeUser(event);">Like User</a>
+            <a class="btn btn-lg submit mb-3" id="likeButton" role="button" onclick="likeUser(event);">Like User</a>
         </div>
-        <div id="edit"></div>
+        <div class = "mb-3" id="edit"></div>
     </div>
     <?php
     require_once "includes/footer.php"
