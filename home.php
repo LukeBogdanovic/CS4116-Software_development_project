@@ -53,11 +53,13 @@ if($stmt = mysqli_prepare($con, $commonInterest)){
     }
 }
 //return users from potentialUSers whos gender matches users preference
-$filterStudent = "";
 $returnSuitableUsers = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description 
                         FROM user LEFT JOIN profile ON user.UserID=profile.UserID 
                         WHERE user.UserID = ? and profile.Gender = ?";
 
+//Filter for students POC
+//fill this variable with yes, no or leave empty for no filter. This can be done later using a POST 
+$filterStudent = "";
 if(!empty($filterStudent)){
     if($filterStudent == "yes"){
         $filterStudent = 1;
