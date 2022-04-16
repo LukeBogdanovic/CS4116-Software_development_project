@@ -82,7 +82,7 @@
 
                             <div class="input-group mb-3">
 
-                                <input type="text" class="form-control" placeholder="username">
+                                <input type="text" class="form-control" placeholder="username" id="uname" name="name">
 
                                 <div class="input-group-append">
                                     <button type="button" class="btn input-group-text btn-danger">Ban</button>
