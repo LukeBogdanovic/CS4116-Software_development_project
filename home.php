@@ -57,16 +57,85 @@ $returnSuitableUsers = "SELECT user.UserID, user.Username, user.Firstname, user.
                         FROM user LEFT JOIN profile ON user.UserID=profile.UserID 
                         WHERE user.UserID = ? and profile.Gender = ?";
 
-//Filter for students POC
-//fill this variable with yes, no or leave empty for no filter. This can be done later using a POST 
-$filterStudent = "";
-if(!empty($filterStudent)){
-    if($filterStudent == "yes"){
-        $filterStudent = 1;
-    }else if ($filterStudent == "no"){
-        $filterStudent = 0;
+
+//Filter by student status
+function applyStudentFilter($stmt,$studentYN){
+    if($studentYN == "Yes"){
+        $studentYN = 1;
+    }else if ($studentYN == "No"){
+        $studentYN = 0;
     }
-    $returnSuitableUsers = "$returnSuitableUsers AND profile.Student = $filterStudent";
+    return $stmt = "$stmt AND profile.Student = $studentYN";
+}
+
+//function for applying a county filter
+function applyCountyFilter($stmt,$county){
+    return $stmt = "$stmt AND profile.County = '$county'";
+}
+
+//function for users who either smoke or never smoke
+//smokes = Yes /= No 
+function applySmokerFilter($stmt,$smokesYN){
+    if($smokesYN == "Yes"){
+        return $stmt = "$stmt AND profile.Smoker <> 'Never' ";
+    } else {
+    return $stmt = "$stmt AND profile.Smoker = 'Never';";
+    }
+}
+
+//filters by drinker status, No for filtering out drinkers, anything else for filtering out abstainers
+function applyDrinkerFilter($stmt,$drinksYN){
+    if($drinksYN == "No"){
+        return $stmt = "$stmt AND profile.Drinker = 'No';";
+    } else {
+    return $stmt = "$stmt AND profile.Drinker <> 'No' ";
+    }
+}
+
+//check if the current $user matches the age range or not.  
+//add them to $suggestedUsers if they are in the age range.
+function checkAgeRange($user, $lowerAge, $upperAge){  
+    if($user['age']<=$upperAge && $user['age'] >= $lowerAge){
+        return true;
+    }
+    else {
+        return null;
+    }
+}
+
+//fill these variable with a POST, 
+
+if(!empty($_POST["studentVal"])){
+$filterStudent = $_POST["studentVal"];      // "Yes" or "No"
+}
+if(!empty($_POST["smokesVal"])){    
+$filterSmoker = $_POST["smokesVal"];        // "Yes" returns smokers and social smokers, "No" returns never smokers
+}
+if(!empty($_POST["drinksVal"])){
+$filterDrinker = $_POST["drinksVal"];       // "No" filters out non-drinkers, anything else returns all types of drinkers except non-drinkers
+}
+if(!empty($_POST["county"])){
+    $filterCounty = $_POST["county"];       // County name "Tipperary"
+}
+if(!empty( $_POST["ageLower"])){
+    $lowerAge = $_POST["ageLower"];         // lower age bracket
+}
+if(!empty( $_POST["AgeUpper"])){
+$upperAge = $_POST["AgeUpper"];             // upper age boundary
+}             
+
+//check if empty before applying filter
+if(!empty($filterStudent)){
+    $returnSuitableUsers = applyStudentFilter($returnSuitableUsers,$filterStudent);
+}
+if(!empty($filterCounty)){
+    $returnSuitableUsers = applyCountyFilter($returnSuitableUsers,$filterCounty);
+}
+if(!empty($filterSmoker)){
+    $returnSuitableUsers = applySmokerFilter($returnSuitableUsers,$filterSmoker);
+}
+if(!empty($filterDrinker)){
+    $returnSuitableUsers = applyDrinkerFilter($returnSuitableUsers,$filterDrinker);
 }
 
 $suggestedUsers = [];
@@ -80,13 +149,22 @@ foreach($potentialUsers as $key => $value){
                 $result = array('status' => 200, 'message' => 'Users found matching search criteria');
                 // Put all retrieved UserIDs into results array
                 while (mysqli_stmt_fetch($stmt)) {
-                    $age = get_age($dob);
                     //Create profile description string if profile descritpion returns null
                     if(is_null($description)){
-                        $description = $firstname. ' ' . $surname . ' has not created their profile yet';
+                        $description = "$firstname $surname has not created their profile yet";
                     }
+                    $age = get_age($dob);
                     $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description, 'interests in common'=> $value);
-                    array_push($suggestedUsers, $user);
+                    if(!empty($upperAge) && !empty($lowerAge)){ 
+                        if(checkAgeRange($user, $lowerAge, $upperAge)){
+                            $test = "thing";
+                            array_push($suggestedUsers, $user);
+                            $test = "thingy";
+                        }
+                    }
+                    else {
+                        array_push($suggestedUsers, $user);
+                    }
                 }
             }
         }
@@ -114,11 +192,98 @@ foreach($potentialUsers as $key => $value){
     <?php
     require_once "includes/navbar.php";
     ?>
+
+    <!-- Offcanvas Sidebar -->
+    <div class="offcanvas offcanvas-start" id="applyFilters">
+        <div class="offcanvas-header">
+        <h2 class="offcanvas-title">Edit Filters</h2>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+                <form action="" method="POST">
+                    <div>
+                        <label class="labels">Student?</label>
+                        <input type="radio" class="custom-control-input" id="studentYes" name="studentVal" value="Yes">
+                        <label class="custom-control-label" for="studentYes">Yes</label>
+                        <input type="radio" class="custom-control-input" id="studentNo" name="studentVal" value="No">
+                        <label class="custom-control-label" for="studentNo">No</label>  
+                    </div>
+                    <hr>
+                    <div>
+                        <label class="labels">Age Range</label>
+                        <input type="text" id="fname" name="ageLower" size="1" ><input type="text" id="fname" name="AgeUpper" size="1" >
+                    </div>
+                    <hr>
+                    <div>
+                        <label class="labels">Drinks?</label>
+                        <input type="radio" class="custom-control-input" id="drinksYes" name="drinksVal" value="Yes">
+                        <label class="custom-control-label" for="drinksYes">Yes</label>
+                        <input type="radio" class="custom-control-input" id="drinksNo" name="drinksVal" value="No">
+                        <label class="custom-control-label" for="drinksNo">No</label>  
+                    </div>
+                    <hr>
+                    <div>
+                        <label class="labels">Smokes?</label>
+                        <input type="radio" class="custom-control-input" id="smokesYes" name="smokesVal" value="Yes">
+                        <label class="custom-control-label" for="smokesYes">Yes</label>
+                        <input type="radio" class="custom-control-input" id="smokesNo" name="smokesVal"value="No">
+                        <label class="custom-control-label" for="smokesNo">No</label>  
+                    </div>
+                    <hr>
+                    <div class="form-inline">
+                    <label class="labels">County</label>
+                    <select name="county" id="county" class="form-select">
+                        <option></option>
+                        <option>Antrim</option>
+                        <option>Armagh</option>
+                        <option>Carlow</option>
+                        <option>Cavan</option>
+                        <option>Clare</option>
+                        <option>Cork</option>
+                        <option>Derry</option>
+                        <option>Donegal</option>
+                        <option>Down</option>
+                        <option>Dublin</option>
+                        <option>Fermanagh</option>
+                        <option>Galway</option>
+                        <option>Kerry</option>
+                        <option>Kildare</option>
+                        <option>Kilkenny</option>
+                        <option>Laois</option>
+                        <option>Leitrim</option>
+                        <option>Limerick</option>
+                        <option>Longford</option>
+                        <option>Louth</option>
+                        <option>Mayo</option>
+                        <option>Meath</option>
+                        <option>Monaghan</option>
+                        <option>Offaly</option>
+                        <option>Roscommon</option>
+                        <option>Sligo</option>
+                        <option>Tipperary</option>
+                        <option>Tyrone</option>
+                        <option>Waterford</option>
+                        <option>Westmeath</option>
+                        <option>Wexford</option>
+                        <option>Wicklow</option>
+                    </select>
+                    </div>
+                    <button class="btn submit" type="submit">Apply Filters</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button to open the offcanvas sidebar -->
+    <button class="btn py-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#applyFilters">
+        Edit Filters
+    </button>
+
     <?php 
     foreach($suggestedUsers as $value){
         echo "<div> <p> 'users' </p></div>";
         echo print_r($value);
-        
     }
     ?>
     <?php
