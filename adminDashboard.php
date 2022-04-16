@@ -15,7 +15,7 @@
     <?php
         /* Attempt MySQL server connection. Assuming you are running MySQL
         server with default setting (user 'root' with no password) */
-
+/*
         $link = mysqli_connect("localhost", "root", "", "test");
         
         // Check connection
@@ -41,7 +41,7 @@
         }
 
         // Attempt update query execution
-        $sql = "UPDATE user SET Banned='1' WHERE userID= $row[0]";
+        $sql = "UPDATE user SET Banned='0' WHERE userID= $row[0]";
         if(mysqli_query($link, $sql)){
             echo "Records were updated successfully.";
         } else {
@@ -50,6 +50,7 @@
         
         // Close connection
         mysqli_close($link);
+*/
 ?>
 
         <?php
@@ -122,11 +123,12 @@
 
                             <div class="input-group mb-3">
 
-                                <input type="text" class="form-control" placeholder="username" id="myInput">
-
-                                <div class="input-group-append">
-                                    <button type="button" class="btn input-group-text btn-danger" onclick="getInputValue();">Ban</button>
-                                </div>
+                                <form action="" method="POST">
+                                    <div>
+                                        <label class="labels">username</label>
+                                        <input type="text" id="username" name="username">
+                                    </div>
+                                </form>
 
                             </div>
 
@@ -140,11 +142,13 @@
 
                             <div class="input-group mb-3">
 
-                                <input type="text" class="form-control" placeholder="username" id="myInput2">
+                            <form action="" method="POST">
+                                    <div>
+                                        <label class="labels">username</label>
+                                        <input type="text" id="username2" name="username2">
+                                    </div>
+                                </form>
 
-                                <div class="input-group-append">
-                                    <button type="button" class="btn input-group-text btn-success" onclick="getInputValue2();">Unban</button>
-                                </div>
 
                             </div>
 
@@ -208,24 +212,105 @@
 
         </main>
 
-        <script>
-        function getInputValue(){
-            // Selecting the input element and get its value 
-            var inputVal = document.getElementById("myInput").value;
-            
-            // Displaying the value
-            alert(inputVal);
-        }
-        </script>
+        <?php 
+        
+        //Ban A User
 
-        <script>
-        function getInputValue2(){
-            // Selecting the input element and get its value 
-            var inputVal2 = document.getElementById("myInput2").value;
-            
-            // Displaying the value
-        }
-        </script>
+            if(!empty($_POST["username"])){
+
+                $username = $_POST["username"];
+
+                $link = mysqli_connect("localhost", "root", "", "test");
+        
+                // Check connection
+                if($link === false){
+                    die("ERROR: Could not connect. " . mysqli_connect_error());
+                }
+
+                // Fetch Data
+                $query = "SELECT userID, Username, Banned FROM user WHERE Username ='$username'";
+
+                $result = mysqli_query($link, $query);
+
+                if (!$result) {
+                    echo("Error : No user found" . $link -> error);
+                }
+
+                else {
+                    $row = mysqli_fetch_row($result);
+
+                    echo $row[0]; // id
+                    echo "\n";
+                    echo $row[1]; // username
+                    echo "\n";
+                    echo $row[2]; // Bool Banned 
+                    echo "\n";
+                }
+
+                // Attempt update query execution
+                $sql = "UPDATE user SET Banned='1' WHERE userID= $row[0]";
+                if(mysqli_query($link, $sql)){
+                    echo "Records were updated successfully. User Ban";
+                } else {
+                    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                }
+                
+                // Close connection
+                mysqli_close($link);
+               }
+        
+        
+        ?>
+
+        <?php 
+        
+        //Unban A User
+        
+            if(!empty($_POST["username2"])){
+
+                $username2 = $_POST["username2"];
+
+                $link = mysqli_connect("localhost", "root", "", "test");
+        
+                // Check connection
+                if($link === false){
+                    die("ERROR: Could not connect. " . mysqli_connect_error());
+                }
+
+                // Fetch Data
+                $query = "SELECT userID, Username, Banned FROM user WHERE Username ='$username2'";
+
+                $resultbis = mysqli_query($link, $query);
+
+                if (!$resultbis) {
+                    echo("Error : No user found" . $link -> error);
+                }
+
+                else {
+                    $rowbis = mysqli_fetch_row($resultbis);
+
+                    echo $rowbis[0]; // id
+                    echo "\n";
+                    echo $rowbis[1]; // username
+                    echo "\n";
+                    echo $rowbis[2]; // Bool Banned 
+                    echo "\n";
+                }
+
+                // Attempt update query execution
+                $sql = "UPDATE user SET Banned='0' WHERE userID= $rowbis[0]";
+                if(mysqli_query($link, $sql)){
+                    echo "Records were updated successfully. User Unban";
+                } else {
+                    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                }
+                
+                // Close connection
+                mysqli_close($link);
+               }
+        
+        
+        ?>
 
         <?php
             require_once "includes/footer.php";
