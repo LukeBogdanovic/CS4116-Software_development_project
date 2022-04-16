@@ -30,9 +30,14 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <input type="hidden" id="userID" name="userID" value="<?php echo $_SESSION['id'] ?>">
     <main>
         <div id="container" class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
+            <h3>Connected Users</h3>
             <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" data-user-cards-container></div>
         </div>
     </main>
+    <div id="container" class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
+        <h3>Liked Users</h3>
+        <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" data-user-cards-liked-container></div>
+    </div>
     <template data-user-template>
         <div class="col">
             <div class="usercard card h-100 shadow-sm"> <img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture">
@@ -43,7 +48,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                         <p class="card-content" data-body>Bio</p>
                         <p class="card-content text-muted" data-connection>Connected date</p>
                         <div class="text-center my-4">
-                            <a class="btn btn-dark">View Profile</a>
+                            <a class="btn btn-dark" href="" data-userid>View Profile</a>
                         </div>
                 </div>
             </div>

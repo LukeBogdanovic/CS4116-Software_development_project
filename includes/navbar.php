@@ -11,7 +11,7 @@
                 </li>
                 <?php echo (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) ?
                     '<li class="nav-item">
-                    <a class="nav-link" href="profile.php">Profile</a>
+                    <a class="nav-link" href="profile.php?profile='. $_SESSION["id"] .'">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="connections.php">My Connections</a>
