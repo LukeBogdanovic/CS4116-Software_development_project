@@ -12,6 +12,46 @@
 
     <body>
 
+    <?php
+        /* Attempt MySQL server connection. Assuming you are running MySQL
+        server with default setting (user 'root' with no password) */
+
+        $link = mysqli_connect("localhost", "root", "", "test");
+        
+        // Check connection
+        if($link === false){
+            die("ERROR: Could not connect. " . mysqli_connect_error());
+        }
+
+        // Fetch Data
+        $query = "SELECT userID, Username, Banned FROM user WHERE Username = 'jackryan'";
+
+        $result = mysqli_query($link, $query);
+
+        if (!$result) {
+            echo("Error : No user found" . $link -> error);
+         }
+
+        else {
+            $row = mysqli_fetch_row($result);
+
+            echo $row[0]; // id
+            echo $row[1]; // username
+            echo $row[2]; // Bool Banned 
+        }
+
+        // Attempt update query execution
+        $sql = "UPDATE user SET Banned='1' WHERE userID= $row[0]";
+        if(mysqli_query($link, $sql)){
+            echo "Records were updated successfully.";
+        } else {
+            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+        }
+        
+        // Close connection
+        mysqli_close($link);
+?>
+
         <?php
             require_once "includes/navbar.php";
         ?>
@@ -82,10 +122,10 @@
 
                             <div class="input-group mb-3">
 
-                                <input type="text" class="form-control" placeholder="username" id="uname" name="name">
+                                <input type="text" class="form-control" placeholder="username" id="myInput">
 
                                 <div class="input-group-append">
-                                    <button type="button" class="btn input-group-text btn-danger">Ban</button>
+                                    <button type="button" class="btn input-group-text btn-danger" onclick="getInputValue();">Ban</button>
                                 </div>
 
                             </div>
@@ -100,10 +140,10 @@
 
                             <div class="input-group mb-3">
 
-                                <input type="text" class="form-control" placeholder="username">
+                                <input type="text" class="form-control" placeholder="username" id="myInput2">
 
                                 <div class="input-group-append">
-                                    <button type="button" class="btn input-group-text btn-success">Unban</button>
+                                    <button type="button" class="btn input-group-text btn-success" onclick="getInputValue2();">Unban</button>
                                 </div>
 
                             </div>
@@ -167,6 +207,25 @@
             </div>
 
         </main>
+
+        <script>
+        function getInputValue(){
+            // Selecting the input element and get its value 
+            var inputVal = document.getElementById("myInput").value;
+            
+            // Displaying the value
+            alert(inputVal);
+        }
+        </script>
+
+        <script>
+        function getInputValue2(){
+            // Selecting the input element and get its value 
+            var inputVal2 = document.getElementById("myInput2").value;
+            
+            // Displaying the value
+        }
+        </script>
 
         <?php
             require_once "includes/footer.php";
