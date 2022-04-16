@@ -157,9 +157,7 @@ foreach($potentialUsers as $key => $value){
                     $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description, 'interests in common'=> $value);
                     if(!empty($upperAge) && !empty($lowerAge)){ 
                         if(checkAgeRange($user, $lowerAge, $upperAge)){
-                            $test = "thing";
                             array_push($suggestedUsers, $user);
-                            $test = "thingy";
                         }
                     }
                     else {
