@@ -37,7 +37,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                         <form onsubmit="registerNewUser(event);" method="POST" id="signupform">
                             <div class="form-floating mb-4">
-                                <input name="username" type="text" data-toggle="tooltip" pattern="[A-Za-z0-9_]{0,16}"  class="form-control form-control-lg" id="username" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." >
+                                <input name="username" type="text" data-toggle="tooltip" pattern="[A-Za-z0-9_]{0,16}" class="form-control form-control-lg" id="username" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores.">
                                 <label for="username">Username</label>
                                 <span id="usermsg"></span>
                             </div>
@@ -60,12 +60,12 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                                 <span id="emailmsg"></span>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="password" type="password" data-toggle="tooltip" class="form-control form-control-lg" id="pwd" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-?$£!*()&^%_@]).{8,16}">
+                                <input name="password" type="password" data-toggle="tooltip" class="form-control form-control-lg" id="pwd" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." pattern="[A-Za-z0-9_$%^&*()@?><-]{8,16}">
                                 <label for="password">Password</label>
                                 <span id="pwdmsg"></span>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="confirmpassword" type="password" class="form-control form-control-lg" id="confirmpwd" placeholder="Confirm Password" pattern="^(?=.*\d\S)(?=.*[a-z\S])(?=.*[A-Z\S])(?=.*[-?$£!*()&^%_@\S]).{8,16}*$">
+                                <input name="confirmpassword" type="password" class="form-control form-control-lg" id="confirmpwd" placeholder="Confirm Password" pattern="[A-Za-z0-9_$%^&*()@?><-]{8,16}">
                                 <label for="confirmpassword">Confirm password</label>
                                 <span id="confirmpwdmsg"></span>
                             </div>
@@ -82,11 +82,6 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             </div>
         </section>
     </div>
-    <script>
-        $(document).ready(() => {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
     <?php
     require_once "includes/footer.php";
     ?>

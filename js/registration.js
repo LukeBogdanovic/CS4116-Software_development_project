@@ -189,3 +189,7 @@ document.getElementById("confirmpwd").addEventListener("keyup", function () {
     $("#confirmpwdmsg").html("Not Matching").css("color", "red");
   }
 });
+
+document.addEventListener("readystatechange", function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
