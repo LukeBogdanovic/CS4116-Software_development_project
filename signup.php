@@ -37,7 +37,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                         <form onsubmit="registerNewUser(event);" method="POST" id="signupform">
                             <div class="form-floating mb-4">
-                                <input name="username" type="text" data-toggle="tooltip" class="form-control form-control-lg" id="username" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." pattern="^(\d?)([a-zA-Z]?)([_]?).{0,16}*$">
+                                <input name="username" type="text" data-toggle="tooltip" pattern="[A-Za-z0-9_]{0,16}"  class="form-control form-control-lg" id="username" placeholder="Username" title="Must be less than 16 characters. Can contain alphanumeric characters and underscores." >
                                 <label for="username">Username</label>
                                 <span id="usermsg"></span>
                             </div>
