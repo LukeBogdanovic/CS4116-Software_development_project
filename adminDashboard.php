@@ -11,48 +11,7 @@
     </head>
 
     <body>
-
-    <?php
-        /* Attempt MySQL server connection. Assuming you are running MySQL
-        server with default setting (user 'root' with no password) */
-/*
-        $link = mysqli_connect("localhost", "root", "", "test");
         
-        // Check connection
-        if($link === false){
-            die("ERROR: Could not connect. " . mysqli_connect_error());
-        }
-
-        // Fetch Data
-        $query = "SELECT userID, Username, Banned FROM user WHERE Username = 'jackryan'";
-
-        $result = mysqli_query($link, $query);
-
-        if (!$result) {
-            echo("Error : No user found" . $link -> error);
-         }
-
-        else {
-            $row = mysqli_fetch_row($result);
-
-            echo $row[0]; // id
-            echo $row[1]; // username
-            echo $row[2]; // Bool Banned 
-        }
-
-        // Attempt update query execution
-        $sql = "UPDATE user SET Banned='0' WHERE userID= $row[0]";
-        if(mysqli_query($link, $sql)){
-            echo "Records were updated successfully.";
-        } else {
-            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-        }
-        
-        // Close connection
-        mysqli_close($link);
-*/
-?>
-
         <?php
             require_once "includes/navbar.php";
         ?>
@@ -239,20 +198,29 @@
                 else {
                     $row = mysqli_fetch_row($result);
 
-                    echo $row[0]; // id
-                    echo "\n";
-                    echo $row[1]; // username
-                    echo "\n";
-                    echo $row[2]; // Bool Banned 
-                    echo "\n";
-                }
+                    if (empty($row)){
+                        echo("Error : No user found" . $link -> error);
+                    }
+                    
+                    else {
+                        echo "User ID Value :";
+                        echo '<p>'.$row[0].'</p>'; // id
+                        echo "Username Value :";
+                        echo '<p>'.$row[1].'</p>'; // username
+                        echo "Banned Value :";
+                        echo '<p>'.$row[2].'</p>'; // Bool Banned
 
-                // Attempt update query execution
-                $sql = "UPDATE user SET Banned='1' WHERE userID= $row[0]";
-                if(mysqli_query($link, $sql)){
-                    echo "Records were updated successfully. User Ban";
-                } else {
-                    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                        // Attempt update query execution
+                        $sql = "UPDATE user SET Banned='1' WHERE userID= $row[0]";
+
+                        if(mysqli_query($link, $sql)){
+                            echo "Records were updated successfully. User Ban.";
+                        } 
+                        
+                        else {
+                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                        }
+                    } 
                 }
                 
                 // Close connection
@@ -289,22 +257,31 @@
                 else {
                     $rowbis = mysqli_fetch_row($resultbis);
 
-                    echo $rowbis[0]; // id
-                    echo "\n";
-                    echo $rowbis[1]; // username
-                    echo "\n";
-                    echo $rowbis[2]; // Bool Banned 
-                    echo "\n";
+                    if (empty($rowbis)){
+                        echo("Error : No user found" . $link -> error);
+                    }
+                    
+                    else {
+                        echo "User ID Value :";
+                        echo '<p>'.$rowbis[0].'</p>'; // id
+                        echo "Username Value :";
+                        echo '<p>'.$rowbis[1].'</p>'; // username
+                        echo "Banned Value :";
+                        echo '<p>'.$rowbis[2].'</p>'; // Bool Banned
+
+                        // Attempt update query execution
+                        $sql = "UPDATE user SET Banned='0' WHERE userID= $rowbis[0]";
+
+                        if(mysqli_query($link, $sql)){
+                            echo "Records were updated successfully. User Unban.";
+                        } 
+                        
+                        else {
+                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                        }
+                    } 
                 }
 
-                // Attempt update query execution
-                $sql = "UPDATE user SET Banned='0' WHERE userID= $rowbis[0]";
-                if(mysqli_query($link, $sql)){
-                    echo "Records were updated successfully. User Unban";
-                } else {
-                    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                }
-                
                 // Close connection
                 mysqli_close($link);
                }
