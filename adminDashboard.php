@@ -177,14 +177,10 @@
 
             if(!empty($_POST["username"])){
 
+                require_once "includes/database.php";
+
                 $username = $_POST["username"];
 
-                $DATABASE_HOST = 'sql302.epizy.com';
-                $DATABASE_USER = 'epiz_31123825';
-                $DATABASE_PASS = '0nwNXAwGlQ0KzjV';
-                $DATABASE_NAME = 'epiz_31123825_group13';
-
-                $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
         
                 // Check connection
                 if($con === false){
@@ -241,15 +237,10 @@
         
             if(!empty($_POST["username2"])){
 
+                require_once "includes/database.php";
+                
                 $username2 = $_POST["username2"];
 
-                $DATABASE_HOST = 'sql302.epizy.com';
-                $DATABASE_USER = 'epiz_31123825';
-                $DATABASE_PASS = '0nwNXAwGlQ0KzjV';
-                $DATABASE_NAME = 'epiz_31123825_group13';
-
-                $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-        
                 // Check connection
                 if($con === false){
                     die("ERROR: Could not connect. " . mysqli_connect_error());
