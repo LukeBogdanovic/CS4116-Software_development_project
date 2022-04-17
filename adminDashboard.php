@@ -179,27 +179,32 @@
 
                 $username = $_POST["username"];
 
-                $link = mysqli_connect("localhost", "root", "", "test");
+                $DATABASE_HOST = 'sql302.epizy.com';
+                $DATABASE_USER = 'epiz_31123825';
+                $DATABASE_PASS = '0nwNXAwGlQ0KzjV';
+                $DATABASE_NAME = 'epiz_31123825_group13';
+
+                $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
         
                 // Check connection
-                if($link === false){
+                if($con === false){
                     die("ERROR: Could not connect. " . mysqli_connect_error());
                 }
 
                 // Fetch Data
                 $query = "SELECT userID, Username, Banned FROM user WHERE Username ='$username'";
 
-                $result = mysqli_query($link, $query);
+                $result = mysqli_query($con, $query);
 
                 if (!$result) {
-                    echo("Error : No user found" . $link -> error);
+                    echo("Error : No user found" . $con -> error);
                 }
 
                 else {
                     $row = mysqli_fetch_row($result);
 
                     if (empty($row)){
-                        echo("Error : No user found" . $link -> error);
+                        echo("Error : No user found" . $con -> error);
                     }
                     
                     else {
@@ -213,18 +218,18 @@
                         // Attempt update query execution
                         $sql = "UPDATE user SET Banned='1' WHERE userID= $row[0]";
 
-                        if(mysqli_query($link, $sql)){
+                        if(mysqli_query($con, $sql)){
                             echo "Records were updated successfully. User Ban.";
                         } 
                         
                         else {
-                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
                         }
                     } 
                 }
                 
                 // Close connection
-                mysqli_close($link);
+                mysqli_close($con);
                }
         
         
@@ -238,27 +243,32 @@
 
                 $username2 = $_POST["username2"];
 
-                $link = mysqli_connect("localhost", "root", "", "test");
+                $DATABASE_HOST = 'sql302.epizy.com';
+                $DATABASE_USER = 'epiz_31123825';
+                $DATABASE_PASS = '0nwNXAwGlQ0KzjV';
+                $DATABASE_NAME = 'epiz_31123825_group13';
+
+                $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
         
                 // Check connection
-                if($link === false){
+                if($con === false){
                     die("ERROR: Could not connect. " . mysqli_connect_error());
                 }
 
                 // Fetch Data
                 $query = "SELECT userID, Username, Banned FROM user WHERE Username ='$username2'";
 
-                $resultbis = mysqli_query($link, $query);
+                $resultbis = mysqli_query($con, $query);
 
                 if (!$resultbis) {
-                    echo("Error : No user found" . $link -> error);
+                    echo("Error : No user found" . $con -> error);
                 }
 
                 else {
                     $rowbis = mysqli_fetch_row($resultbis);
 
                     if (empty($rowbis)){
-                        echo("Error : No user found" . $link -> error);
+                        echo("Error : No user found" . $con -> error);
                     }
                     
                     else {
@@ -272,18 +282,18 @@
                         // Attempt update query execution
                         $sql = "UPDATE user SET Banned='0' WHERE userID= $rowbis[0]";
 
-                        if(mysqli_query($link, $sql)){
+                        if(mysqli_query($con, $sql)){
                             echo "Records were updated successfully. User Unban.";
                         } 
                         
                         else {
-                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
                         }
                     } 
                 }
 
                 // Close connection
-                mysqli_close($link);
+                mysqli_close($con);
                }
         
         
