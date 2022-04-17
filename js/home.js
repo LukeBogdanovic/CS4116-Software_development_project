@@ -1,9 +1,11 @@
 let seeking;
 let suggestedUsers = [];
 let cardArrayUsers = [];
+let likedUsers = [];
 
 /**
- *
+ * Gets the seeking value of the current user and stores
+ * the value within a global variable for use in later functions
  */
 function getSeeking() {
   $.ajax({
@@ -29,7 +31,8 @@ function getSeeking() {
 }
 
 /**
- *
+ * Gets the suggested users for the current user and the
+ * selected filters that are active and filled in by the user
  */
 function getSuggestedUsers() {
   const queryString = window.location.search;
@@ -58,6 +61,30 @@ function getSuggestedUsers() {
       let data = JSON.parse(response);
       if (data.status == 200) {
         suggestedUsers = data.suggested_users;
+        $.ajax({
+          method: "POST",
+          async: false,
+          url: "../api/Connections/connections.php",
+          data: {
+            function: "get_Liked_Users",
+            id: sessionID,
+          },
+          success: (response) => {
+            let data = JSON.parse(response);
+            if (data.status == 200) {
+              likedUsers = data[0];
+              for (let i = suggestedUsers.length - 1; i >= 0; i--) {
+                for (let j = likedUsers.length - 1; j >= 0; j--) {
+                  if (suggestedUsers[i].userID == likedUsers[j].userID) {
+                    suggestedUsers.splice(i, 1);
+                    break;
+                  }
+                }
+              }
+            } else {
+            }
+          },
+        });
         if (suggestedUsers.length > 4) {
           suggestedUsers.reverse();
           for (let i = suggestedUsers.length - 1; i > 0; i--) {
@@ -67,6 +94,8 @@ function getSuggestedUsers() {
             cardArrayUsers.push(suggestedUsers[i]);
             suggestedUsers.splice(i, 1);
           }
+        } else {
+          cardArrayUsers = suggestedUsers;
         }
         addUserCards(cardArrayUsers);
       } else {
@@ -83,7 +112,8 @@ function getSuggestedUsers() {
 }
 
 /**
- *
+ * Adds the user data to a card and adds that card to the user card
+ * array
  * @param {Array} data
  */
 function addUserCards(data) {
@@ -120,7 +150,8 @@ function addUserCards(data) {
 }
 
 /**
- *
+ * Likes the user that the current user has clicked.
+ * Adds a new user to the card array after the liked user has been
  * @param {Event} event
  * @param {number} userID2
  */
@@ -149,7 +180,7 @@ function likeUser(event, userID2) {
           document.getElementById(`user${userID2}`).innerHTML = "Like User";
           document.getElementById(`user${userID2}`).removeAttribute("disabled");
           window.setTimeout(() => {
-            document.getElementById(`user${userID2}`).remove();
+            dismissUser(event, userID2);
           }, 2500);
         }, 2500);
         checkUserConnection(userID2);
@@ -159,7 +190,9 @@ function likeUser(event, userID2) {
 }
 
 /**
- *
+ * Checks if both users (current and liked user) have liked each other.
+ * If both have liked each other, connects both users and sends the users
+ * a notification that they have liked each other
  * @param {number} userID2
  */
 function checkUserConnection(userID2) {
@@ -183,16 +216,6 @@ function checkUserConnection(userID2) {
         window.setTimeout(() => {
           parentDiv.removeChild(newNode);
         }, 2500);
-      } else {
-        let newNode = document.createElement("div");
-        newNode.id = "warning";
-        newNode.classList.add("alert", "alert-danger");
-        newNode.innerHTML = data.message;
-        let parentDiv = document.getElementById("user-cards").parentElement;
-        parentDiv.prepend(newNode);
-        window.setTimeout(() => {
-          parentDiv.removeChild(newNode);
-        }, 2500);
       }
     },
   });
@@ -201,12 +224,19 @@ function checkUserConnection(userID2) {
 document.addEventListener("load", getSeeking());
 
 /**
- *
+ * Dismisses the user selected by the current user and removes them from the suggested user array.
+ * Adds new user to the suggested users if there are available users within the suggestedUsers array
+ * Otherwise grabs new suggested users from the database and adds them until they have been liked and
+ * permanently removed from rotation.
  * @param {Event} event
  * @param {number} userID
  */
 function dismissUser(event, userID) {
-  event.preventDefault();
+  try {
+    event.preventDefault();
+  } catch {
+    console.error(event);
+  }
   document.getElementById(`userCard${userID}`).remove();
   for (let i = cardArrayUsers.length - 1; i > 0; i--) {
     if (cardArrayUsers[i].userID == userID) {
@@ -257,6 +287,30 @@ function dismissUser(event, userID) {
           newChild.innerHTML = data.message;
           let parentDiv = document.getElementById("user-cards").parentElement;
           parentDiv.prepend(newChild);
+        }
+      },
+    });
+    $.ajax({
+      method: "POST",
+      async: false,
+      url: "../api/Connections/connections.php",
+      data: {
+        function: "get_Liked_Users",
+        id: sessionID,
+      },
+      success: (response) => {
+        let data = JSON.parse(response);
+        if (data.status == 200) {
+          likedUsers = data[0];
+          for (let i = suggestedUsers.length - 1; i >= 0; i--) {
+            for (let j = likedUsers.length - 1; j >= 0; j--) {
+              if (suggestedUsers[i].userID == likedUsers[j].userID) {
+                suggestedUsers.splice(i, 1);
+                break;
+              }
+            }
+          }
+        } else {
         }
       },
     });
