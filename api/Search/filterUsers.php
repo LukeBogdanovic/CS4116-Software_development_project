@@ -114,8 +114,7 @@ function get_suggested_users()
                         }
                     }
                     $result['suggested_users'] = $suggestedUsers;
-                } else
-                    $result = array('status' => 403, 'message' => "No users found matching the search criteria");
+                } 
             }
         }
     }
