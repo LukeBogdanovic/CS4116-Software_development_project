@@ -23,11 +23,10 @@ function get_seeking()
             mysqli_stmt_store_result($stmt);
             mysqli_stmt_bind_result($stmt, $seeking);
             mysqli_stmt_fetch($stmt);
-            if (!empty($seeking)) {
+            if (!empty($seeking))
                 $result = array('status' => 200, 'message' => "Seeked gender for User found", 'seeking' => $seeking);
-            } else {
+            else
                 $result = array('status' => 403, 'message' => "Seeked gender not found for User");
-            }
         }
     }
     echo json_encode($result);
@@ -53,51 +52,39 @@ function get_suggested_users()
                 while (mysqli_stmt_fetch($stmt)) {
                     $usersInterests = [];
                     array_push($usersInterests, $interestShared);
-                    if (empty($potentialUsers[$userID])) {
+                    if (empty($potentialUsers[$userID]))
                         $potentialUsers[$userID] = $usersInterests;
-                    } else {
+                    else
                         array_push($potentialUsers[$userID], $interestShared);
-                    }
                 }
             }
         }
     }
     $returnSuitableUsers = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE user.UserID = ? and profile.Gender = ?";
     //fill these variable with a POST, 
-    if (!empty($_POST["studentVal"])) {
+    if (!empty($_POST["studentVal"]))
         $filterStudent = $_POST["studentVal"];      // "Yes" or "No"
-    }
-    if (!empty($_POST["smokesVal"])) {
+    if (!empty($_POST["smokesVal"]))
         $filterSmoker = $_POST["smokesVal"];        // "Yes" returns smokers and social smokers, "No" returns never smokers
-    }
-    if (!empty($_POST["drinksVal"])) {
+    if (!empty($_POST["drinksVal"]))
         $filterDrinker = $_POST["drinksVal"];       // "No" filters out non-drinkers, anything else returns all types of drinkers except non-drinkers
-    }
-    if (!empty($_POST["county"])) {
+    if (!empty($_POST["county"]))
         $filterCounty = $_POST["county"];       // County name "Tipperary"
-    }
-    if (!empty($_POST["ageLower"])) {
+    if (!empty($_POST["ageLower"]))
         $lowerAge = $_POST["ageLower"];         // lower age bracket
-    }
-    if (!empty($_POST["AgeUpper"])) {
+    if (!empty($_POST["AgeUpper"]))
         $upperAge = $_POST["AgeUpper"];             // upper age boundary
-    }
     //check if empty before applying filter
-    if ($seeking == "All") {
+    if ($seeking == "All")
         $returnSuitableUsers = applyAllSeekingFilter();
-    }
-    if (!empty($filterStudent)) {
+    if (!empty($filterStudent))
         $returnSuitableUsers = applyStudentFilter($returnSuitableUsers, $filterStudent);
-    }
-    if (!empty($filterCounty)) {
+    if (!empty($filterCounty))
         $returnSuitableUsers = applyCountyFilter($returnSuitableUsers, $filterCounty);
-    }
-    if (!empty($filterSmoker)) {
+    if (!empty($filterSmoker))
         $returnSuitableUsers = applySmokerFilter($returnSuitableUsers, $filterSmoker);
-    }
-    if (!empty($filterDrinker)) {
+    if (!empty($filterDrinker))
         $returnSuitableUsers = applyDrinkerFilter($returnSuitableUsers, $filterDrinker);
-    }
     $suggestedUsers = [];
     foreach ($potentialUsers as $key => $value) {
         if ($stmt = mysqli_prepare($con, $returnSuitableUsers)) {
@@ -127,9 +114,8 @@ function get_suggested_users()
                         }
                     }
                     $result['suggested_users'] = $suggestedUsers;
-                } else {
+                } else
                     $result = array('status' => 403, 'message' => "No users found matching the search criteria");
-                }
             }
         }
     }
@@ -140,11 +126,11 @@ function get_suggested_users()
 //Filter by student status
 function applyStudentFilter($stmt, $studentYN)
 {
-    if ($studentYN == "Yes") {
+    if ($studentYN == "Yes")
         $studentYN = 1;
-    } else if ($studentYN == "No") {
+    else if ($studentYN == "No")
         $studentYN = 0;
-    }
+
     return $stmt = "$stmt AND profile.Student = $studentYN";
 }
 
@@ -158,32 +144,29 @@ function applyCountyFilter($stmt, $county)
 //smokes = Yes /= No 
 function applySmokerFilter($stmt, $smokesYN)
 {
-    if ($smokesYN == "Yes") {
+    if ($smokesYN == "Yes")
         return $stmt = "$stmt AND profile.Smoker <> 'Never' ";
-    } else {
+    else
         return $stmt = "$stmt AND profile.Smoker = 'Never';";
-    }
 }
 
 //filters by drinker status, No for filtering out drinkers, anything else for filtering out abstainers
 function applyDrinkerFilter($stmt, $drinksYN)
 {
-    if ($drinksYN == "No") {
+    if ($drinksYN == "No")
         return $stmt = "$stmt AND profile.Drinker = 'No';";
-    } else {
+    else
         return $stmt = "$stmt AND profile.Drinker <> 'No' ";
-    }
 }
 
 //check if the current $user matches the age range or not.  
 //add them to $suggestedUsers if they are in the age range.
 function checkAgeRange($user, $lowerAge, $upperAge)
 {
-    if ($user['age'] <= $upperAge && $user['age'] >= $lowerAge) {
+    if ($user['age'] <= $upperAge && $user['age'] >= $lowerAge)
         return true;
-    } else {
+    else
         return null;
-    }
 }
 
 function applyAllSeekingFilter()
