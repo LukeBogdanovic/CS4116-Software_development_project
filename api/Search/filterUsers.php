@@ -72,8 +72,8 @@ function get_suggested_users()
         $filterCounty = $_POST["county"];       // County name "Tipperary"
     if (!empty($_POST["ageLower"]))
         $lowerAge = $_POST["ageLower"];         // lower age bracket
-    if (!empty($_POST["AgeUpper"]))
-        $upperAge = $_POST["AgeUpper"];             // upper age boundary
+    if (!empty($_POST["ageUpper"]))
+        $upperAge = $_POST["ageUpper"];             // upper age boundary
     //check if empty before applying filter
     if ($seeking == "All")
         $returnSuitableUsers = applyAllSeekingFilter();

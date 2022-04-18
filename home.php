@@ -50,7 +50,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     <hr>
                     <div>
                         <label class="labels">Age Range</label>
-                        <input type="text" id="ageLower" name="ageLower" size="1"><input type="text" id="ageUpper" name="AgeUpper" size="1">
+                        <input type="text" id="ageLower" name="ageLower" size="1"><input type="text" id="ageUpper" name="ageUpper" size="1">
                     </div>
                     <hr>
                     <div>
