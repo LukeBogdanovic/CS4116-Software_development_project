@@ -112,7 +112,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             </form>
         </div>
     </div>
-    <!-- Button to open the offcanvas sidebar -->
     <div class="container-fluid bg-trasparent my-4 p-3">
         <div class="card">
             <div class="card-header">Suggestions</div>
