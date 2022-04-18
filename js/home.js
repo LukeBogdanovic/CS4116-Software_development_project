@@ -38,7 +38,7 @@ function getSuggestedUsers() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const studentVal = urlParams.get("studentVal");
-  const ageUpper = urlParams.get("AgeUpper");
+  const ageUpper = urlParams.get("ageUpper");
   const ageLower = urlParams.get("ageLower");
   const drinksVal = urlParams.get("drinksVal");
   const smokesVal = urlParams.get("smokesVal");
@@ -289,7 +289,7 @@ function dismissUser(event, userID) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const studentVal = urlParams.get("studentVal");
-    const ageUpper = urlParams.get("AgeUpper");
+    const ageUpper = urlParams.get("ageUpper");
     const ageLower = urlParams.get("ageLower");
     const drinksVal = urlParams.get("drinksVal");
     const smokesVal = urlParams.get("smokesVal");
