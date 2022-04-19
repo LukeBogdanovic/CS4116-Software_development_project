@@ -2,7 +2,9 @@
  * Fetches the profile of the specified User ID
  */
 function fetchProfile() {
-  const id = $("#userID").val();
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const id = urlParams.get("profile");
   $.ajax({
     method: "POST",
     url: "../api/profile/profileSetup.php",

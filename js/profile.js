@@ -17,7 +17,7 @@ function isPageEditable(id) {
     let editBtn = document.createElement("a");
     editBtn.classList.add("btn", "btn-lg", "submit");
     editBtn.setAttribute("role", "button");
-    editBtn.setAttribute("href", "profileSetup.php");
+    editBtn.setAttribute("href", `profileSetup.php?profile=${id}`);
     editBtn.style = "background-color: #6D071A;";
     editBtn.innerHTML = "Edit";
     editDiv.appendChild(editBtn);
