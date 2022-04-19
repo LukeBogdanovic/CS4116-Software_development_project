@@ -167,7 +167,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         <div id="userLike" hidden>
             <a class="btn btn-lg submit mb-3" id="likeButton" role="button" onclick="likeUser(event);">Like User</a>
         </div>
-        <div class = "mb-3" id="edit"></div>
+        <div class="mb-3" id="edit"></div>
     </div>
     <?php
     require_once "includes/footer.php"
