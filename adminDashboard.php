@@ -211,15 +211,30 @@
                         echo "Banned Value :";
                         echo '<p>'.$row[2].'</p>'; // Bool Banned
 
-                        // Attempt update query execution
-                        $sql = "UPDATE user SET Banned='1' WHERE userID= $row[0]";
+                        if ($row[2] == 1) {
+                            echo "User Already Banned.";
+                        }
 
-                        if(mysqli_query($con, $sql)){
-                            echo "Records were updated successfully. User Ban.";
-                        } 
-                        
                         else {
-                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
+                            // Attempt update query execution
+                            $sql = "UPDATE user SET Banned='1' WHERE userID= $row[0]";
+
+                            if(mysqli_query($con, $sql)){
+                                echo '<p>'."Records were updated successfully. User Ban.".'<p>';
+                                $date = date("Y-m-d");
+                                $sql2 = "INSERT INTO bannedusers (UserID, BanID, `Date`, BannedByID) VALUES ('.$row[0].', '0', '.$date.', '1')";
+                                if(mysqli_query($con, $sql2)) {
+                                    echo "Successfully added to Banned User List.";
+                                }
+                                else
+                                {
+                                    echo "ERROR: Could not able to execute $sql2. " . mysqli_error($con);
+                                }
+                            } 
+                            
+                            else {
+                                echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
+                            }
                         }
                     } 
                 }
@@ -273,12 +288,26 @@
                         // Attempt update query execution
                         $sql = "UPDATE user SET Banned='0' WHERE userID= $rowbis[0]";
 
-                        if(mysqli_query($con, $sql)){
-                            echo "Records were updated successfully. User Unban.";
-                        } 
-                        
+                        if($rowbis[2] == 0) {
+                            echo "User Already Unbanned.";
+                        }
                         else {
-                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
+                            if(mysqli_query($con, $sql)){
+                                echo '<p>'."Records were updated successfully. User Unban.".'<p>';
+                                $date = date("Y-m-d");
+                                $sql2 = "DELETE FROM bannedusers WHERE userID= $rowbis[0]";
+                                if(mysqli_query($con, $sql2)) {
+                                    echo "Successfully removed from Banned User List.";
+                                }
+                                else
+                                {
+                                    echo "ERROR: Could not able to execute $sql2. " . mysqli_error($con);
+                                }
+                            } 
+                            
+                            else {
+                                echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
+                            }
                         }
                     } 
                 }
