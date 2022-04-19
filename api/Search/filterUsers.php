@@ -114,9 +114,12 @@ function get_suggested_users()
                         }
                     }
                     $result['suggested_users'] = $suggestedUsers;
-                } 
+                }
             }
         }
+    }
+    if (empty($result['suggested_users'])) {
+        $result = array('status' => 403, 'message' => "No Suggested Users found");
     }
     echo json_encode($result);
     return;
