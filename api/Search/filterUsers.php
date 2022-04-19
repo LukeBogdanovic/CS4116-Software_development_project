@@ -59,6 +59,8 @@ function get_suggested_users()
                 }
             }
         }
+        //sort array in descending order based on array length to return users in order of most interests in common
+        arsort($potentialUsers);
     }
     $returnSuitableUsers = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE user.UserID = ? and profile.Gender = ?";
     //fill these variable with a POST, 
