@@ -40,7 +40,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                                 <label for="username">Username</label>
                             </div>
                             <div class="form-floating mb-4">
-                                <input name="password" type="password" id="pwd" class="form-control form-control-lg" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." />
+                                <input name="password" type="password" id="pwd" class="form-control form-control-lg" pattern="[A-Za-z0-9_$%^&*()@?><-]{8,16}" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase character, and between 8 and 16 characters long." />
                                 <label for="password">Password</label>
                             </div>
                             <div class="d-flex justify-content-around align-items-center mb-4">

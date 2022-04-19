@@ -1,6 +1,5 @@
 /**
- *
- * @param {Event} event
+ * Gets all users with a connection to the current logged in user
  */
 function getConnectedUsers() {
   const id = $("#userID").val();
@@ -35,6 +34,10 @@ function getConnectedUsers() {
   });
 }
 
+/**
+ * Adds data retrieved from the connection ajax request to the user card template
+ * @param {JSON} data
+ */
 function addUserCards(data, type) {
   const userCardTemplate = document.querySelector("[data-user-template]");
   const userCardContainer = document.querySelector(type);
