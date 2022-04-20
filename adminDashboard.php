@@ -156,6 +156,7 @@
                 require_once "includes/database.php";
 
                 $username = $_POST["username"];
+                $banbyid = $_SESSION['id'];
 
                 // Check For Ban Reason
                 if(!empty($_POST["ban_reason"])){
@@ -206,7 +207,7 @@
                             if(mysqli_query($con, $sql)){
                                 echo '<p>'."Records were updated successfully. User Ban.".'<p>';
                                 $date = date("Y-m-d");
-                                $sql2 = "INSERT INTO bannedusers (UserID, BanID, `Date`, BannedByID, Reason) VALUES ('.$row[0].', '0', '$date', '1', '$banreason')"; // BannedByID to $_SESSION['id'] 
+                                $sql2 = "INSERT INTO bannedusers (UserID, BanID, `Date`, BannedByID, Reason) VALUES ('.$row[0].', '0', '$date', '.$banbyid.', '$banreason')"; // BannedByID to $_SESSION['id'] 
                                 if(mysqli_query($con, $sql2)) {
                                     echo "Successfully added to Banned User List.";
                                 }
