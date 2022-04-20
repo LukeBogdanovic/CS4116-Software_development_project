@@ -133,13 +133,13 @@ function check_connection()
                     $connect = true;
                 } else {
                     $connect = false;
+                    $result = array('status' => 403, 'message' => "User's are not connected yet");
                 }
             }
             mysqli_stmt_close($stmt);
         }
         if ($connect) {
             $date = date("Y-m-d");
-
             $stmt = "INSERT INTO connections (ConnectionID,userID1,userID2,ConnectionDate) VALUES (DEFAULT,$userID1,$userID2,?);";
             if ($stmt = mysqli_prepare($con, $stmt)) {
                 if (mysqli_stmt_bind_param($stmt, "s", $date)) {
