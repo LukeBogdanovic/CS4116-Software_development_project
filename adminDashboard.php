@@ -28,51 +28,63 @@
                             <h5 class="text-right">Reports Table:</h5>
                         </div>
 
-                        <div class="table-scroll scrollbar">
+                        <?php
+                            require_once "includes/database.php";
 
-                            <table class="table table-striped">
+                            $query = "SELECT userID, ReportReason FROM reports";
 
-                                <thead>
+                            $result = mysqli_query($con, $query);
 
-                                    <tr>
-                                        <th scope="col">Username</th>
-                                        <th scope="col">Reported By</th>
-                                        <th scope="col">Reason for Report</th>
-                                    </tr>
+                            if ($result->num_rows > 0) {
+                                // Reported Users
+                                while($row = $result->fetch_assoc()) {
+                                    print_r("<b>ID: </b>" . $row["userID"]. "<b> - Reason: </b>" . $row["ReportReason"]);
+                                    if($row["ReportReason"] == NULL){
+                                        print_r("No Specified Reason");
+                                    }
+                                    print_r(" ");
+                                    $b = $row["userID"];
+                                    $query2 = "SELECT userID, Username FROM user WHERE userID ='$b'";
+                                    $result2 = mysqli_query($con, $query2);
+                                    $rowbis = mysqli_fetch_row($result2);
+                                    print_r("<b>- Username: </b>" . $rowbis[1]. "<br>");
+                                }
+                              } else {
+                                print_r("<b>0 results</b>");
+                              }
+                        ?>
 
-                                </thead>
-
-                                <tbody>
-
-                                    <tr>
-                                        <th scope="row">username1</th>
-                                        <td>The Cool Police</td>
-                                        <td>Not being cool enough</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row">username2</th>
-                                        <td>The Cool Police</td>
-                                        <td>Being too cool</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row">username3</th>
-                                        <td>The Cool Police</td>
-                                        <td>Being too cool</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row">username4</th>
-                                        <td>The Cool Police</td>
-                                        <td>Being too cool</td>
-                                    </tr>
-
-                                </tbody>
-
-                            </table>
-
+                        <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
+                            <h5 class="text-right">List of Banned Users:</h5>
                         </div>
+
+                        <?php
+                            require_once "includes/database.php";
+
+                            $query = "SELECT userID, Username, Banned FROM user WHERE Banned ='1'";
+
+                            $result = mysqli_query($con, $query);
+
+                            if ($result->num_rows > 0) {
+                                // Banned Users
+                                while($row = $result->fetch_assoc()) {
+                                    print_r("<b>ID: </b>" . $row["userID"]. "<b> - Username: </b>" . $row["Username"]. " ");
+
+                                    $b = $row["userID"];
+                                    $query2 = "SELECT userID, `Date`, Reason FROM bannedusers WHERE userID ='$b'";
+                                    $result2 = mysqli_query($con, $query2);
+                                    $rowbis = mysqli_fetch_row($result2);
+
+                                    if($rowbis[2]==NULL){
+                                        $rowbis[2] = "No Specified Reason";
+                                    }
+
+                                    print_r("<b>- Date: </b>" . $rowbis[1]."<b> - Ban Reason: </b>" . $rowbis[2] . "<br>");
+                                }
+                              } else {
+                                print_r("<b>0 results</b>");
+                              }
+                        ?>
 
                         <div class="row mt-5">
 
@@ -84,8 +96,20 @@
 
                                 <form action="" method="POST">
                                     <div>
-                                        <label class="labels">username</label>
-                                        <input type="text" id="username" name="username">
+                                        <label class="labels">Username</label>
+                                        <input type="text" id="username" name="username"> <br>   
+
+                                        <fieldset> <br>
+                                            <legend style="font-size:20px">Ban Reason : </legend>      
+                                            <input type="checkbox" name="ban_reason" value="Harassment"> Harassment<br>      
+                                            <input type="checkbox" name="ban_reason" value="Disrespectful behaviour"> Disrespectful behaviour<br>      
+                                            <input type="checkbox" name="ban_reason" value="Hate Speech"> Hate Speech<br>
+                                            <input type="checkbox" name="ban_reason" value="Catfish"> Catfish<br>
+                                            <input type="checkbox" name="ban_reason" value="Bot account"> Bot account<br>
+                                        </fieldset> <br>
+
+                                        <input class="btn btn-danger" type="submit" value="Ban">
+
                                     </div>
                                 </form>
 
@@ -103,63 +127,15 @@
 
                             <form action="" method="POST">
                                     <div>
-                                        <label class="labels">username</label>
+                                        <label class="labels">Username</label>
                                         <input type="text" id="username2" name="username2">
+                                        <input class="btn input-group-text btn-success" type="submit" value="Unban">
                                     </div>
+
                                 </form>
 
 
                             </div>
-
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
-                            <h5 class="text-right">List of Banned Users:</h5>
-                        </div>
-
-                        <div class="table-scroll scrollbar">
-
-                            <table class="table table-striped">
-
-                                <thead>
-
-                                    <tr>
-                                        <th scope="col">Username</th>
-                                        <th scope="col">Banned By</th>
-                                        <th scope="col">Reason for Ban</th>
-                                    </tr>
-
-                                </thead>
-
-                                <tbody>
-
-                                    <tr>
-                                        <th scope="row">username1</th>
-                                        <td>Admin</td>
-                                        <td>Reason</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row">username2</th>
-                                        <td>Admin</td>
-                                        <td>Reason</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row">username3</th>
-                                        <td>Admin</td>
-                                        <td>Reason</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row">username4</th>
-                                        <td>Admin</td>
-                                        <td>Reason</td>
-                                    </tr>
-
-                                </tbody>
-
-                            </table>
 
                         </div>
 
@@ -172,7 +148,7 @@
         </main>
 
         <?php 
-        
+        date_default_timezone_set('Europe/Dublin');
         //Ban A User
 
             if(!empty($_POST["username"])){
@@ -181,6 +157,14 @@
 
                 $username = $_POST["username"];
 
+                // Check For Ban Reason
+                if(!empty($_POST["ban_reason"])){
+                    $banreason = $_POST["ban_reason"];
+                    echo "Selected Ban Reason : ". $banreason.'</p>';
+                }
+                else {
+                    $banreason = NULL;
+                }
         
                 // Check connection
                 if($con === false){
@@ -222,7 +206,7 @@
                             if(mysqli_query($con, $sql)){
                                 echo '<p>'."Records were updated successfully. User Ban.".'<p>';
                                 $date = date("Y-m-d");
-                                $sql2 = "INSERT INTO bannedusers (UserID, BanID, `Date`, BannedByID) VALUES ('.$row[0].', '0', '.$date.', '1')";
+                                $sql2 = "INSERT INTO bannedusers (UserID, BanID, `Date`, BannedByID, Reason) VALUES ('.$row[0].', '0', '$date', '1', '$banreason')"; // BannedByID to $_SESSION['id'] 
                                 if(mysqli_query($con, $sql2)) {
                                     echo "Successfully added to Banned User List.";
                                 }
@@ -249,6 +233,7 @@
         <?php 
         
         //Unban A User
+        date_default_timezone_set('Europe/Dublin');
         
             if(!empty($_POST["username2"])){
 
