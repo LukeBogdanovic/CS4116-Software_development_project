@@ -64,13 +64,13 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                                 <select name="smoker" id="smoker" class="form-select">
                                     <option>Non Smoker</option>
                                     <option>Social Smoker</option>
-                                    <option>Yes</option>
+                                    <option value="Smoker">Yes</option>
                                 </select>
                             </div>
                             <div class="col-md-12">
                                 <label class="labels">Drinker</label>
                                 <select name="drinker" id="drinker" class="form-select">
-                                    <option>Never</option>
+                                    <option value ="No">Never</option>
                                     <option>Social Drinker</option>
                                     <option>Most Days</option>
                                     <option>Constantly</option>
