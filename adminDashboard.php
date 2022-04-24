@@ -1,7 +1,7 @@
 <?php 
 session_start();
 // Checking if the user is already logged in to the website and redirecting to Home if they are
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
     header("location: index.php");
     exit;
 }
@@ -29,14 +29,16 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             <div class="container mt-5 mb-5">
 
                 <div class="d-flex justify-content-center">
-
+                    
                     <div class="col-md-6">
 
+                    <!--
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="text-right">Reports Table:</h5>
                         </div>
 
                         <?php
+                        /*
                             require_once "includes/database.php";
 
                             $query = "SELECT userID, ReportReason FROM reports";
@@ -60,8 +62,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                               } else {
                                 print_r("<b>0 results</b>");
                               }
+                              */
                         ?>
 
+                    -->
+
+                    <!-- Ban User List Display-->
                         <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
                             <h5 class="text-right">List of Banned Users:</h5>
                         </div>
@@ -74,7 +80,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                             $result = mysqli_query($con, $query);
 
                             if ($result->num_rows > 0) {
-                                // Banned Users
                                 while($row = $result->fetch_assoc()) {
                                     print_r("<b>ID: </b>" . $row["userID"]. "<b> - Username: </b>" . $row["Username"]. " ");
 
@@ -100,6 +105,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                               }
                         ?>
 
+                        <!-- Ban User Button-->
                         <div class="row mt-5">
 
                             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -131,6 +137,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
                         </div>
 
+                        <!-- Unban User Button-->
                         <div class="row mt-3">
 
                             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -152,10 +159,34 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                             </div>
 
                         </div>
+
+                        <!-- Admin User Button-->
+                        <div class="row mt-3">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="text-right">Give Admin to a User:</h5>
+                            </div>
+
+                            <div class="input-group mb-3">
+
+                            <form action="" method="POST">
+                                    <div>
+                                        <label class="labels">Username</label>
+                                        <input type="text" id="username3" name="username3">
+                                        <input class="btn input-group-text btn-success" type="submit" value="Admin">
+                                    </div>
+
+                                </form>
+
+
+                            </div>
+
+                        </div>
+
+                        <!-- Ban A user -->
                             <div class="justify-content-between align-items-center">
                                 <?php 
                                     date_default_timezone_set('Europe/Dublin');
-                                    //Ban A User
 
                                         if(!empty($_POST["username"])){
 
@@ -238,9 +269,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                                         }    
                                     ?>
 
+                                    <!-- Unban A user -->
                                     <?php 
-                                    
-                                    //Unban A User
                                     date_default_timezone_set('Europe/Dublin');
                                     
                                         if(!empty($_POST["username2"])){
@@ -255,9 +285,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                                             }
 
                                             // Fetch Data
-                                            $query = "SELECT userID, Username, Banned FROM user WHERE Username ='$username2'";
+                                            $query2 = "SELECT userID, Username, Banned FROM user WHERE Username ='$username2'";
 
-                                            $resultbis = mysqli_query($con, $query);
+                                            $resultbis = mysqli_query($con, $query2);
 
                                             if (!$resultbis) {
                                                 print_r("Error : No user found" . $con -> error);
@@ -279,17 +309,17 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                                                     print_r( '<p>'.$rowbis[2].'</p>'); // Bool Banned
 
                                                     // Attempt update query execution
-                                                    $sql = "UPDATE user SET Banned='0' WHERE userID= $rowbis[0]";
+                                                    $sql3 = "UPDATE user SET Banned='0' WHERE userID= $rowbis[0]";
 
                                                     if($rowbis[2] == 0) {
                                                         print_r( "User Already Unbanned.");
                                                     }
                                                     else {
-                                                        if(mysqli_query($con, $sql)){
+                                                        if(mysqli_query($con, $sql3)){
                                                             print_r( '<p>'."Records were updated successfully. User Unban.".'<p>');
                                                             $date = date("Y-m-d");
-                                                            $sql2 = "DELETE FROM bannedusers WHERE userID= $rowbis[0]";
-                                                            if(mysqli_query($con, $sql2)) {
+                                                            $sql4 = "DELETE FROM bannedusers WHERE userID= $rowbis[0]";
+                                                            if(mysqli_query($con, $sql4)) {
                                                                 print_r( "Successfully removed from Banned User List.");
                                                                 echo( '<script>
                                                                             document.location.reload(true);
@@ -297,12 +327,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                                                             }
                                                             else
                                                             {
-                                                                print_r( "ERROR: Could not able to execute $sql2. " . mysqli_error($con));
+                                                                print_r( "ERROR: Could not able to execute $sql4. " . mysqli_error($con));
                                                             }
                                                         } 
                                                         
                                                         else {
-                                                            print_r( "ERROR: Could not able to execute $sql. " . mysqli_error($con));
+                                                            print_r( "ERROR: Could not able to execute $sql3. " . mysqli_error($con));
                                                         }
                                                     }
                                                 } 
@@ -311,6 +341,68 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                                             mysqli_close($con);
                                         }
                                     ?>
+
+                                <!-- Admin A user -->
+                                <?php 
+                                        if(!empty($_POST["username3"])){
+
+                                            require_once "includes/database.php";
+
+                                            $username3 = $_POST["username3"];
+
+                                            // Check connection
+                                            if($con === false){
+                                                die("ERROR: Could not connect. " . mysqli_connect_error());
+                                            }
+
+                                            // Fetch Data
+                                            $query3 = "SELECT userID, Username, `Admin` FROM user WHERE Username ='$username3'";
+
+                                            $result3 = mysqli_query($con, $query3);
+
+                                            if (!$result3) {
+                                                print_r("Error : No user found" . $con -> error);
+                                            }
+
+                                            else {
+                                                $row3 = mysqli_fetch_row($result3);
+
+                                                if (empty($row3)){
+                                                    print_r("Error : No user found" . $con -> error);
+                                                }
+                                                
+                                                else {
+                                                    print_r( "User ID Value :");
+                                                    print_r( '<p>'.$row3[0].'</p>'); // id
+                                                    print_r( "Username Value :");
+                                                    print_r( '<p>'.$row3[1].'</p>'); // username
+                                                    print_r( "Admin Value :");
+                                                    print_r( '<p>'.$row3[2].'</p>'); // Bool Banned
+
+                                                    if ($row3[2] == 1) {
+                                                        print_r( "User Already Admin.");
+                                                    }
+
+                                                    else {
+                                                        // Attempt update query execution
+                                                        $sql5 = "UPDATE user SET `Admin`='1' WHERE userID= $row3[0]";
+
+                                                        if(mysqli_query($con, $sql5)){
+                                                            print_r( '<p>'."Records were updated successfully. User now Admin.".'<p>');
+                                                        } 
+                                                        
+                                                        else {
+                                                            print_r( "ERROR: Could not able to execute $sql5. " . mysqli_error($con));
+                                                        }
+                                                    }
+                                                } 
+                                            }
+                                            
+                                            // Close connection
+                                            mysqli_close($con);
+                                        }    
+                                    ?>
+
                         </div>
                     </div>
                 </div>
