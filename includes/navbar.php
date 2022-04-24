@@ -9,19 +9,20 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="Home.php">Home</a>
                 </li>
-                <li class="nav-item">
+            <?php echo (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) ?    
+                '<li class="nav-item">
                     <a class="nav-link" href="Profile.php">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Connections.php">My Connections</a>
                 </li>
             </ul>
-            <?php echo (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) ?
-                '<form class="d-flex">
+            
+                <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <a class="btn submit" type="submit" href="search.php">Search</a>
             </form>
-            <a href="logout.php" class="btn ml-3">Sign Out</a>' : '' ?>
+            <a href="logout.php" class="btn ml-3">Sign Out</a>' : '</ul>' ?>
         </div>
     </div>
 </nav>
