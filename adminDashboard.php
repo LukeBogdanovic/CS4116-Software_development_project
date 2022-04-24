@@ -32,41 +32,6 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                     
                     <div class="col-md-6">
 
-                    <!--
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="text-right">Reports Table:</h5>
-                        </div>
-
-                        <?php
-                        /*
-                            require_once "includes/database.php";
-
-                            $query = "SELECT userID, ReportReason FROM reports";
-
-                            $result = mysqli_query($con, $query);
-
-                            if ($result->num_rows > 0) {
-                                // Reported Users
-                                while($row = $result->fetch_assoc()) {
-                                    print_r("<b>ID: </b>" . $row["userID"]. "<b> - Reason: </b>" . $row["ReportReason"]);
-                                    if($row["ReportReason"] == NULL){
-                                        print_r("No Specified Reason");
-                                    }
-                                    print_r(" ");
-                                    $b = $row["userID"];
-                                    $query2 = "SELECT userID, Username FROM user WHERE userID ='$b'";
-                                    $result2 = mysqli_query($con, $query2);
-                                    $rowbis = mysqli_fetch_row($result2);
-                                    print_r("<b>- Username: </b>" . $rowbis[1]. "<br>");
-                                }
-                              } else {
-                                print_r("<b>0 results</b>");
-                              }
-                              */
-                        ?>
-
-                    -->
-
                     <!-- Ban User List Display-->
                         <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
                             <h5 class="text-right">List of Banned Users:</h5>
@@ -128,7 +93,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                             <input type="checkbox" name="ban_reason" value="Bot account"> Bot account<br>
                                         </fieldset> <br>
 
-                                        <input class="btn btn-danger" type="submit" value="Ban">
+                                        <input class="btn input-group-text btn-warning" type="submit" value="Ban">
 
                                     </div>
                                 </form>
@@ -173,7 +138,53 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                     <div>
                                         <label class="labels">Username</label>
                                         <input type="text" id="username3" name="username3">
-                                        <input class="btn input-group-text btn-success" type="submit" value="Admin">
+                                        <input class="btn input-group-text btn-info" type="submit" value="Admin">
+                                    </div>
+
+                                </form>
+
+
+                            </div>
+
+                        </div>
+
+                        <!-- Remove Admin User Button-->
+                        <div class="row mt-3">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="text-right">Remove Admin to a User:</h5>
+                            </div>
+
+                            <div class="input-group mb-3">
+
+                            <form action="" method="POST">
+                                    <div>
+                                        <label class="labels">Username</label>
+                                        <input type="text" id="username4" name="username4">
+                                        <input class="btn input-group-text btn-info" type="submit" value="Remove Admin">
+                                    </div>
+
+                                </form>
+
+
+                            </div>
+
+                        </div>
+
+                        <!-- Remove User Button-->
+                        <div class="row mt-3">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="text-right">Remove a User:</h5>
+                            </div>
+
+                            <div class="input-group mb-3">
+
+                            <form action="" method="POST">
+                                    <div>
+                                        <label class="labels">Username</label>
+                                        <input type="text" id="username5" name="username5">
+                                        <input class="btn input-group-text btn-danger" type="submit" value="Remove User">
                                     </div>
 
                                 </form>
@@ -247,9 +258,11 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                                             $sql2 = "INSERT INTO bannedusers (UserID, BanID, `Date`, BannedByID, Reason) VALUES ('.$row[0].', '0', '$date', '.$banbyid.', '$banreason')"; // BannedByID to $_SESSION['id'] 
                                                             if(mysqli_query($con, $sql2)) {
                                                                 print_r( "Successfully added to Banned User List.");
+                                                                /*
                                                                 echo( '<script>
                                                                             document.location.reload(true);
                                                                     </script>');
+                                                                */
                                                             }
                                                             else
                                                             {
@@ -321,9 +334,11 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                                             $sql4 = "DELETE FROM bannedusers WHERE userID= $rowbis[0]";
                                                             if(mysqli_query($con, $sql4)) {
                                                                 print_r( "Successfully removed from Banned User List.");
+                                                                /*
                                                                 echo( '<script>
                                                                             document.location.reload(true);
                                                                     </script>');
+                                                                */
                                                             }
                                                             else
                                                             {
@@ -377,7 +392,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                                     print_r( "Username Value :");
                                                     print_r( '<p>'.$row3[1].'</p>'); // username
                                                     print_r( "Admin Value :");
-                                                    print_r( '<p>'.$row3[2].'</p>'); // Bool Banned
+                                                    print_r( '<p>'.$row3[2].'</p>'); // Admin Banned
 
                                                     if ($row3[2] == 1) {
                                                         print_r( "User Already Admin.");
@@ -403,6 +418,120 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                         }    
                                     ?>
 
+                                    <!-- Remove Admin A user -->
+                                    <?php 
+                                        if(!empty($_POST["username4"])){
+
+                                            require_once "includes/database.php";
+
+                                            $username4 = $_POST["username4"];
+
+                                            // Check connection
+                                            if($con === false){
+                                                die("ERROR: Could not connect. " . mysqli_connect_error());
+                                            }
+
+                                            // Fetch Data
+                                            $query3 = "SELECT userID, Username, `Admin` FROM user WHERE Username ='$username4'";
+
+                                            $result3 = mysqli_query($con, $query3);
+
+                                            if (!$result3) {
+                                                print_r("Error : No user found" . $con -> error);
+                                            }
+
+                                            else {
+                                                $row3 = mysqli_fetch_row($result3);
+
+                                                if (empty($row3)){
+                                                    print_r("Error : No user found" . $con -> error);
+                                                }
+                                                
+                                                else {
+                                                    print_r( "User ID Value :");
+                                                    print_r( '<p>'.$row3[0].'</p>'); // id
+                                                    print_r( "Username Value :");
+                                                    print_r( '<p>'.$row3[1].'</p>'); // username
+                                                    print_r( "Admin Value :");
+                                                    print_r( '<p>'.$row3[2].'</p>'); // Admin Banned
+
+                                                    if ($row3[2] == 0) {
+                                                        print_r( "User is not an Admin.");
+                                                    }
+
+                                                    else {
+                                                        // Attempt update query execution
+                                                        $sql5 = "UPDATE user SET `Admin`='0' WHERE userID= $row3[0]";
+
+                                                        if(mysqli_query($con, $sql5)){
+                                                            print_r( '<p>'."Records were updated successfully. Admin Status Removed.".'<p>');
+                                                        } 
+                                                        
+                                                        else {
+                                                            print_r( "ERROR: Could not able to execute $sql5. " . mysqli_error($con));
+                                                        }
+                                                    }
+                                                } 
+                                            }
+                                            
+                                            // Close connection
+                                            mysqli_close($con);
+                                        }    
+                                    ?>
+
+                                    <!-- Remove A user -->
+                                    <?php 
+                                        if(!empty($_POST["username5"])){
+
+                                            require_once "includes/database.php";
+
+                                            $username5 = $_POST["username5"];
+
+                                            // Check connection
+                                            if($con === false){
+                                                die("ERROR: Could not connect. " . mysqli_connect_error());
+                                            }
+
+                                            // Fetch Data
+                                            $query3 = "SELECT userID, Username FROM user WHERE Username ='$username5'";
+
+                                            $result3 = mysqli_query($con, $query3);
+
+                                            if (!$result3) {
+                                                print_r("Error : No user found" . $con -> error);
+                                            }
+
+                                            else {
+                                                $row3 = mysqli_fetch_row($result3);
+
+                                                if (empty($row3)){
+                                                    print_r("Error : No user found" . $con -> error);
+                                                }
+                                                
+                                                else {
+                                                    print_r( "User ID Value :");
+                                                    print_r( '<p>'.$row3[0].'</p>'); // id
+                                                    print_r( "Username Value :");
+                                                    print_r( '<p>'.$row3[1].'</p>'); // username
+
+                                                    // Attempt update query execution
+                                                    $sql5 = "DELETE FROM user WHERE userID= $row3[0]";
+
+                                                    if(mysqli_query($con, $sql5)){
+                                                        print_r( '<p>'."Records were updated successfully. User Removed.".'<p>');
+                                                    } 
+                                                    
+                                                    else {
+                                                        print_r( "ERROR: Could not able to execute $sql5. " . mysqli_error($con));
+                                                    }
+                                                    
+                                                } 
+                                            }
+                                            
+                                            // Close connection
+                                            mysqli_close($con);
+                                        }    
+                                    ?>
                         </div>
                     </div>
                 </div>
