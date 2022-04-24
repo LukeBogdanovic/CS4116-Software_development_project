@@ -1,33 +1,43 @@
+let search = $("#search");
+let typingTimer;
+let interval = 500;
 /**
  * Sends the user request from the frontend to the server and returns
  * the data retrieved from the database
  * @param {Event} event
  */
 function getSearchResults(event) {
-  event.preventDefault();
+  try {
+    event.preventDefault();
+  } catch (error) {
+    console.error();
+  }
   const searchTerm = $("#search").val();
   $.ajax({
     method: "POST",
     url: "../api/Search/getSearchResult.php",
-    data: { function: "get_Search_result_username", search: searchTerm },
+    data: {
+      function: "get_Search_result",
+      search: searchTerm,
+    },
     success: (response) => {
-      var data = JSON.parse(response);
+      let data = JSON.parse(response);
       if (data.status == 200) {
         if (document.getElementById("warning"))
           document
-            .getElementById("searchForm")
+            .getElementById("user-cards")
             .parentElement.removeChild(document.getElementById("warning"));
         if (document.getElementById("user-cards").children) {
           document.getElementById("user-cards").innerHTML = "";
         }
-        addUserCards(data[0]);
+        addUserCards(data[0], "[data-user-cards-container]");
       } else {
         if (!document.getElementById("warning")) {
           var newNode = document.createElement("div");
           newNode.id = "warning";
           newNode.classList.add("alert", "alert-danger");
           newNode.innerHTML = data.message;
-          var parentDiv = document.getElementById("searchForm").parentElement;
+          var parentDiv = document.getElementById("user-cards").parentElement;
           parentDiv.appendChild(newNode);
           document.getElementById("user-cards").innerHTML = "";
         }
@@ -45,16 +55,177 @@ function addUserCards(data) {
   const userCardContainer = document.querySelector(
     "[data-user-cards-container]"
   );
+  const userID = $("#userID").val();
+  let likedUsers;
+  $.ajax({
+    method: "POST",
+    async: false,
+    url: "../api/Connections/connections.php",
+    data: {
+      function: "get_Liked_Users",
+      id: userID,
+    },
+    success: (response) => {
+      likedUsers = JSON.parse(response);
+    },
+  });
   data.forEach((user) => {
     const card = userCardTemplate.content.cloneNode(true).children[0];
     const header = card.querySelector("[data-header]");
     const username = card.querySelector("[data-username]");
     const age = card.querySelector("[data-age]");
     const body = card.querySelector("[data-body]");
+    const userID = card.querySelector("[data-userid]");
+    const userLike = card.querySelector("[data-like]");
+    const userProfile = card.querySelector("[data-profile]");
+    card.setAttribute("id", `userCard${user.userID}`);
     header.textContent = `${user.firstname} ${user.surname}`;
     username.textContent = user.username;
     age.textContent = user.age;
     body.textContent = user.description;
+    userID.setAttribute("value", user.userID);
+    userLike.setAttribute("onclick", `likeUser(event,${user.userID});`);
+    userLike.setAttribute("id", `user${user.userID}`);
+    if (user.description.includes("has not created their profile yet")) {
+      userProfile.remove();
+    } else {
+      userProfile.setAttribute("href", `/profile.php?profile=${user.userID}`);
+    }
+    if (likedUsers[0]) {
+      likedUsers[0].forEach((likedUser) => {
+        if (
+          likedUser.userID == user.userID ||
+          user.userID == $("#userID").val()
+        ) {
+          userLike.remove();
+        }
+      });
+    }
     userCardContainer.append(card);
   });
+}
+
+$(document).on("ready", getSearchResults());
+
+search.on("keyup", () => {
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(getSearchResults, interval);
+});
+
+/**
+ *
+ * @param {Event} event
+ */
+function likeUser(event, userID2) {
+  event.preventDefault();
+  const userID1 = $("#userID").val();
+  $.ajax({
+    method: "POST",
+    url: "../api/Connections/connections.php",
+    data: {
+      function: "like_user",
+      userID1: userID1,
+      userID2: userID2,
+    },
+    success: (response) => {
+      let data = JSON.parse(response);
+      if (data.status == 200) {
+        document
+          .getElementById(`user${userID2}`)
+          .classList.replace("submit", "btn-success");
+        document.getElementById(`user${userID2}`).innerHTML = "User Liked";
+        document.getElementById(`user${userID2}`).setAttribute("disabled", "");
+        window.setTimeout(() => {
+          document
+            .getElementById(`user${userID2}`)
+            .classList.replace("btn-success", "submit");
+          document.getElementById(`user${userID2}`).innerHTML = "Like User";
+          document.getElementById(`user${userID2}`).removeAttribute("disabled");
+          window.setTimeout(() => {
+            document.getElementById(`user${userID2}`).remove();
+          }, 2500);
+        }, 2500);
+        checkUserConnection(userID2);
+      }
+    },
+  });
+}
+
+/**
+ *
+ * @param {String} userID2
+ */
+function checkUserConnection(userID2) {
+  const userID1 = $("#userID").val();
+  $.ajax({
+    method: "POST",
+    url: "../api/Connections/connections.php",
+    data: {
+      function: "check_connection",
+      userID1: userID1,
+      userID2: userID2,
+    },
+    success: (response) => {
+      let data = JSON.parse(response);
+      if (data.status == 200) {
+        let user;
+        $.ajax({
+          method: "POST",
+          async: false,
+          url: "../api/Search/getSearchResult.php",
+          data: {
+            function: "get_user",
+            id: userID2,
+          },
+          success: (response) => {
+            let data = JSON.parse(response);
+            if (data.status == 200) {
+              user = data.user;
+            }
+          },
+        });
+        const userCardTemplate = document.querySelector("[data-user-template]");
+        const modalBody = document.getElementById("modal-body");
+        const modalHeader = document.getElementById("modalHeader");
+        const card = userCardTemplate.content.cloneNode(true).children[0];
+        const header = card.querySelector("[data-header]");
+        const username = card.querySelector("[data-username]");
+        const age = card.querySelector("[data-age]");
+        const body = card.querySelector("[data-body]");
+        const userID = card.querySelector("[data-userid]");
+        const userProfile = document.querySelector("[data-view-profile]");
+        const userLike = card.querySelector("[data-like]");
+        const profile = card.querySelector("[data-profile]");
+        userLike.remove();
+        profile.remove();
+        card.setAttribute("id", `userCard${user.userID}`);
+        header.textContent = `${user.firstname} ${user.surname}`;
+        username.textContent = user.username;
+        age.textContent = getAge(user.dob);
+        body.textContent = user.description;
+        userID.setAttribute("value", user.userID);
+        modalHeader.innerHTML = `Connected to ${user.firstname} ${user.surname}`;
+        userProfile.setAttribute("href", `/profile.php?profile=${user.userID}`);
+        modalBody.appendChild(card);
+        let modal = new bootstrap.Modal(document.getElementById("Modal"), {});
+        modal.show();
+      }
+    },
+  });
+}
+
+/**
+ *
+ * @param {string} dob
+ * @returns age
+ */
+function getAge(dob) {
+  let today = new Date();
+  let birthDate = new Date(dob);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  let month = today.getMonth() - birthDate.getMonth();
+  if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
 }
