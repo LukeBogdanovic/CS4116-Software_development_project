@@ -161,7 +161,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                     <div>
                                         <label class="labels">Username</label>
                                         <input type="text" id="username4" name="username4">
-                                        <input class="btn input-group-text btn-info" type="submit" value="Remove Admin">
+                                        <input class="btn input-group-text btn-primary" type="submit" value="Remove Admin">
                                     </div>
 
                                 </form>
@@ -284,8 +284,6 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
 
                                     <!-- Unban A user -->
                                     <?php 
-                                    date_default_timezone_set('Europe/Dublin');
-                                    
                                         if(!empty($_POST["username2"])){
 
                                             require_once "includes/database.php";
@@ -314,6 +312,9 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                                 }
                                                 
                                                 else {
+                                                    echo( '<script>
+                                                                document.location.reload(true);
+                                                        </script>');
                                                     print_r( "User ID Value :");
                                                     print_r( '<p>'.$rowbis[0].'</p>'); // id
                                                     print_r( "Username Value :");
@@ -330,7 +331,6 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                                     else {
                                                         if(mysqli_query($con, $sql3)){
                                                             print_r( '<p>'."Records were updated successfully. User Unban.".'<p>');
-                                                            $date = date("Y-m-d");
                                                             $sql4 = "DELETE FROM bannedusers WHERE userID= $rowbis[0]";
                                                             if(mysqli_query($con, $sql4)) {
                                                                 print_r( "Successfully removed from Banned User List.");
@@ -392,7 +392,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                                     print_r( "Username Value :");
                                                     print_r( '<p>'.$row3[1].'</p>'); // username
                                                     print_r( "Admin Value :");
-                                                    print_r( '<p>'.$row3[2].'</p>'); // Admin Banned
+                                                    print_r( '<p>'.$row3[2].'</p>'); // Admin
 
                                                     if ($row3[2] == 1) {
                                                         print_r( "User Already Admin.");
@@ -453,7 +453,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                                                     print_r( "Username Value :");
                                                     print_r( '<p>'.$row3[1].'</p>'); // username
                                                     print_r( "Admin Value :");
-                                                    print_r( '<p>'.$row3[2].'</p>'); // Admin Banned
+                                                    print_r( '<p>'.$row3[2].'</p>'); // Admin 
 
                                                     if ($row3[2] == 0) {
                                                         print_r( "User is not an Admin.");
