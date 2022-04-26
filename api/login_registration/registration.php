@@ -96,7 +96,8 @@ function register_user()
                     $_SESSION['loggedin'] = true;
                     $_SESSION['id'] = $id;
                     $_SESSION['username'] = $username;
-                    $result = array('status' => 200, 'message' => 'User successfully registered!');
+                    $_SESSION['admin'] = false;
+                    $result = array('status' => 200, 'message' => 'User successfully registered!', 'id' => $id);
                 }
             } else {
                 $result = array('status' => 403, 'message' => 'Something went wrong during registration. Please try again later');

@@ -4,7 +4,7 @@ session_start();
  * If user is not logged in: the user is redirected to the login page and the script exits
  */
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("location: login.php");
+    header("location: index.php");
     exit;
 }
 ?>
