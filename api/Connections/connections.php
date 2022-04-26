@@ -20,7 +20,6 @@ if (isset($_POST['function'])) {
     }
 }
 
-
 function get_Connected_Users($id)
 {
     require "../../includes/database.php";
