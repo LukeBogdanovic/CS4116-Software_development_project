@@ -31,7 +31,7 @@ SET
     `Email` varchar(52) NOT NULL,
     `Admin` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Is the user an admin',
     `Banned` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Has the user been banned by an admin?',
-    PRIMARY KEY (UserID) ON DELETE CASCADE,
+    PRIMARY KEY (UserID),
     UNIQUE (Email),
     UNIQUE (Username)
   ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Store personal information about the user. ';
