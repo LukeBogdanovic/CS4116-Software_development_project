@@ -21,6 +21,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         let admin = "<?php echo $_SESSION['admin']; ?>";
     </script>
     <script src="js/profile.js" defer></script>
+    <script src="js/utils.js" defer></script>
 </head>
 
 <body class="text-center">
