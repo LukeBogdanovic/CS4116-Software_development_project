@@ -1,0 +1,55 @@
+{
+    "api": {
+        "Connections": [
+            "connections.php"
+        ],
+        "login_registration": [
+            "login.php"
+        ],
+        "resetPassword": [
+            "getSecQA.php"
+        ],
+        "Search": [
+            "getSearchResult.php"
+        ]
+    },
+    "assets": {
+        "database": [
+            "database.sql"
+        ],
+        "images": [
+            "1619563.png",
+            "aticon.png",
+            "logo.png",
+            "profile_pic.png"
+        ]
+    },
+    "css": [
+        "help.css",
+        "login.css",
+        "utils.css"
+    ],
+    "includes": [
+        "footer.php",
+        "navbar.php",
+        "utils.php"
+    ],
+    "js": [
+        "connections.js",
+        "login.js",
+        "resetPassword.js",
+        "search.js"
+    ],
+    "root": [
+        "connections.php",
+        "help.php",
+        "home.php",
+        "index.php",
+        "login.php",
+        "logout.php",
+        "profileSetup.php",
+        "resetPassword.php",
+        "search.php",
+        "signup.php"
+    ]
+}

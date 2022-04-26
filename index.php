@@ -3,60 +3,42 @@ session_start();
 
 // Checking if the user is already logged in to the website and redirecting to Home if they are
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    header("location: Home.php");
+    header("location: home.php");
     exit;
 }
 ?>
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8" />
-    <title>Welcome</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/utils.css">    
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" sizes="16x16">
-</head>
-<body>
-    <!-- Dans la balise body va se trouver tout le contenu visible de mon site -->
-    
-    <?php
-    require_once "includes/navbar.php";
-    ?>
-    
-    <div class="backgrnd">
-        <img alt="" src="assets/images/fond_coeurs.jpg" />
-        <div class="text2">
-                <div class="container">
-                    <div class="bouton1">
-                        <form>
-                            <a class="btn btn-secondary btn-outline-secondary btn-lg" style="background-color: #6D071A;" href="signup.php" role="button">
-                                Sign Up
-                            </a>
-                          </form>
-                    </div>
-
-                </div>
-
-                <div class="bouton2">
-                    <form>
-                      <a class="btn btn-secondary btn-outline-secondary btn-lg" style="background-color: #6D071A;" href="login.php" role="button">
-                                Log In
-                            </a>
-                    </form>
-                </div>
+<html>
+  <head>
+    <title>Welcome Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="assets/images/logo.PNG">
+    <link rel="stylesheet" type="text/css" href="css/utils.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  </head>
+    <body>
+      <?php
+      require_once "includes/navbar.php";
+      ?>
+      <div class="bg-image d-flex align-items-center justify-content-center text-center vh-100" style="background-image: url('assets/images/bg_og.jpg'); height: 100vh; background-size: cover;">
+        <div class="row d-flex align-items-center justify-content-center">
+          <div class="container">
+            <img src="assets/images/logo_transparentbg.png" alt="no image">
+          </div>
+          <div class="container">
+            <a class="btn submit btn-outline-light btn-lg" href="signup.php" role="button">Sign Up</a>
+            <a class="btn submit btn-outline-light btn-lg" href="login.php" role="button">Log In</a>
+          </div>
+        </div>
         
-                <div class="bouton3">
-                    <form>
-                        <a class="btn btn-primary btn-outline-dark btn-lg" style="background-color: #8B4513;" href="help.php" role="button">
-                                Help
-                            </a>
-                      </form>
-                </div>
         </div>
     </div>
     <?php
     require_once "includes/footer.php";
     ?>
-</body>
+    </body>
 </html>
+
+
+
