@@ -35,10 +35,21 @@ function get_Connected_Users($id)
                     $result = array('status' => 200, 'message' => 'Users connected to logged in user found');
                     // Put all retrieved UserIDs into results array
                     while (mysqli_stmt_fetch($stmt)) {
+                        $photoStmt = "SELECT photos.PhotoID FROM photos WHERE photos.UserID = ?";
+                        if ($photoStmt = mysqli_prepare($con, $photoStmt)) {
+                            if (mysqli_stmt_bind_param($photoStmt, "i", $userID)) {
+                                if (mysqli_stmt_execute($photoStmt)) {
+                                    mysqli_stmt_store_result($photoStmt);
+                                    mysqli_stmt_bind_result($photoStmt, $PhotoID);
+                                    mysqli_stmt_fetch($photoStmt);
+                                }
+                            }
+                        }
                         // Changing dob to age and putting in array
                         $age = get_age($dob);
-                        $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'daysSinceConnection' => date_difference($connectionDate, "Connected"), 'description' => $description);
+                        $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'daysSinceConnection' => date_difference($connectionDate, "Connected"), 'description' => $description, 'photo' => $PhotoID);
                         array_push($results, $user);
+                        $PhotoID = "";
                     }
                     array_push($result, $results);
                 } else {

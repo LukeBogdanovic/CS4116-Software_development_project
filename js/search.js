@@ -84,6 +84,7 @@ function addUserCards(data) {
   });
   data.forEach((user) => {
     const card = userCardTemplate.content.cloneNode(true).children[0];
+    const img = card.querySelector("[data-img]");
     const header = card.querySelector("[data-header]");
     const username = card.querySelector("[data-username]");
     const age = card.querySelector("[data-age]");
@@ -92,6 +93,9 @@ function addUserCards(data) {
     const userLike = card.querySelector("[data-like]");
     const userProfile = card.querySelector("[data-profile]");
     card.setAttribute("id", `userCard${user.userID}`);
+    if (user.photo) {
+      img.setAttribute("src", `assets/images/${user.photo}`);
+    }
     header.textContent = `${user.firstname} ${user.surname}`;
     username.textContent = user.username;
     age.textContent = user.age;

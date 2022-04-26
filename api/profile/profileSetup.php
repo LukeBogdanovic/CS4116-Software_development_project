@@ -29,7 +29,18 @@ if (isset($_POST['function'])) {
 function fetch_profile($id)
 {
     require "../../includes/database.php";
+    $PhotoID = "";
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $stmt = "SELECT photos.PhotoID FROM photos WHERE photos.UserID = ?";
+        if ($stmt = mysqli_prepare($con, $stmt)) {
+            if (mysqli_stmt_bind_param($stmt, "i", $id)) {
+                if (mysqli_stmt_execute($stmt)) {
+                    mysqli_stmt_store_result($stmt);
+                    mysqli_stmt_bind_result($stmt, $PhotoID);
+                    mysqli_stmt_fetch($stmt);
+                }
+            }
+        }
         $fetchProfile = "SELECT user.Username, user.Firstname, user.Surname, user.DateOfBirth,
         profile.Smoker, profile.Drinker, profile.Gender, profile.Seeking, profile.Description, profile.County, profile.Town, profile.Employment, profile.Student, profile.College, profile.Degree 
         FROM profile JOIN user 
@@ -43,7 +54,7 @@ function fetch_profile($id)
                 mysqli_stmt_bind_result($stmt, $username, $firstnameStored, $surnameStored, $dobStored, $smokerStored, $drinkerStored, $genderStored, $seekingStored, $descriptionStored, $countyStored, $townStored, $employmentStored, $studentStored, $collegeStored, $degreeStored);
                 mysqli_stmt_fetch($stmt);
                 ($studentStored == 0) ? $studentStored = 'No' : $studentStored = 'Yes';
-                $user = array('username' => $username, 'firstname' => $firstnameStored, 'surname' => $surnameStored, 'dob' => $dobStored, 'smoker' => $smokerStored, 'drinker' => $drinkerStored, 'gender' => $genderStored, 'seeking' => $seekingStored, 'description' => $descriptionStored, 'county' => $countyStored, 'town' => $townStored, 'employment' => $employmentStored, 'student' => $studentStored, 'college' => $collegeStored, 'degree' => $degreeStored);
+                $user = array('username' => $username, 'firstname' => $firstnameStored, 'surname' => $surnameStored, 'dob' => $dobStored, 'smoker' => $smokerStored, 'drinker' => $drinkerStored, 'gender' => $genderStored, 'seeking' => $seekingStored, 'description' => $descriptionStored, 'county' => $countyStored, 'town' => $townStored, 'employment' => $employmentStored, 'student' => $studentStored, 'college' => $collegeStored, 'degree' => $degreeStored, 'photo' => $PhotoID);
                 $result = array('status' => 200, 'message' => 'User profile details found.');
                 array_push($result, $user);
                 echo json_encode($result);
@@ -51,7 +62,7 @@ function fetch_profile($id)
             }
         }
     }
-    $result = array('status' => 403, 'message' => 'Unable to retireve User Profile information.');
+    $result = array('status' => 403, 'message' => 'Unable to retrieve User Profile information.');
     echo json_encode($result);
     return;
 }

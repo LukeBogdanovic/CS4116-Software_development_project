@@ -28,6 +28,7 @@ function get_Search_result($search = "")
 {
     // Init our database connection
     require "../../includes/database.php";
+    $PhotoID = "";
     $result = [];
     $results = [];
     $user = [];
@@ -45,12 +46,23 @@ function get_Search_result($search = "")
                     $result = array('status' => 200, 'message' => 'Users found matching search criteria');
                     // Put all retrieved UserIDs into results array
                     while (mysqli_stmt_fetch($stmt)) {
+                        $photoStmt = "SELECT photos.PhotoID FROM photos WHERE photos.UserID = ?";
+                        if ($photoStmt = mysqli_prepare($con, $photoStmt)) {
+                            if (mysqli_stmt_bind_param($photoStmt, "i", $userID)) {
+                                if (mysqli_stmt_execute($photoStmt)) {
+                                    mysqli_stmt_store_result($photoStmt);
+                                    mysqli_stmt_bind_result($photoStmt, $PhotoID);
+                                    mysqli_stmt_fetch($photoStmt);
+                                }
+                            }
+                        }
                         $age = get_age($dob);
                         //Create profile description string if profile descritpion returns null
                         if (is_null($description))
                             $description = $firstname . ' ' . $surname . ' has not created their profile yet';
-                        $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description);
+                        $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description, 'photo' => $PhotoID);
                         array_push($results, $user);
+                        $PhotoID = "";
                     }
                     array_push($result, $results);
                 } else

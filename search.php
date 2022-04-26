@@ -138,7 +138,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         </div>
         <template data-user-template>
             <div class="col">
-                <div class="usercard card h-100 shadow-sm"><img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture">
+                <div class="usercard card h-100 shadow-sm"><img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture" data-img>
                     <div class="card-body">
                         <input value="" hidden data-userid>
                         <h5 class="card-title" data-header>Name</h5>
