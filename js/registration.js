@@ -94,7 +94,7 @@ function registerUser(
         let parentDiv = document.getElementById("signupform").parentNode;
         parentDiv.replaceChild(newNode, document.getElementById("signupform"));
         window.setTimeout(() => {
-          window.location.href = "../profileSetup.php";
+          window.location.href = `../profileSetup.php?profile=${data.id}`;
         }, 1250);
       } else {
         if (!document.getElementById("warning")) {
