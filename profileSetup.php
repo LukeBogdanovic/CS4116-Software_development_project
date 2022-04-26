@@ -7,6 +7,10 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("location: login.php");
     exit;
 }
+if ($_GET['profile'] != $_SESSION['id'] && !$_SESSION['admin']) {
+    header("location: home.php");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -70,7 +74,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                             <div class="col-md-12">
                                 <label class="labels">Drinker</label>
                                 <select name="drinker" id="drinker" class="form-select">
-                                    <option value ="No">Never</option>
+                                    <option value="No">Never</option>
                                     <option>Social Drinker</option>
                                     <option>Most Days</option>
                                     <option>Constantly</option>

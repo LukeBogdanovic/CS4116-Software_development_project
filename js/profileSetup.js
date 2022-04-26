@@ -284,6 +284,9 @@ function sendUpdate(interestStored) {
         newChild.classList.add("alert", "alert-success");
         newChild.innerHTML = data.message;
         document.getElementById("hide").prepend(newChild);
+        window.setTimeout(() => {
+          document.getElementById("warning").remove();
+        }, 3000);
       } else {
         let newChild = document.createElement("div");
         newChild.id = "warning";
