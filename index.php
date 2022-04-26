@@ -21,24 +21,16 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 </head>
 
 <body>
-    <?php
-    require_once "includes/navbar.php";
-    ?>
-    <div class="bg-image d-flex align-items-center justify-content-center text-center vh-100" style="background-image: url('assets/images/bg_og.jpg'); height: 100vh; background-size: cover;">
+    <div class="bg-image d-flex align-items-center justify-content-center text-center vh-100" style="background-image: url('assets/images/lovey_dovey.jpg'); height: 100vh; background-size: cover;">
         <div class="row d-flex align-items-center justify-content-center">
-            <div class="container">
-                <img src="assets/images/logo_transparentbg.png" alt="no image">
-            </div>
             <div class="container">
                 <a class="btn submit btn-outline-light btn-lg" href="signup.php" role="button">Sign Up</a>
                 <a class="btn submit btn-outline-light btn-lg" href="login.php" role="button">Log In</a>
             </div>
         </div>
     </div>
-    </div>
     <?php
     require_once "includes/footer.php";
     ?>
 </body>
-
 </html>
