@@ -124,6 +124,7 @@ function addUserCards(data) {
   data.forEach((user) => {
     const card = userCardTemplate.content.cloneNode(true).children[0];
     const header = card.querySelector("[data-header]");
+    const img = card.querySelector("[data-img]");
     const username = card.querySelector("[data-username]");
     const age = card.querySelector("[data-age]");
     const body = card.querySelector("[data-body]");
@@ -131,14 +132,27 @@ function addUserCards(data) {
     const userLike = card.querySelector("[data-like]");
     const userProfile = card.querySelector("[data-profile]");
     const dismissUser = card.querySelector("[data-dismiss]");
+    const interests = card.querySelector("[data-interests]");
     card.setAttribute("id", `userCard${user.userID}`);
     header.textContent = `${user.firstname} ${user.surname}`;
+    if (user.photo) {
+      img.setAttribute("src", `assets/images/${user.photo}`);
+    }
     username.textContent = user.username;
     age.textContent = user.age;
     body.textContent = user.description;
     userID.setAttribute("value", user.userID);
     userLike.setAttribute("onclick", `likeUser(event,${user.userID});`);
     userLike.setAttribute("id", `user${user.userID}`);
+    let interestsSpan = document.createElement("span");
+    interestsSpan.innerHTML = "Interests In Common: ";
+    interests.appendChild(interestsSpan);
+    for (i = 0; i < user.interests_in_common.length; i++) {
+      let span = document.createElement("span");
+      span.classList.add("badge", "rounded-pill", "bg-primary");
+      span.innerHTML = user.interests_in_common[i];
+      interests.appendChild(span);
+    }
     if (user.description.includes("has not created their profile yet")) {
       userProfile.remove();
     } else {
