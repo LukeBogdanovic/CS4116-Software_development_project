@@ -34,6 +34,22 @@ function update_photo($photoID)
     $id=$_SESSION['id'];
     require "../../includes/database.php";
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $stmt = "SELECT PhotoID FROM photos WHERE UserID = ?";
+        if ($stmt = mysqli_prepare($con, $stmt)) {
+            if (mysqli_stmt_bind_param($stmt, "i", $id)) {
+                if (mysqli_stmt_execute($stmt)) {
+                    mysqli_stmt_store_result($stmt);
+                    mysqli_stmt_bind_result($stmt, $PhotoID);
+                    if(mysqli_stmt_fetch($stmt)){
+                        if(unlink('../../assets/images/'.$PhotoID)){
+                            echo "it worked";
+                        }
+                    }
+                } 
+            }
+        }else {
+        }
+
         $stmt = "DELETE FROM photos WHERE UserID = ?";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             if (mysqli_stmt_bind_param($stmt, "i", $id)) {
@@ -50,9 +66,7 @@ function update_photo($photoID)
         if ($stmt = mysqli_prepare($con, $stmt)) {
             if (mysqli_stmt_bind_param($stmt, "is", $id, $photoID)) {
                 if (mysqli_stmt_execute($stmt)) {
-                    $result = array('status' => 200, 'message' => "Updated User's Photo sucessfully");
                 } else {
-                    $result = array('status' => 403, 'message' => "Unable to Update User's Photos Sucessfully");
                     header("Location: ../../profileSetup.php?profile={$_SESSION['id']}");
                 }
             }

@@ -11,7 +11,7 @@ if ($_GET['profile'] != $_SESSION['id'] && !$_SESSION['admin']) {
     header("location: home.php");
     exit;
 }
-//messy but I need a way to access whos profile it is in uplaod.php
+//messy but I need a way to access whos profile it is in upload.php
 $_SESSION['profile']=$_GET['profile'];
 ?>
 <!DOCTYPE html>
