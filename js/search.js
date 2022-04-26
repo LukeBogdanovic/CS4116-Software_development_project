@@ -12,9 +12,16 @@ function getSearchResults(event) {
   } catch (error) {
     console.error();
   }
-  const searchTerm = $("#search").val();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
+  let searchTerm;
+  if (urlParams.get("searchType")) {
+    searchTerm = urlParams.get("search");
+    document.getElementById("search").value = searchTerm;
+    urlParams.delete("searchType");
+  } else {
+    searchTerm = $("#search").val();
+  }
   urlParams.delete("search");
   let urlSplit = window.location.href.split("?");
   let obj = { Title: "Search", URL: urlSplit[0] + `?search=${searchTerm}` };
