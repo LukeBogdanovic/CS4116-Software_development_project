@@ -18,14 +18,14 @@ if(isset($_POST['submit'])){
             $fileDestination = '../../assets/images/'.$fileNameNew;
             move_uploaded_file($fileTmpName,$fileDestination);
             update_photo($fileNameNew);
-            header("Location: ../../profile.php?profile={$_SESSION['id']}");
+            header("Location: ../../profile.php?profile={$_SESSION['profile']}");
         } else {
-            header("Location: ../../profileSetup.php?profile={$_SESSION['id']}");
+            header("Location: ../../profileSetup.php?profile={$_SESSION['profile']}");
             //File too large to upload. Apologise, limited space you know!
         }
     } else{
         //unknown error uploading file
-        header("Location: ../../profileSetup.php?profile={$_SESSION['id']}");
+        header("Location: ../../profileSetup.php?profile={$_SESSION['profile']}");
     }
 }
 
