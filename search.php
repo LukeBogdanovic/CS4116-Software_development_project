@@ -28,10 +28,109 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <?php
     require_once "includes/navbar.php";
     ?>
+    <div class="offcanvas offcanvas-start" id="applyFilters">
+        <div class="offcanvas-header">
+            <h2 class="offcanvas-title">Edit Filters</h2>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <form onsubmit="getSearchFilters(event);">
+                <div>
+                    <div>
+                        <label class="labels">Student?</label>
+                        <input type="radio" class="custom-control-input" id="studentYes" name="studentVal" value="Yes">
+                        <label class="custom-control-label" for="studentYes">Yes</label>
+                        <input type="radio" class="custom-control-input" id="studentNo" name="studentVal" value="No">
+                        <label class="custom-control-label" for="studentNo">No</label>
+                    </div>
+                    <hr>
+                    <div>
+                        <label class="labels">Gender</label>
+                        <br>
+                        <input type="radio" class="custom-control-input" id="genderMale" name="genderVal" value="Male">
+                        <label class="custom-control-label" for="genderMale">Male</label>
+                        <input type="radio" class="custom-control-input" id="genderFemale" name="genderVal" value="Female">
+                        <label class="custom-control-label" for="genderFemale">Female</label>
+                        <input type="radio" class="custom-control-input" id="genderNB" name="genderVal" value="Non-Binary">
+                        <label class="custom-control-label" for="genderFemale">Non Binary</label>
+                        <input type="radio" class="custom-control-input" id="genderOther" name="genderVal" value="Other">
+                        <label class="custom-control-label" for="genderFemale">Other</label>
+                        <br>
+                        <input type="radio" class="custom-control-input" id="genderPNS" name="genderVal" value="Prefer not to say">
+                        <label class="custom-control-label" for="genderFemale">Prefer Not To Say</label>
+                    </div>
+                    <hr>
+                    <div>
+                        <label class="labels">Age Range</label>
+                        <input type="text" id="ageLower" name="ageLower" size="1">to<input type="text" id="ageUpper" name="ageUpper" size="1">
+                    </div>
+                    <hr>
+                    <div>
+                        <label class="labels">Drinks?</label>
+                        <input type="radio" class="custom-control-input" id="drinksYes" name="drinksVal" value="Yes">
+                        <label class="custom-control-label" for="drinksYes">Yes</label>
+                        <input type="radio" class="custom-control-input" id="drinksNo" name="drinksVal" value="No">
+                        <label class="custom-control-label" for="drinksNo">No</label>
+                    </div>
+                    <hr>
+                    <div>
+                        <label class="labels">Smokes?</label>
+                        <input type="radio" class="custom-control-input" id="smokesYes" name="smokesVal" value="Yes">
+                        <label class="custom-control-label" for="smokesYes">Yes</label>
+                        <input type="radio" class="custom-control-input" id="smokesNo" name="smokesVal" value="No">
+                        <label class="custom-control-label" for="smokesNo">No</label>
+                    </div>
+                    <hr>
+                    <div class="form-inline">
+                        <label class="labels">County</label>
+                        <select name="county" id="county" class="form-select">
+                            <option></option>
+                            <option>Antrim</option>
+                            <option>Armagh</option>
+                            <option>Carlow</option>
+                            <option>Cavan</option>
+                            <option>Clare</option>
+                            <option>Cork</option>
+                            <option>Derry</option>
+                            <option>Donegal</option>
+                            <option>Down</option>
+                            <option>Dublin</option>
+                            <option>Fermanagh</option>
+                            <option>Galway</option>
+                            <option>Kerry</option>
+                            <option>Kildare</option>
+                            <option>Kilkenny</option>
+                            <option>Laois</option>
+                            <option>Leitrim</option>
+                            <option>Limerick</option>
+                            <option>Longford</option>
+                            <option>Louth</option>
+                            <option>Mayo</option>
+                            <option>Meath</option>
+                            <option>Monaghan</option>
+                            <option>Offaly</option>
+                            <option>Roscommon</option>
+                            <option>Sligo</option>
+                            <option>Tipperary</option>
+                            <option>Tyrone</option>
+                            <option>Waterford</option>
+                            <option>Westmeath</option>
+                            <option>Wexford</option>
+                            <option>Wicklow</option>
+                        </select>
+                    </div>
+                    <button class="btn submit" type="submit">Apply Filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div>
         <div class="container py-5 h-5">
             <input name="search" type="text" id="search" class="form-control" placeholder="Search">
             <input id="userID" value="<?php echo $_SESSION['id'] ?>" hidden />
+            <button class="btn py-1 submit" type="button" data-bs-toggle="offcanvas" data-bs-target="#applyFilters">
+                Edit Filters
+            </button>
         </div>
         <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
             <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" id="user-cards" data-user-cards-container></div>
