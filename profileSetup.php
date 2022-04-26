@@ -12,7 +12,11 @@ if ($_GET['profile'] != $_SESSION['id'] && !$_SESSION['admin']) {
     exit;
 }
 //messy but I need a way to access whos profile it is in upload.php
-$_SESSION['profile']=$_GET['profile'];
+if(isset($_GET['profile'])){
+    $_SESSION['profile']=$_GET['profile'];
+}else{
+    $_SESSION['profile']=$_SESSION['id'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -281,7 +285,7 @@ $_SESSION['profile']=$_GET['profile'];
             <form action="api/profile/upload.php" method="POST" enctype="multipart/form-data">
                 <div class="d-flex justify-content-center">
                     <div class="row mt-3">
-                        <label class="labels">Add Profile Picture</label>
+                        <label class="labels">Add Profile Picture (only accepts .png,.jpg,.jpeg)</label>
                         <input type="file" id="photo" name="photo" accept=".png,.jpg,.jpeg">
                     </div>
                 </div>
