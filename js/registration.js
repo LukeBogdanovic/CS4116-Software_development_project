@@ -94,8 +94,8 @@ function registerUser(
         let parentDiv = document.getElementById("signupform").parentNode;
         parentDiv.replaceChild(newNode, document.getElementById("signupform"));
         window.setTimeout(() => {
-          window.location.href = "../profileSetup.php";
-        }, 5000);
+          window.location.href = `../profileSetup.php?profile=${data.id}`;
+        }, 1250);
       } else {
         if (!document.getElementById("warning")) {
           let newNode = document.createElement("div");
@@ -114,7 +114,8 @@ function registerUser(
 }
 
 /**
- *
+ * Validates the email and password/confirmPassword fields entered by the user to see if they are valid/match
+ * the requirements set
  * @param {string} email
  * @param {string} password
  * @param {string} confirmPassword
@@ -141,7 +142,7 @@ function inputValidation(email, password, confirmPassword) {
   return false;
 }
 
-$(document).on("keyup", () => {
+$(document).on("keyup", function () {
   if (
     $("#username").val() === "" ||
     $("#pwd").val() === "" ||
@@ -155,4 +156,40 @@ $(document).on("keyup", () => {
   } else {
     $("#submit").prop("disabled", false);
   }
+});
+
+document.getElementById("username").addEventListener("keyup", function () {
+  if ($(this).val().length > 16) {
+    $("#usermsg")
+      .html("Username must not exceed 16 characters")
+      .css("color", "red");
+  } else {
+    $("#usermsg").html("");
+  }
+});
+
+document.getElementById("pwd").addEventListener("keyup", function () {
+  if ($(this).val().length < 8) {
+    $("#pwdmsg")
+      .html("Password must be at least 8 characters")
+      .css("color", "red");
+  } else if ($(this).val().length > 16) {
+    $("#pwdmsg")
+      .html("Password must not exceed 16 characters")
+      .css("color", "red");
+  } else {
+    $("#pwdmsg").html("");
+  }
+});
+
+document.getElementById("confirmpwd").addEventListener("keyup", function () {
+  if ($("#pwd").val() == $(this).val()) {
+    $("#confirmpwdmsg").html("Matching").css("color", "green");
+  } else {
+    $("#confirmpwdmsg").html("Not Matching").css("color", "red");
+  }
+});
+
+document.addEventListener("readystatechange", function () {
+  $('[data-toggle="tooltip"]').tooltip();
 });

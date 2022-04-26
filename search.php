@@ -25,43 +25,53 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-
     <?php
     require_once "includes/navbar.php";
     ?>
     <div>
         <div class="container py-5 h-5">
             <input name="search" type="text" id="search" class="form-control" placeholder="Search">
-        </div>
-        <div class="col">
-            <label for="ageRange" class="form-label"></label>
-            <input type="range" class="form-range" id="ageRange" min="18" max="130">
+            <input id="userID" value="<?php echo $_SESSION['id'] ?>" hidden />
         </div>
         <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
             <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3" id="user-cards" data-user-cards-container></div>
         </div>
-
         <template data-user-template>
             <div class="col">
-                <div class="usercard card h-100 shadow-sm"> <img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture">
+                <div class="usercard card h-100 shadow-sm"><img src="assets/images/profile_pic.png" class="card-img-top" alt="Profile Picture">
                     <div class="card-body">
+                        <input value="" hidden data-userid>
                         <h5 class="card-title" data-header>Name</h5>
                         <h5 class="card-subtitle mb-2 text-muted" data-username>Username</h5>
                         <h6 class="card-subtitle mb-2 text-muted" data-age>Age</h5>
                             <p class="card-content" data-body>Bio</p>
                             <div class="text-center my-4">
-                                <a class="btn btn-dark">View Profile</a>
+                                <a class="btn submit" data-like>Like User</a>
+                                <a class="btn btn-dark" data-profile>View Profile</a>
                             </div>
                     </div>
                 </div>
             </div>
         </template>
-
+    </div>
+    <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalHeader"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a type="button" class="btn submit" data-view-profile>View Profile</a>
+                </div>
+            </div>
+        </div>
     </div>
     <?php
     require_once "includes/footer.php"
     ?>
-
 </body>
 
 </html>
