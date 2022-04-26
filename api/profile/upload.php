@@ -18,20 +18,20 @@ if(isset($_POST['submit'])){
             $fileDestination = '../../assets/images/'.$fileNameNew;
             move_uploaded_file($fileTmpName,$fileDestination);
             update_photo($fileNameNew);
-            header("Location: ../../profile.php?profile={$_SESSION['id']}");
+            header("Location: ../../profile.php?profile={$_SESSION['profile']}");
         } else {
-            header("Location: ../../profileSetup.php?profile={$_SESSION['id']}");
+            header("Location: ../../profileSetup.php?profile={$_SESSION['profile']}");
             //File too large to upload. Apologise, limited space you know!
         }
     } else{
         //unknown error uploading file
-        header("Location: ../../profileSetup.php?profile={$_SESSION['id']}");
+        header("Location: ../../profileSetup.php?profile={$_SESSION['profile']}");
     }
 }
 
 function update_photo($photoID)
 {
-    $id=$_SESSION['id'];
+    $id=$_SESSION['profile'];
     require "../../includes/database.php";
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $stmt = "SELECT PhotoID FROM photos WHERE UserID = ?";
@@ -57,7 +57,7 @@ function update_photo($photoID)
                     $result = array('status' => 200, 'message' => "User photo successfully deleted");
                 } else {
                     $result = array('status' => 403, 'message' => "User photo unable to be deleted");
-                    header("Location: ../../profileSetup.php?profile={$_SESSION['id']}");
+                    header("Location: ../../profileSetup.php?profile={$_SESSION['profile']}");
                 }
             }
             mysqli_stmt_close($stmt);
@@ -67,7 +67,7 @@ function update_photo($photoID)
             if (mysqli_stmt_bind_param($stmt, "is", $id, $photoID)) {
                 if (mysqli_stmt_execute($stmt)) {
                 } else {
-                    header("Location: ../../profileSetup.php?profile={$_SESSION['id']}");
+                    header("Location: ../../profileSetup.php?profile={$_SESSION['profile']}");
                 }
             }
         }

@@ -12,7 +12,11 @@ if ($_GET['profile'] != $_SESSION['id'] && !$_SESSION['admin']) {
     exit;
 }
 //messy but I need a way to access whos profile it is in upload.php
-$_SESSION['profile']=$_GET['profile'];
+if(isset($_GET['profile'])){
+    $_SESSION['profile']=$_GET['profile'];
+}else{
+    $_SESSION['profile']=$_SESSION['id'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,6 +31,7 @@ $_SESSION['profile']=$_GET['profile'];
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="js/profileSetup.js" defer></script>
+    <script src="js/utils.js" defer></script>
 </head>
 
 <body>
@@ -281,7 +286,7 @@ $_SESSION['profile']=$_GET['profile'];
             <form action="api/profile/upload.php" method="POST" enctype="multipart/form-data">
                 <div class="d-flex justify-content-center">
                     <div class="row mt-3">
-                        <label class="labels">Add Profile Picture</label>
+                        <label class="labels">Add Profile Picture (only accepts .png,.jpg,.jpeg)</label>
                         <input type="file" id="photo" name="photo" accept=".png,.jpg,.jpeg">
                     </div>
                 </div>
