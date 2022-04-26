@@ -30,8 +30,8 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         <section class="vh-100">
             <div class="container py-5 h-100">
                 <div class="row d-flex align-items-center justify-content-center h-100">
-                    <div class="col-md-8 col-lg-7 col-xl-6">
-                        <img src="" class="img-fluid" alt="image to be found">
+                    <div class="col">
+                        <img src="assets/images/barimage.jpg" class="img-fluid" alt="image to be found">
                     </div>
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1" id="form">
                         <form onsubmit="loginUser(event);" method="POST" id="loginForm">
