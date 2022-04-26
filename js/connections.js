@@ -44,12 +44,16 @@ function addUserCards(data, type) {
   data.forEach((user) => {
     const card = userCardTemplate.content.cloneNode(true).children[0];
     const header = card.querySelector("[data-header]");
+    const img = card.querySelector("[data-img]");
     const username = card.querySelector("[data-username]");
     const age = card.querySelector("[data-age]");
     const body = card.querySelector("[data-body]");
     const connectionDate = card.querySelector("[data-connection]");
     const userID = card.querySelector("[data-userid]");
     header.textContent = `${user.firstname} ${user.surname}`;
+    if (user.photo) {
+      img.setAttribute("src", `assets/images/${user.photo}`);
+    }
     username.textContent = user.username;
     age.textContent = user.age;
     body.textContent = user.description;

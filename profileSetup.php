@@ -11,6 +11,8 @@ if ($_GET['profile'] != $_SESSION['id'] && !$_SESSION['admin']) {
     header("location: home.php");
     exit;
 }
+//messy but I need a way to access whos profile it is in upload.php
+$_SESSION['profile']=$_GET['profile'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -269,18 +271,25 @@ if ($_GET['profile'] != $_SESSION['id'] && !$_SESSION['admin']) {
                                 <textarea name="description" id="description" maxlength="512" type="text" class="form-control" rows="5" placeholder="enter bio"></textarea>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-center">
-                            <div class="row mt-3">
-                                <label class="labels">Add Pictures</label>
-                                <input type="file" id="myFile" name="filename" multiple accept=".png,.jpg,.jpeg">
-                            </div>
-                        </div>
                         <div class="mt-5 text-center">
                             <button class="btn btn-primary profile-button" onclick="updateProfile(event);" type="submit">Save Profile</button>
                         </div>
                 </form>
             </div>
         </section>
+        <Section>
+            <form action="api/profile/upload.php" method="POST" enctype="multipart/form-data">
+                <div class="d-flex justify-content-center">
+                    <div class="row mt-3">
+                        <label class="labels">Add Profile Picture</label>
+                        <input type="file" id="photo" name="photo" accept=".png,.jpg,.jpeg">
+                    </div>
+                </div>
+                <div class="mt-5 text-center">
+                    <button class="btn btn-primary profile-button" name="submit" type="submit">Save Photo</button>
+                </div>
+            </form>
+        </Section>
         <section>
             <div class="container mt-5 mb-5" id="hide2" hidden>
                 <hr />

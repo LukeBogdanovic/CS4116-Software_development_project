@@ -5,6 +5,26 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("location: login.php");
     exit;
 }
+
+require "includes/database.php";
+$id=$_GET['profile'];
+$stmt = "SELECT photos.PhotoID FROM photos WHERE photos.UserID = ?";
+if ($stmt = mysqli_prepare($con, $stmt)) {
+    if (mysqli_stmt_bind_param($stmt, "i", $id)) {
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_store_result($stmt);
+            mysqli_stmt_bind_result($stmt, $PhotoID);
+            if(mysqli_stmt_fetch($stmt)){
+                $photoLocation = $PhotoID;
+                $result = array('status' => 200, 'message' => "User's Photo retrieved");
+            }
+        } 
+    }
+}else {
+    $result = array('status' => 403, 'message' => "User's Photo unable to be retrieved");
+}
+mysqli_stmt_close($stmt);
+mysqli_close($con);
 ?>
 <!DOCTYPE html>
 
@@ -32,26 +52,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             <div class="spinner-border" role="status"></div>
         </div>
         <div class="container mt-5" id="cont" hidden>
-            <div id="profileCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="assets/images/profile_pic.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/1619563.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/logo.png" class="img-fluid rounded mx-auto d-block w-75" alt="No Image">
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#profileCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#profileCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+            <div>
+                <img src=<?php echo(!empty($photoLocation)) ? ("assets/images/{$photoLocation}") : ("assets/images/profile_pic.png");  ?> class="img-fluid rounded" alt="No Image">
             </div>
             <div class="card mb-4 mt-2">
                 <div class="card-body" id="card">
