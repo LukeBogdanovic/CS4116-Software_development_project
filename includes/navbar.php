@@ -11,7 +11,7 @@
                 </li>
                 <?php echo (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) ?
                     '<li class="nav-item">
-                    <a class="nav-link" href="profile.php?profile='. $_SESSION["id"] .'">Profile</a>
+                    <a class="nav-link" href="profile.php?profile=' . $_SESSION["id"] . '">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="connections.php">My Connections</a>
@@ -24,8 +24,8 @@
             </ul>
             <?php echo (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) ?
                 '<form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <a class="btn submit" type="submit" href="search.php">Search</a>
+                    <input class="form-control me-2" type="search" id="searchBar" placeholder="Search"aria-label="Search">
+                    <a class="btn submit" type="submit" onclick="goToSearch();">Search</a>
                 </form>
                 <a href="logout.php" class="btn ml-3">Sign Out</a>' : '' ?>
         </div>
