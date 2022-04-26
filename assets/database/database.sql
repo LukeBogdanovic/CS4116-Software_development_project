@@ -196,8 +196,7 @@ SET time_zone = "+00:00";
   --
   CREATE Table `photos` (
     `UserID` int(11) NOT NULL,
-    `PhotoID` int (11) NOT NULL AUTO_INCREMENT,
-    `Type` enum('primaryPhoto', 'coverPhoto', 'additionalPhoto') NOT NULL,
+    `PhotoID` varchar (27) NOT NULL COMMENT 'long enough to store the output of php''suniqid("",true) +the .jpeg/.png', 
     PRIMARY KEY (PhotoID),
     CONSTRAINT `Photos_ibfk_1` FOREIGN KEY (UserID) REFERENCES user(UserID) ON DELETE CASCADE
   ) ENGINE = INNODB DEFAULT CHARSET = latin1 COMMENT = 'Store each Photo of Users';
