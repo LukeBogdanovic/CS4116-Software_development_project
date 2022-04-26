@@ -1,20 +1,22 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 4.9.0.1
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: May 30, 2018 at 09:00 AM
--- Server version: 5.7.22-0ubuntu0.16.04.1
--- PHP Version: 7.0.30-0ubuntu0.16.04.1
-SET
-  SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET
-  time_zone = "+00:00";
-  /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-  /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-  /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-  /*!40101 SET NAMES utf8mb4 */;
---
+-- Host: sql302.epizy.com
+-- Generation Time: Apr 25, 2022 at 10:08 PM
+-- Server version: 10.3.27-MariaDB
+-- PHP Version: 7.2.22
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+  --
   -- Database: `epiz_31123825_group13`
   --
   -- --------------------------------------------------------
@@ -234,7 +236,7 @@ INSERT INTO `user` (`UserID`, `Username`, `Firstname`, `Surname`, `DateOfBirth`,
 (14, 'PMX1121', 'asdf', 'sdad', '2000-12-29', '$2y$10$CcXwuUMbh.9p7JT/oG3Ra.cgUCx63PqqN1VcNTTWPN/FChrTzfwoO', 'asdf@gmail.com', 0, 0),
 (15, 'PMX1122', 'asdf', 'sdad', '1999-03-03', '$2y$10$GrBrE8pUr6hZ03nv0gS/r.SrDy1y0uNI1SDHG2qS68GphPZNc9V7K', 'john.smith@email.com', 0, 0),
 (16, 'PMX112222', 'test', 'test', '2000-03-01', '$2y$10$KnUbaZL5s5ELtsUweICo/etR181AjBV97bAUrbYhgzndSNqx7afiu', 'test.@com', 0, 0),
-(17, '123456789101123456', 'John', 'Doe', '2000-01-01', '$2y$10$jZjHMhPHMegfW/y4evz5mu0pp4YWEW7PHZXbmC7phYP.Oc91TdYQm', 'john@gmail.com', 0, 0),
+(17, '123456789101123456', 'John', 'Doe', '2000-01-01', '$2y$10$jZjHMhPHMegfW/y4evz5mu0pp4YWEW7PHZXbmC7phYP.Oc91TdYQm', 'john@gmail.com', 0, 1),
 (18, 'harrypotter12', 'Harry', 'Potter', '2000-01-03', '$2y$10$ZoAQMNvOavX48jSJmR0tq.I46C3Fxi2nyAGIc7Fqix55oCDrVwhYO', 'h@p.com', 0, 0),
 (19, 'william123', 'William', 'Smith', '1996-02-21', '$2y$10$Of7.JIcFy2J8gXQx278aH.JlqiCPeHrE7RZE352/m67YNv0FbiDOW', 'william.smith42@gmail.com', 0, 0),
 (20, 'emmetb', 'Emmet', 'Browne', '2000-02-07', '$2y$10$uQ5OEKFUR/JdG7Fkw4e8ae3SOriRyOBGGaTWI35Sc9KLdC4CTSdAy', 'e@gmial.com', 0, 0),
@@ -326,11 +328,11 @@ INSERT INTO `profile` (`UserID`, `Smoker`, `Drinker`, `Gender`, `Seeking`, `Desc
 (32, 'Social Smoker', 'No', 'Male', 'Female', 'Hi ', 'Cork', NULL, 'compooter job', 1, NULL, NULL),
 (34, 'Non Smoker', 'No', 'Male', 'Female', 'Hello there', 'Galway', 'Tatooine', 'Jedi', 1, NULL, NULL),
 (35, 'Social Smoker', 'Social Drinker', 'Male', 'Female', 'Likes:\n-Pod-racing\n-Lightsabers\n-PadmÃ©\n\nDislikes:\n-Sand\n-Younglings\n-PadmÃ©', 'Dublin', 'Tatooine', 'Jedi', 1, NULL, NULL),
-(36, 'Non Smoker', 'Constantly', 'Female', 'Male', 'Anakin > Vader', 'Laois', 'Coruscant', 'Jedi', 1, NULL, NULL),
+(36, 'Non Smoker', 'Constantly', 'Female', 'Female', 'Anakin > Vader', 'Laois', 'Coruscant', 'Jedi', 1, NULL, NULL),
 (37, 'Non Smoker', 'Most days', 'Female', 'Male', '#youngesteverqueenofnaboo', 'Kerry', 'Naboo', 'Senator', 1, NULL, NULL),
 (38, 'Non Smoker', 'No', 'Non-Binary', 'All', '*beep* *boop*', 'Mayo', 'Factory', 'Droid', 1, NULL, NULL),
 (39, 'Non Smoker', 'No', 'Non-Binary', 'All', 'Sometimes, I just don\'t understand human behaviour.', 'Kilkenny', 'Tatooine', 'Droid', 1, NULL, NULL),
-(40, 'Social Smoker', 'Most days', 'Male', 'Female', 'Most unique looking lad out there', 'Kildare', 'Kamino', 'Clone', 1, NULL, NULL),
+(40, 'Social Smoker', 'Most days', 'Male', 'Male', 'Most unique looking lad out there', 'Kildare', 'Kamino', 'Clone', 1, NULL, NULL),
 (41, 'Smoker', 'No', 'Male', 'Female', 'My bio, this is', 'Leitrim', 'Dagobah', 'Jedi', 1, NULL, NULL),
 (42, 'Non Smoker', 'Social Drinker', 'Male', 'Female', 'You are on this dating site, but I do not grant you the rank of my girl', 'Fermanagh', 'Coruscant', 'Jedi', 1, NULL, NULL),
 (43, 'Non Smoker', 'No', 'Male', 'Female', 'I don\'t believe in chance', 'Clare', 'Coruscant', 'Jedi', 1, NULL, NULL),
@@ -353,7 +355,7 @@ INSERT INTO `profile` (`UserID`, `Smoker`, `Drinker`, `Gender`, `Seeking`, `Desc
 (60, 'Non Smoker', 'Social Drinker', 'Male', 'Female', 'I am about to do something very bold in this job that Iâ€™ve never done before: try.', 'Tipperary', 'Scranton', 'Salesman', 1, NULL, NULL),
 (61, 'Non Smoker', 'Social Drinker', 'Female', 'Male', 'Oh God no, Dwight isnâ€™t my friendâ€¦ Oh my God! Dwightâ€™s kind of my friend!', 'Longford', 'Scranton', 'Receptionist', 1, 'New York', 'Art'),
 (62, 'Non Smoker', 'No', 'Male', 'Female', 'I went to cornell', 'Carlow', 'Scranton', 'Salesman', 1, 'Cornell', NULL),
-(63, 'Non Smoker', 'Most days', 'Male', 'Female', 'Me think, why waste time say lot word, when few word do trick?', 'Meath', 'Scranton', 'Accountant', 1, NULL, NULL),
+(63, 'Non Smoker', 'Most days', 'Male', 'Male', 'Me think, why waste time say lot word, when few word do trick?', 'Meath', 'Scranton', 'Accountant', 1, NULL, NULL),
 (64, 'Non Smoker', 'No', 'Female', 'Male', 'If you pray enough you can change yourself into a cat person', 'Armagh', 'Scranton', 'Accountant', 1, NULL, NULL),
 (65, 'Non Smoker', 'Social Drinker', 'Male', 'Female', 'I have six roommates, which are better than friends because they have to give you one month\'s notice before they leave', 'Louth', 'Scranton', 'HR', 1, NULL, NULL),
 (66, 'Social Smoker', 'Constantly', 'Male', 'Female', 'I\'m such a perfectionist that I\'d kinda rather not do it at all than do a crappy version', 'Monaghan', 'Scranton', 'Temp', 1, NULL, NULL),
@@ -364,7 +366,7 @@ INSERT INTO `profile` (`UserID`, `Smoker`, `Drinker`, `Gender`, `Seeking`, `Desc
 (71, 'Non Smoker', 'Social Drinker', 'Male', 'Female', 'You Need To Access Your Uncrazy Side', 'Derry', 'Scranton', 'Warehouse Manager', 1, NULL, NULL),
 (72, 'Social Smoker', 'Most days', 'Female', 'Male', 'When you use a ridiculous font, no one thinks you have a plan', 'Fermanagh', 'Scranton', 'Special Projects Manager', 1, NULL, NULL),
 (73, 'Non Smoker', 'No', 'Male', 'Female', 'I\'m Mose', 'Kilkenny', 'Scranton', 'Farmer', 1, NULL, NULL),
-(74, 'Non Smoker', 'Social Drinker', 'Male', 'Male', 'I just want you to know you can''t just say the word bankruptcy and expect anything to happen', 'Leitrim', 'Scranton', 'Accountant', 1, NULL, NULL),
+(74, 'Non Smoker', 'Social Drinker', 'Male', 'Male', 'I just want you to know you can\'t just say the word bankruptcy and expect anything to happen', 'Leitrim', 'Scranton', 'Accountant', 1, NULL, NULL),
 (75, 'Smoker', 'Constantly', 'Male', 'All', 'The only difference between me and a homeless man is this job', 'Tipperary', 'Scranton', 'Quality Assurance', 1, NULL, NULL),
 (76, 'Non Smoker', 'Most days', 'Male', 'Female', 'There\'s only one thing I hate more than lying: skim milk', 'Donegal', 'Pawnee', 'Department Director', 1, NULL, NULL),
 (77, 'Social Smoker', 'Most days', 'Female', 'Male', 'Prom is nothing but a huge party full of smiling, dancing people enjoying themselves. It\'s literally my worst nightmare. And I hate punch', 'Dublin', 'Pawnee', 'Intern', 1, NULL, NULL),
@@ -378,7 +380,6 @@ INSERT INTO `profile` (`UserID`, `Smoker`, `Drinker`, `Gender`, `Seeking`, `Desc
 (85, 'Social Smoker', 'Most days', 'Female', 'Male', 'Treat yo self', 'Limerick', 'Pawnee', 'Government Worker', 1, NULL, NULL),
 (86, 'Smoker', 'No', 'Male', 'Female', 'test', 'Galway', 'Galway', 'Student', 1, NULL, NULL),
 (87, 'Smoker', 'Social Drinker', 'Male', 'Female', 'heyo I like student being no', 'Tipperary', NULL, 'I like being employed', 0, NULL, NULL);
-
 -- --------------------------------------------------------
   --
   -- Insert data for Connections into Connections table
@@ -386,20 +387,20 @@ INSERT INTO `profile` (`UserID`, `Smoker`, `Drinker`, `Gender`, `Seeking`, `Desc
 INSERT INTO
   connections
 VALUES
-  (NULL, 1, 7, '2022-03-22'),
-  (NULL, 1, 2, '2022-02-14'),
-  (NULL, 1, 8, '2022-03-18'),
-  (NULL, 1, 5, '2022-02-08'),
-  (NULL, 1, 9, '2022-03-06'),
-  (NULL, 2, 5, '2022-03-14'),
-  (NULL, 2, 7, '2022-03-18'),
-  (NULL, 2, 9, '2022-03-02'),
-  (NULL, 3, 5, '2022-02-17'),
-  (NULL, 3, 8, '2022-03-23'),
-  (NULL, 3, 6, '2022-03-16'),
-  (NULL, 4, 7, '2022-02-23'),
-  (NULL, 4, 9, '2022-03-02'),
-  (NULL, 4, 5, '2022-03-21');
+  (1, 1, 7, '2022-03-22'),
+  (2, 1, 2, '2022-02-14'),
+  (3, 1, 8, '2022-03-18'),
+  (4, 1, 5, '2022-02-08'),
+  (5, 1, 9, '2022-03-06'),
+  (6, 2, 5, '2022-03-14'),
+  (7, 2, 7, '2022-03-18'),
+  (8, 2, 9, '2022-03-02'),
+  (9, 3, 5, '2022-02-17'),
+  (10, 3, 8, '2022-03-23'),
+  (11, 3, 6, '2022-03-16'),
+  (12, 4, 7, '2022-02-23'),
+  (13, 4, 9, '2022-03-02'),
+  (14, 4, 5, '2022-03-21');
 -- --------------------------------------------------------
   --
   -- Insert data for avaialble interests into available interest table
@@ -707,8 +708,6 @@ INSERT INTO `interests` (`UserID`, `InterestID`) VALUES
   --
 
 INSERT INTO `securityqa` (`UserID`, `SecurityQuestion`, `SecurityAnswer`) VALUES
-(31, '', ''),
-(31, 'Mothers maiden name', ''),
 (30, 'Best friends name', 'Grainne'),
 (30, 'Mothers maiden name', 'Knightly'),
 (34, 'First pets name', 'Anakin'),
@@ -755,27 +754,34 @@ INSERT INTO `securityqa` (`UserID`, `SecurityQuestion`, `SecurityAnswer`) VALUES
 (56, 'Favourite teacher', 'Darth Sidious'),
 (56, 'First pets name', 'Yoda'),
 (57, 'First pets name', 'Obi-Wan'),
-(57, 'Mothers maiden name', ''),
 (58, 'Best friends name', 'Dwight'),
 (58, 'Mothers maiden name', 'Scott'),
-(59, '', ''),
 (59, 'Mothers maiden name', 'Schrute'),
 (60, 'Favourite teacher', 'Michael Scott'),
 (60, 'Best friends name', 'Dwight Schrute'),
 (61, 'Best friends name', 'Jim Halpert'),
-(61, 'Mothers maiden name', ''),
 (62, 'Best friends name', 'Darryl'),
-(62, 'Mothers maiden name', ''),
 (64, 'Best friends name', 'Cats'),
-(64, 'Mothers maiden name', ''),
 (65, 'Best friends name', 'Pam'),
 (65, 'Mothers maiden name', 'Flenderson'),
-(66, '', ''),
-(66, 'Mothers maiden name', ''),
-(69, '', ''),
-(69, 'Mothers maiden name', ''),
-(73, 'Best friends name', 'Dwight'),
-(73, 'Mothers maiden name', '');
+(73, 'Best friends name', 'Dwight');
+
+-- --------------------------------------------------------
+  --
+  -- insert data for table `liked`
+  --
+
+  INSERT INTO `liked` (`UserID1`, `UserID2`, `LikedDate`) VALUES
+  (5, 3, '2022-04-17'),
+  (5, 2, '2022-04-17'),
+  (5, 7, '2022-04-17'),
+  (5, 11, '2022-04-17'),
+  (5, 9, '2022-04-17'),
+  (5, 14, '2022-04-17'),
+  (5, 19, '2022-04-17'),
+  (5, 17, '2022-04-17'),
+  (52, 36, '2022-04-21');
+
   /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
   /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
   /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
