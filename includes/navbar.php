@@ -24,7 +24,7 @@
             </ul>
             <?php echo (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) ?
                 '<form class="d-flex">
-                    <input class="form-control me-2" type="search" id="searchBar" placeholder="Search" aria-label="Search">
+                    <input class="form-control me-2" type="search" id="searchBar" placeholder="Search"aria-label="Search">
                     <a class="btn submit" type="submit" onclick="goToSearch();">Search</a>
                 </form>
                 <a href="logout.php" class="btn ml-3">Sign Out</a>' : '' ?>
