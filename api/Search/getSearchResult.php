@@ -140,8 +140,18 @@ function get_filtered_users()
                     if (is_null($description)) {
                         $description = "$firstname $surname has not created their profile yet";
                     }
+                    $photoStmt = "SELECT photos.PhotoID FROM photos WHERE photos.UserID = ?";
+                    if ($photoStmt = mysqli_prepare($con, $photoStmt)) {
+                        if (mysqli_stmt_bind_param($photoStmt, "i", $userID)) {
+                            if (mysqli_stmt_execute($photoStmt)) {
+                                mysqli_stmt_store_result($photoStmt);
+                                mysqli_stmt_bind_result($photoStmt, $PhotoID);
+                                mysqli_stmt_fetch($photoStmt);
+                            }
+                        }
+                    }
                     $age = get_age($dob);
-                    $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description);
+                    $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description, 'photo' => $PhotoID);
                     if (!empty($upperAge) && !empty($lowerAge)) {
                         if (checkAgeRange($user, $lowerAge, $upperAge)) {
                             array_push($filteredUsers, $user);
@@ -149,6 +159,7 @@ function get_filtered_users()
                     } else {
                         array_push($filteredUsers, $user);
                     }
+                    $PhotoID = "";
                 }
                 $result['filtered_users'] = $filteredUsers;
             }
