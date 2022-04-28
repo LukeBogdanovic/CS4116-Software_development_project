@@ -36,7 +36,7 @@ function get_Search_result($search = "")
     // Check that the request method is a POST request
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         //statement to find all usernames or first names similar to inputted username 
-        $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE CONCAT(user.firstname, ' ',user.Surname, '¾', user.Username) LIKE '%$search%';";
+        $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE CONCAT(user.firstname, ' ',user.Surname, '¾', user.Username) LIKE '%$search%' AND user.banned <> 1;";
         if ($stmt = mysqli_prepare($con, $stmt)) {
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
@@ -77,7 +77,7 @@ function get_Search_result($search = "")
 function get_user()
 {
     require "../../includes/database.php";
-    $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE user.userID = ?";
+    $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE user.userID = ? AND user.banned <> 1";
     if ($stmt = mysqli_prepare($con, $stmt)) {
         mysqli_stmt_bind_param($stmt, "i", $_POST['id']);
         if (mysqli_stmt_execute($stmt)) {
@@ -101,7 +101,7 @@ function get_filtered_users()
 {
     require "../../includes/database.php";
     $search = $_POST['search'];
-    $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE CONCAT(user.firstname, ' ',user.Surname, '¾', user.Username) LIKE '%$search%'";
+    $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE CONCAT(user.firstname, ' ',user.Surname, '¾', user.Username) LIKE '%$search%' AND user.banned <> 1";
     if (!empty($_POST["student"]))
         $filterStudent = $_POST["student"];
     if (!empty($_POST["gender"]))
@@ -140,8 +140,18 @@ function get_filtered_users()
                     if (is_null($description)) {
                         $description = "$firstname $surname has not created their profile yet";
                     }
+                    $photoStmt = "SELECT photos.PhotoID FROM photos WHERE photos.UserID = ?";
+                    if ($photoStmt = mysqli_prepare($con, $photoStmt)) {
+                        if (mysqli_stmt_bind_param($photoStmt, "i", $userID)) {
+                            if (mysqli_stmt_execute($photoStmt)) {
+                                mysqli_stmt_store_result($photoStmt);
+                                mysqli_stmt_bind_result($photoStmt, $PhotoID);
+                                mysqli_stmt_fetch($photoStmt);
+                            }
+                        }
+                    }
                     $age = get_age($dob);
-                    $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description);
+                    $user = array('userID' => $userID, 'username' => $username, 'firstname' => $firstname, 'surname' => $surname, 'age' => $age, 'description' => $description, 'photo' => $PhotoID);
                     if (!empty($upperAge) && !empty($lowerAge)) {
                         if (checkAgeRange($user, $lowerAge, $upperAge)) {
                             array_push($filteredUsers, $user);
@@ -149,6 +159,7 @@ function get_filtered_users()
                     } else {
                         array_push($filteredUsers, $user);
                     }
+                    $PhotoID = "";
                 }
                 $result['filtered_users'] = $filteredUsers;
             }
@@ -183,9 +194,9 @@ function applyCountyFilter($stmt, $county)
 function applySmokerFilter($stmt, $smokesYN)
 {
     if ($smokesYN == "Yes")
-        return $stmt = "$stmt AND profile.Smoker <> 'Never' ";
+        return $stmt = "$stmt AND profile.Smoker <> 'Non Smoker' ";
     else
-        return $stmt = "$stmt AND profile.Smoker = 'Never';";
+        return $stmt = "$stmt AND profile.Smoker = 'Non Smoker';";
 }
 
 //filters by drinker status, No for filtering out drinkers, anything else for filtering out abstainers
