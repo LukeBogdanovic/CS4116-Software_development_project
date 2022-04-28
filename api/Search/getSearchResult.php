@@ -77,7 +77,7 @@ function get_Search_result($search = "")
 function get_user()
 {
     require "../../includes/database.php";
-    $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE user.userID = ? user.banned <> 1";
+    $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE user.userID = ? AND user.banned <> 1";
     if ($stmt = mysqli_prepare($con, $stmt)) {
         mysqli_stmt_bind_param($stmt, "i", $_POST['id']);
         if (mysqli_stmt_execute($stmt)) {
@@ -101,7 +101,7 @@ function get_filtered_users()
 {
     require "../../includes/database.php";
     $search = $_POST['search'];
-    $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE CONCAT(user.firstname, ' ',user.Surname, '¾', user.Username) LIKE '%$search%' user.banned <> 1";
+    $stmt = "SELECT user.UserID, user.Username, user.Firstname, user.Surname, user.DateOfBirth, profile.Description FROM user LEFT JOIN profile ON user.UserID=profile.UserID WHERE CONCAT(user.firstname, ' ',user.Surname, '¾', user.Username) LIKE '%$search%' AND user.banned <> 1";
     if (!empty($_POST["student"]))
         $filterStudent = $_POST["student"];
     if (!empty($_POST["gender"]))
@@ -183,9 +183,9 @@ function applyCountyFilter($stmt, $county)
 function applySmokerFilter($stmt, $smokesYN)
 {
     if ($smokesYN == "Yes")
-        return $stmt = "$stmt AND profile.Smoker <> 'Never' ";
+        return $stmt = "$stmt AND profile.Smoker <> 'Non Smoker' ";
     else
-        return $stmt = "$stmt AND profile.Smoker = 'Never';";
+        return $stmt = "$stmt AND profile.Smoker = 'Non Smoker';";
 }
 
 //filters by drinker status, No for filtering out drinkers, anything else for filtering out abstainers

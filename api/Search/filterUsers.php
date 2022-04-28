@@ -160,9 +160,9 @@ function applyCountyFilter($stmt, $county)
 function applySmokerFilter($stmt, $smokesYN)
 {
     if ($smokesYN == "Yes")
-        return $stmt = "$stmt AND profile.Smoker <> 'Never' ";
+        return $stmt = "$stmt AND profile.Smoker <> 'Non Smoker' ";
     else
-        return $stmt = "$stmt AND profile.Smoker = 'Never';";
+        return $stmt = "$stmt AND profile.Smoker = 'Non Smoker';";
 }
 
 //filters by drinker status, No for filtering out drinkers, anything else for filtering out abstainers
