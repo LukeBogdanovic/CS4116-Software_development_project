@@ -205,8 +205,6 @@ function update_profile()
                     $result = array('status' => 200, 'message' => "User's profile has been updated succesfully");
                 } else {
                     $result = array('status' => 403, 'message' => "Unable to update the User's profile");
-                    echo json_encode($result);
-                    return;
                 }
             }
             mysqli_stmt_close($stmt);
