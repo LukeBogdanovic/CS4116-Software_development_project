@@ -279,24 +279,28 @@ function sendUpdate(interestStored) {
     success: (response) => {
       let data = JSON.parse(response);
       if (data.status == 200) {
-        let newChild = document.createElement("div");
-        newChild.id = "warning";
-        newChild.classList.add("alert", "alert-success");
-        newChild.innerHTML = data.message;
-        document.getElementById("hide").prepend(newChild);
-        window.setTimeout(() => {
-          document.getElementById("warning").remove();
-        }, 3000);
+        if (!document.getElementById("warning")) {
+          let newChild = document.createElement("div");
+          newChild.id = "warning";
+          newChild.classList.add("alert", "alert-success");
+          newChild.innerHTML = data.message;
+          document.getElementById("hide").prepend(newChild);
+          window.setTimeout(() => {
+            document.getElementById("warning").remove();
+          }, 3000);
+        }
       } else {
-        let newChild = document.createElement("div");
-        newChild.id = "warning";
-        newChild.classList.add("alert", "alert-danger");
-        newChild.innerHTML = data.message;
-        let parentElement = document.getElementById("hide");
-        parentElement.prepend(newChild);
-        document.getElementById("spinner").remove();
-        document.getElementById("form").remove();
-        document.getElementById("hide").removeAttribute("hidden");
+        if (!document.getElementById("warning")) {
+          let newChild = document.createElement("div");
+          newChild.id = "warning";
+          newChild.classList.add("alert", "alert-danger");
+          newChild.innerHTML = data.message;
+          let parentElement = document.getElementById("hide");
+          parentElement.prepend(newChild);
+          window.setTimeout(() => {
+            document.getElementById("warning").remove();
+          }, 3000);
+        }
       }
     },
   });
@@ -430,19 +434,35 @@ function updateSecurityQuestionsAnswers(event) {
     success: (response) => {
       let data = JSON.parse(response);
       if (data.status == 200) {
-        let newChild = document.createElement("div");
-        newChild.id = "warning";
-        newChild.classList.add("alert", "alert-success");
-        newChild.innerHTML = data.message;
-        let parentElement = document.getElementById("hide2");
-        parentElement.insertBefore(newChild, document.getElementById("form2"));
+        if (!document.getElementById("secWarning")) {
+          let newChild = document.createElement("div");
+          newChild.id = "secWarning";
+          newChild.classList.add("alert", "alert-success");
+          newChild.innerHTML = data.message;
+          let parentElement = document.getElementById("hide2");
+          parentElement.insertBefore(
+            newChild,
+            document.getElementById("form2")
+          );
+          window.setTimeout(() => {
+            document.getElementById("secWarning").remove();
+          }, 3000);
+        }
       } else {
-        let newChild = document.createElement("div");
-        newChild.id = "warning";
-        newChild.classList.add("alert", "alert-danger");
-        newChild.innerHTML = data.message;
-        let parentElement = document.getElementById("hide2");
-        parentElement.insertBefore(newChild, document.getElementById("form2"));
+        if (!document.getElementById("secWarning")) {
+          let newChild = document.createElement("div");
+          newChild.id = "secWarning";
+          newChild.classList.add("alert", "alert-danger");
+          newChild.innerHTML = data.message;
+          let parentElement = document.getElementById("hide2");
+          parentElement.insertBefore(
+            newChild,
+            document.getElementById("form2")
+          );
+          window.setTimeout(() => {
+            document.getElementById("secWarning").remove();
+          }, 3000);
+        }
       }
     },
   });

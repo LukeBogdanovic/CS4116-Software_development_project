@@ -188,7 +188,8 @@ function update_profile()
                 }
             }
         }
-        $inputs = array(&$gender, &$seeking, &$smoker, &$drinker, &$employment, &$student, &$college, &$degree, &$county, &$town, &$description);
+        //set all empty variables to null except for student as student defaults to 0 always. there is no opportunity for it to be empty
+        $inputs = array(&$gender, &$seeking, &$smoker, &$drinker, &$employment, &$college, &$degree, &$county, &$town, &$description);
         foreach ($inputs as &$value) {
             if ($value == "" || $value == '') {
                 $value = null;
@@ -204,8 +205,6 @@ function update_profile()
                     $result = array('status' => 200, 'message' => "User's profile has been updated succesfully");
                 } else {
                     $result = array('status' => 403, 'message' => "Unable to update the User's profile");
-                    echo json_encode($result);
-                    return;
                 }
             }
             mysqli_stmt_close($stmt);
